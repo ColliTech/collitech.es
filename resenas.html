@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reseñas | ColliTech</title>
+<meta name="description" content="Opiniones de clientes de ColliTech.">
+<link rel="icon" type="image/png" href="collitech-logo.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html" aria-label="ColliTech inicio">
+      <img src="collitech-logo.png" alt="Logo de ColliTech">
+    </a>
+    <div class="menu-wrap" id="menuWrap">
+      <button class="menu-button" id="menuButton" type="button" aria-expanded="false">
+        <span>Menú</span><span class="menu-arrow">▼</span>
+      </button>
+      <nav class="dropdown" id="dropdown">
+        <a href="index.html" class="">Inicio</a>
+        <a href="servicios.html" class="">Servicios</a>
+        <a href="precios.html" class="">Precios</a>
+        <a href="proyectos.html" class="">Proyectos</a>
+        <a href="resenas.html" class="active">Reseñas</a>
+        <a href="contacto.html" class="">Contacto</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main>
+
+<section class="section">
+<div class="container">
+  <div class="section-head">
+    <div class="label">Opiniones</div>
+    <h1 style="font-size:clamp(42px,7vw,74px);letter-spacing:-3px">Reseñas</h1>
+    <p>Las nuevas reseñas quedan pendientes de revisión antes de publicarse.</p>
+  </div>
+
+  <div class="rating-box">
+    <div><span class="rating-number" id="average-rating">—</span><span class="rating-star">★</span></div>
+    <div class="rating-count"><span id="reviews-count">0</span> reseñas publicadas</div>
+  </div>
+
+  <div class="review-form">
+    <h3>Déjanos tu opinión</h3>
+    <div class="stars" id="stars">
+      <button type="button" data-rating="1" aria-label="1 estrella">★</button>
+      <button type="button" data-rating="2" aria-label="2 estrellas">★</button>
+      <button type="button" data-rating="3" aria-label="3 estrellas">★</button>
+      <button type="button" data-rating="4" aria-label="4 estrellas">★</button>
+      <button type="button" data-rating="5" aria-label="5 estrellas">★</button>
+    </div>
+    <input class="field" id="review-name" type="text" maxlength="50" placeholder="Tu nombre">
+    <textarea class="field" id="review-message" maxlength="1000" placeholder="Escribe tu opinión..."></textarea>
+    <button class="btn primary" id="submit-review" type="button" style="width:100%">Publicar reseña</button>
+    <div class="form-status" id="review-status"></div>
+  </div>
+
+  <div class="reviews-grid" id="reviews-list"></div>
+</div>
+</section>
+
+</main>
+<footer>
+  <img class="footer-logo" src="collitech-logo.png" alt="ColliTech">
+  <div class="footer-brand">COLLITECH</div>
+  <div>Informática · Hornachos y alrededores</div>
+  <div style="margin-top:8px">© 2026 ColliTech</div>
+</footer>
+<script src="nav.js"></script>
+<script src="reviews.js"></script>
+</body>
+</html>
