@@ -1224,6 +1224,367 @@
         }
 
     </style>
+    /* =========================
+   RESEÑAS
+========================= */
+
+#resenas {
+    position: relative;
+}
+
+
+/* RESUMEN DE VALORACIÓN */
+
+.reviews-summary {
+    width: 100%;
+    max-width: 420px;
+
+    margin: 0 auto 45px;
+
+    padding: 35px 25px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #151515,
+            #090909
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,0.10);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,0.25);
+}
+
+
+.reviews-score {
+    font-size: 58px;
+
+    font-weight: 900;
+
+    line-height: 1;
+
+    letter-spacing: -3px;
+}
+
+
+.rating-star {
+    color: white;
+
+    font-size: 48px;
+
+    margin-left: 4px;
+}
+
+
+.reviews-count {
+    margin-top: 12px;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   FORMULARIO
+========================= */
+
+.review-form {
+    width: 100%;
+
+    max-width: 650px;
+
+    margin: 0 auto 60px;
+
+    padding: 35px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #111111,
+            #080808
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+    border-radius: 20px;
+}
+
+
+.review-form h3 {
+    margin-bottom: 25px;
+
+    font-size: 24px;
+
+    text-align: center;
+}
+
+
+/* ESTRELLAS */
+
+.stars-input {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    margin-bottom: 25px;
+}
+
+
+.stars-input button {
+    border: none;
+
+    background: transparent;
+
+    color: #444;
+
+    font-size: 35px;
+
+    cursor: pointer;
+
+    transition:
+        color .2s ease,
+        transform .2s ease;
+}
+
+
+.stars-input button:hover {
+    color: white;
+
+    transform:
+        scale(1.15);
+}
+
+
+.stars-input button.selected {
+    color: white;
+}
+
+
+/* CAMPOS */
+
+.review-form input,
+.review-form textarea {
+    width: 100%;
+
+    margin-bottom: 15px;
+
+    padding: 15px 17px;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.10);
+
+    border-radius: 11px;
+
+    outline: none;
+
+    background: #080808;
+
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    transition:
+        border .2s ease,
+        background .2s ease;
+}
+
+
+.review-form input::placeholder,
+.review-form textarea::placeholder {
+    color: #555;
+}
+
+
+.review-form input:focus,
+.review-form textarea:focus {
+    border-color:
+        rgba(255,255,255,0.30);
+
+    background: #0c0c0c;
+}
+
+
+.review-form textarea {
+    resize: vertical;
+
+    min-height: 130px;
+}
+
+
+/* BOTÓN */
+
+#submit-review {
+    width: 100%;
+
+    border: none;
+
+    cursor: pointer;
+}
+
+
+#submit-review:disabled {
+    opacity: .5;
+
+    cursor: not-allowed;
+}
+
+
+/* MENSAJE DE ESTADO */
+
+.review-status {
+    min-height: 20px;
+
+    margin-top: 15px;
+
+    color: #777;
+
+    font-size: 13px;
+
+    text-align: center;
+}
+
+
+/* =========================
+   LISTA DE RESEÑAS
+========================= */
+
+.reviews-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 18px;
+}
+
+
+.review-card {
+    padding: 27px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #111111,
+            #090909
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+    border-radius: 18px;
+
+    transition:
+        transform .25s ease,
+        border-color .25s ease;
+}
+
+
+.review-card:hover {
+    transform:
+        translateY(-5px);
+
+    border-color:
+        rgba(255,255,255,0.18);
+}
+
+
+.review-card-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 15px;
+}
+
+
+.review-author {
+    font-weight: 700;
+
+    color: white;
+}
+
+
+.review-date {
+    color: #555;
+
+    font-size: 12px;
+}
+
+
+.review-stars {
+    margin-bottom: 12px;
+
+    color: white;
+
+    letter-spacing: 2px;
+
+    font-size: 15px;
+}
+
+
+.review-text {
+    color: #888;
+
+    font-size: 15px;
+
+    line-height: 1.7;
+
+    word-break: break-word;
+}
+
+
+/* =========================
+   MÓVIL
+========================= */
+
+@media (max-width: 600px) {
+
+    .review-form {
+        padding: 25px 20px;
+    }
+
+
+    .reviews-score {
+        font-size: 48px;
+    }
+
+
+    .rating-star {
+        font-size: 40px;
+    }
+
+
+    .reviews-list {
+        grid-template-columns: 1fr;
+    }
+
+
+    .review-card {
+        padding: 23px;
+    }
+
+}
 </head>
 
 
@@ -1488,7 +1849,107 @@
 
     </section>
 
+<!-- =========================
+     RESEÑAS
+========================= -->
 
+<section id="resenas">
+
+    <div class="section-header">
+
+        <div class="section-label">
+            Opiniones
+        </div>
+
+        <h2 class="section-title">
+            Lo que dicen nuestros clientes.
+        </h2>
+
+        <p class="section-description">
+            Tu opinión nos ayuda a mejorar.
+        </p>
+
+    </div>
+
+
+    <!-- VALORACIÓN GENERAL -->
+
+    <div class="reviews-summary">
+
+        <div class="reviews-score">
+            <span id="average-rating">—</span>
+            <span class="rating-star">★</span>
+        </div>
+
+        <div class="reviews-count">
+            <span id="reviews-count">0</span>
+            reseñas
+        </div>
+
+    </div>
+
+
+    <!-- FORMULARIO -->
+
+    <div class="review-form">
+
+        <h3>
+            Déjanos tu opinión
+        </h3>
+
+
+        <div class="stars-input">
+
+            <button type="button" data-rating="1">★</button>
+            <button type="button" data-rating="2">★</button>
+            <button type="button" data-rating="3">★</button>
+            <button type="button" data-rating="4">★</button>
+            <button type="button" data-rating="5">★</button>
+
+        </div>
+
+
+        <input
+            type="text"
+            id="review-name"
+            placeholder="Tu nombre"
+            maxlength="50"
+        >
+
+
+        <textarea
+            id="review-message"
+            placeholder="Escribe tu opinión..."
+            maxlength="1000"
+            rows="5"
+        ></textarea>
+
+
+        <button
+            type="button"
+            id="submit-review"
+            class="btn btn-primary"
+        >
+            Publicar reseña
+        </button>
+
+
+        <p
+            id="review-status"
+            class="review-status"
+        ></p>
+
+    </div>
+
+
+    <!-- RESEÑAS PUBLICADAS -->
+
+    <div
+        id="reviews-list"
+        class="reviews-list"
+    ></div>
+
+</section>
 
     <!-- =========================
          PRECIOS
