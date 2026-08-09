@@ -2539,16 +2539,17 @@ async function loadReviews() {
 
     try {
 
-        const { data, error } =
-            await supabaseClient
-                .from("reviews")
-                .select("*")
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
-                );
+     const { data, error } =
+    await supabaseClient
+        .from("reviews")
+        .select("*")
+        .eq("approved", true)
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        );
 
 
         if (error) {
