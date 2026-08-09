@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColliTech | Informática en Mérida</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f1115;
+            color: #f2f2f2;
+            line-height: 1.6;
+        }
+
+        header {
+            padding: 70px 20px;
+            text-align: center;
+            background: #151922;
+        }
+
+        header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #b8bcc7;
+            font-size: 20px;
+        }
+
+        section {
+            max-width: 1000px;
+            margin: auto;
+            padding: 60px 20px;
+        }
+
+        h2 {
+            font-size: 32px;
+            margin-bottom: 25px;
+        }
+
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #191d26;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+        .prices {
+            width: 100%;
+            border-collapse: collapse;
+            background: #191d26;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .prices th,
+        .prices td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #303541;
+        }
+
+        .prices th {
+            background: #202530;
+        }
+
+        .contact {
+            text-align: center;
+        }
+
+        .contact a {
+            display: inline-block;
+            margin: 8px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            background: #202530;
+            color: white;
+            text-decoration: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+            background: #0a0c10;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>ColliTech</h1>
+        <p>Informática cercana, sencilla y a precios razonables.</p>
+    </header>
+
+    <section>
+        <h2>Servicios</h2>
+
+        <div class="services">
+            <div class="card">
+                <h3>🖥️ Mantenimiento de PCs</h3>
+                <p>Limpieza, optimización y diagnóstico de problemas.</p>
+            </div>
+
+            <div class="card">
+                <h3>🔧 Mejoras de hardware</h3>
+                <p>Instalación de RAM, SSD, tarjetas gráficas y otros componentes.</p>
+            </div>
+
+            <div class="card">
+                <h3>💻 Software</h3>
+                <p>Windows, Linux, drivers y configuración del sistema.</p>
+            </div>
+
+            <div class="card">
+                <h3>🎮 Consolas</h3>
+                <p>Limpieza y mantenimiento básico de consolas.</p>
+            </div>
+
+            <div class="card">
+                <h3>💡 Asesoramiento</h3>
+                <p>Ayuda para elegir componentes y montar tu próximo PC.</p>
+            </div>
+
+            <div class="card">
+                <h3>🔍 Diagnóstico</h3>
+                <p>Buscamos el origen del problema antes de hacer cualquier reparación.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Precios</h2>
+
+        <table class="prices">
+            <tr>
+                <th>Servicio</th>
+                <th>Precio desde</th>
+            </tr>
+
+            <tr>
+                <td>Limpieza de PC</td>
+                <td>15 €</td>
+            </tr>
+
+            <tr>
+                <td>Limpieza de consola</td>
+                <td>15 €</td>
+            </tr>
+
+            <tr>
+                <td>Instalación de Windows / Linux</td>
+                <td>20 €</td>
+            </tr>
+
+            <tr>
+                <td>Instalación de componentes</td>
+                <td>10 €</td>
+            </tr>
+
+            <tr>
+                <td>Diagnóstico</td>
+                <td>10 €</td>
+            </tr>
+
+            <tr>
+                <td>Montaje de PC</td>
+                <td>40 €</td>
+            </tr>
+        </table>
+
+        <p style="margin-top: 15px; color: #aaa;">
+            Los precios pueden variar según la complejidad del trabajo.
+            Siempre se informa del precio antes de realizar la reparación.
+        </p>
+    </section>
+
+    <section>
+        <h2>Sobre ColliTech</h2>
+
+        <p>
+            ColliTech nace de una afición por la informática y el hardware,
+            con la idea de ofrecer mantenimiento, asesoramiento y pequeñas
+            reparaciones de forma cercana, transparente y económica.
+        </p>
+    </section>
+
+    <section class="contact">
+        <h2>Contacto</h2>
+
+        <p>¿Tienes un problema con tu ordenador o quieres mejorar tu equipo?</p>
+
+        <br>
+
+        <a href="mailto:contacto@collitech.es">📧 Email</a>
+        <a href="#">💬 WhatsApp</a>
+        <a href="#">📸 Instagram</a>
+    </section>
+
+    <footer>
+        © 2026 ColliTech · Mérida
+    </footer>
+
+</body>
+</html>
