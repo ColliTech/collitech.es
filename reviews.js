@@ -1,5 +1,5 @@
 
-const SUPABASE_URL = "https://urdxxxvvzrjzeiigcczo.supabase.co/rest/v1/";
+const SUPABASE_URL = "https://urdxxxvvzrjzeiigcczo.supabase.co";
 const SUPABASE_KEY = "sb_publishable_rifoXYsRebVgiGiMvcwjOg_olMs1zXV";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -17,8 +17,11 @@ const reviewsCount = document.getElementById("reviews-count");
 starButtons.forEach(button => {
   button.addEventListener("click", () => {
     selectedRating = Number(button.dataset.rating);
+
     starButtons.forEach(star => {
-      star.classList.toggle("selected", Number(star.dataset.rating) <= selectedRating);
+      const rating = Number(star.dataset.rating);
+      star.classList.toggle("selected", rating <= selectedRating);
+      star.setAttribute("aria-pressed", rating <= selectedRating ? "true" : "false");
     });
   });
 });
@@ -40,8 +43,8 @@ async function loadReviews() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error(error);
-    reviewsList.innerHTML = '<div class="review-card"><div class="review-text">No se han podido cargar las reseñas.</div></div>';
+    console.error("Supabase loadReviews:", error);
+    reviewsList.innerHTML = '<div class="review-card"><div class="review-text">No se han podido cargar las reseñas. Revisa la configuración de Supabase.</div></div>';
     return;
   }
 
@@ -102,8 +105,8 @@ submitButton.addEventListener("click", async () => {
   }]);
 
   if (error) {
-    console.error(error);
-    statusMessage.textContent = "No se ha podido enviar la reseña. Inténtalo de nuevo.";
+    console.error("Supabase insert review:", error);
+    statusMessage.textContent = "No se ha podido enviar la reseña. Revisa la configuración de Supabase.";
     submitButton.disabled = false;
     return;
   }

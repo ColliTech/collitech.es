@@ -21,3 +21,5 @@ Para GitHub Pages:
 
 Las reseñas públicas se filtran por approved=true.
 Las nuevas reseñas se insertan con approved=false por el valor por defecto de la tabla.
+
+- supabase-reviews-setup.sql  Configuración SQL de la moderación
