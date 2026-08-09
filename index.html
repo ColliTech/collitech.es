@@ -8,26 +8,37 @@
 
     <meta
         name="description"
-        content="ColliTech - Informática, mantenimiento, mejoras y asesoramiento en Mérida."
+        content="ColliTech - Mantenimiento, mejoras, reparación y asesoramiento informático en Mérida."
     >
 
-    <link rel="icon" type="image/png" href="collitech-logo.png">
+    <link
+        rel="icon"
+        type="image/png"
+        href="collitech-logo.png"
+    >
 
     <style>
 
-        /* =========================
-           GENERAL
-        ========================= */
-
         :root {
-            --black: #050505;
-            --black2: #0b0b0b;
-            --card: #101010;
+            --black: #030303;
+            --black-soft: #080808;
+            --card: #0d0d0d;
+            --card-light: #131313;
+
             --white: #ffffff;
-            --gray: #888888;
-            --light-gray: #bdbdbd;
-            --border: rgba(255,255,255,0.10);
+            --gray: #9a9a9a;
+            --gray-dark: #5e5e5e;
+
+            --border: rgba(255,255,255,0.08);
+            --border-hover: rgba(255,255,255,0.20);
+
+            --radius: 20px;
         }
+
+
+        /* =========================
+           RESET
+        ========================= */
 
         * {
             margin: 0;
@@ -44,17 +55,53 @@
             color: var(--white);
 
             font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
                 Arial,
-                Helvetica,
                 sans-serif;
 
             line-height: 1.6;
+
             overflow-x: hidden;
         }
 
         a {
             color: inherit;
             text-decoration: none;
+        }
+
+
+        /* =========================
+           SELECCIÓN
+        ========================= */
+
+        ::selection {
+            background: white;
+            color: black;
+        }
+
+
+        /* =========================
+           SCROLLBAR
+        ========================= */
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
 
 
@@ -69,9 +116,9 @@
             left: 0;
             right: 0;
 
-            height: 70px;
-
             z-index: 1000;
+
+            height: 72px;
 
             display: flex;
             align-items: center;
@@ -79,18 +126,20 @@
 
             padding: 0 6%;
 
-            background: rgba(5,5,5,0.82);
+            background:
+                rgba(3,3,3,0.72);
 
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            backdrop-filter:
+                blur(20px);
+
+            -webkit-backdrop-filter:
+                blur(20px);
 
             border-bottom:
                 1px solid
-                rgba(255,255,255,0.07);
+                rgba(255,255,255,0.06);
         }
 
-
-        /* Logo pequeño de arriba */
 
         .nav-brand {
             display: flex;
@@ -99,36 +148,64 @@
             height: 100%;
         }
 
+
         .nav-brand img {
             display: block;
 
-            width: 145px;
+            width: 150px;
+
             height: auto;
 
             object-fit: contain;
         }
 
 
-        /* Enlaces */
-
         .nav-links {
             display: flex;
+
             align-items: center;
 
             gap: 30px;
         }
 
-        .nav-links a {
-            color: #aaa;
 
-            font-size: 14px;
+        .nav-links a {
+            position: relative;
+
+            color: #999;
+
+            font-size: 13px;
 
             transition:
-                color 0.2s ease;
+                color .25s ease;
         }
+
+
+        .nav-links a::after {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            bottom: -6px;
+
+            width: 0;
+            height: 1px;
+
+            background: white;
+
+            transition:
+                width .25s ease;
+        }
+
 
         .nav-links a:hover {
             color: white;
+        }
+
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
 
@@ -142,27 +219,29 @@
             position: relative;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
-            padding:
-                120px 20px 90px;
-
             text-align: center;
+
+            padding:
+                140px 20px 100px;
 
             overflow: hidden;
         }
 
 
-        /* Luz de fondo */
+        /* Glow central */
 
         .hero::before {
             content: "";
 
             position: absolute;
 
-            width: 700px;
-            height: 700px;
+            width: 850px;
+            height: 850px;
 
             top: 50%;
             left: 50%;
@@ -173,16 +252,42 @@
             background:
                 radial-gradient(
                     circle,
-                    rgba(255,255,255,0.075) 0%,
-                    rgba(255,255,255,0.025) 30%,
-                    transparent 70%
+                    rgba(255,255,255,0.075)
+                    0%,
+                    rgba(255,255,255,0.025)
+                    30%,
+                    transparent
+                    68%
                 );
 
             pointer-events: none;
         }
 
 
-        /* CONTENEDOR CENTRAL */
+        /* Línea decorativa */
+
+        .hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 1px;
+            height: 180px;
+
+            bottom: 0;
+            left: 50%;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    transparent,
+                    rgba(255,255,255,0.25),
+                    transparent
+                );
+
+            opacity: .5;
+        }
+
 
         .hero-content {
             position: relative;
@@ -190,6 +295,7 @@
             z-index: 2;
 
             width: 100%;
+
             max-width: 900px;
 
             margin: 0 auto;
@@ -206,68 +312,81 @@
         }
 
 
-        /* LOGO GRANDE */
+        /* LOGO PRINCIPAL */
 
         .hero-logo {
             display: block;
 
-            width: 320px;
-            max-width: 75vw;
+            width: 360px;
+
+            max-width: 78vw;
 
             height: auto;
 
             margin:
-                0 auto 45px;
+                0 auto 42px;
 
             object-fit: contain;
 
-            /*
-             * Si el PNG tiene transparencia alrededor,
-             * esto mantiene la n centrada.
-             */
-
-            object-position: center center;
+            object-position: center;
 
             filter:
                 drop-shadow(
-                    0 15px 35px
-                    rgba(0,0,0,0.65)
+                    0 20px 45px
+                    rgba(0,0,0,.8)
                 );
         }
 
 
-        /* ETIQUETA INFORMÁTICA MÉRIDA */
+        /* BADGE */
 
         .hero-badge {
             display: inline-flex;
 
             align-items: center;
+
             justify-content: center;
 
-            width: fit-content;
-
             margin:
-                0 auto 25px;
+                0 auto 24px;
 
             padding:
-                8px 16px;
+                7px 16px;
 
             border:
                 1px solid
-                rgba(255,255,255,0.13);
+                rgba(255,255,255,.12);
 
-            border-radius: 100px;
+            border-radius: 999px;
+
+            background:
+                rgba(255,255,255,.025);
 
             color: #999;
 
-            background:
-                rgba(255,255,255,0.02);
+            font-size: 12px;
 
-            font-size: 13px;
+            font-weight: 600;
 
-            letter-spacing: 0.6px;
+            letter-spacing: 2px;
+        }
 
-            text-align: center;
+
+        .hero-badge::before {
+            content: "";
+
+            width: 6px;
+            height: 6px;
+
+            margin-right: 9px;
+
+            border-radius: 50%;
+
+            background: #fff;
+
+            box-shadow:
+                0 0 12px
+                rgba(255,255,255,.8);
         }
 
 
@@ -276,24 +395,26 @@
         .hero h1 {
             width: 100%;
 
-            margin: 0 auto 25px;
-
-            text-align: center;
+            margin:
+                0 auto 24px;
 
             font-size:
                 clamp(
                     44px,
                     7vw,
-                    78px
+                    82px
                 );
 
-            line-height: 1.02;
+            line-height: .98;
 
-            letter-spacing: -3px;
+            letter-spacing: -4px;
+
+            text-align: center;
         }
 
+
         .hero h1 span {
-            color: #707070;
+            color: #666;
         }
 
 
@@ -301,16 +422,17 @@
 
         .hero-description {
             width: 100%;
+
             max-width: 680px;
 
             margin:
-                0 auto 40px;
+                0 auto 38px;
 
-            color: var(--light-gray);
+            color: #a0a0a0;
 
             font-size: 18px;
 
-            line-height: 1.7;
+            line-height: 1.75;
 
             text-align: center;
         }
@@ -319,65 +441,86 @@
         /* BOTONES */
 
         .hero-buttons {
-            width: 100%;
-
             display: flex;
 
-            justify-content: center;
             align-items: center;
 
-            gap: 14px;
+            justify-content: center;
+
+            gap: 12px;
 
             flex-wrap: wrap;
         }
+
 
         .btn {
             display: inline-flex;
 
             align-items: center;
+
             justify-content: center;
 
             padding:
-                14px 24px;
+                14px 25px;
 
-            border-radius: 10px;
+            border-radius: 11px;
 
             font-size: 14px;
+
             font-weight: 700;
 
             transition:
-                transform 0.25s ease,
-                background 0.25s ease,
-                border 0.25s ease;
+                transform .25s ease,
+                background .25s ease,
+                border .25s ease,
+                box-shadow .25s ease;
         }
+
 
         .btn-primary {
             background: white;
+
             color: black;
+
+            box-shadow:
+                0 10px 35px
+                rgba(255,255,255,.08);
         }
+
 
         .btn-primary:hover {
-            background: #ddd;
-            transform: translateY(-3px);
+            transform:
+                translateY(-4px);
+
+            background: #e8e8e8;
+
+            box-shadow:
+                0 15px 45px
+                rgba(255,255,255,.14);
         }
 
+
         .btn-secondary {
-            background: #090909;
+            background:
+                rgba(255,255,255,.025);
 
             color: white;
 
             border:
                 1px solid
-                rgba(255,255,255,0.16);
+                rgba(255,255,255,.14);
         }
 
+
         .btn-secondary:hover {
-            background: #151515;
+            transform:
+                translateY(-4px);
+
+            background:
+                rgba(255,255,255,.07);
 
             border-color:
-                rgba(255,255,255,0.35);
-
-            transform: translateY(-3px);
+                rgba(255,255,255,.35);
         }
 
 
@@ -387,16 +530,18 @@
 
         section {
             width: 100%;
+
             max-width: 1150px;
 
-            margin: 0 auto;
+            margin:
+                0 auto;
 
             padding:
-                110px 25px;
+                120px 25px;
         }
 
+
         .section-header {
-            width: 100%;
             max-width: 700px;
 
             margin:
@@ -405,19 +550,21 @@
             text-align: center;
         }
 
+
         .section-label {
-            margin-bottom: 14px;
+            margin-bottom: 13px;
 
-            color: #777;
+            color: #6d6d6d;
 
-            font-size: 12px;
+            font-size: 11px;
 
-            font-weight: 700;
+            font-weight: 800;
 
             letter-spacing: 3px;
 
             text-transform: uppercase;
         }
+
 
         .section-title {
             margin-bottom: 18px;
@@ -426,16 +573,17 @@
                 clamp(
                     36px,
                     5vw,
-                    52px
+                    55px
                 );
 
-            line-height: 1.1;
+            line-height: 1;
 
-            letter-spacing: -2px;
+            letter-spacing: -2.5px;
         }
 
+
         .section-description {
-            color: #999;
+            color: #888;
 
             font-size: 17px;
         }
@@ -446,8 +594,6 @@
         ========================= */
 
         .services-grid {
-            width: 100%;
-
             display: grid;
 
             grid-template-columns:
@@ -456,64 +602,133 @@
             gap: 18px;
         }
 
+
         .service-card {
             position: relative;
 
-            min-height: 230px;
+            min-height: 245px;
 
             padding: 32px;
+
+            overflow: hidden;
 
             background:
                 linear-gradient(
                     145deg,
-                    #111111,
-                    #090909
+                    #111,
+                    #080808
                 );
 
             border:
                 1px solid
                 var(--border);
 
-            border-radius: 18px;
-
-            overflow: hidden;
+            border-radius:
+                var(--radius);
 
             transition:
-                transform 0.3s ease,
-                border 0.3s ease,
-                background 0.3s ease;
+                transform .3s ease,
+                border-color .3s ease,
+                background .3s ease;
         }
 
+
+        .service-card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            right: -100px;
+            bottom: -100px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.09),
+                    transparent 68%
+                );
+
+            transition:
+                transform .4s ease;
+        }
+
+
         .service-card:hover {
-            transform: translateY(-7px);
+            transform:
+                translateY(-8px);
 
             border-color:
-                rgba(255,255,255,0.22);
+                var(--border-hover);
 
             background:
                 linear-gradient(
                     145deg,
-                    #161616,
-                    #0c0c0c
+                    #151515,
+                    #0b0b0b
                 );
         }
 
-        .service-icon {
-            margin-bottom: 22px;
 
-            font-size: 32px;
+        .service-card:hover::before {
+            transform:
+                scale(1.5);
         }
 
+
+        .service-icon {
+            position: relative;
+
+            z-index: 2;
+
+            width: 52px;
+            height: 52px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 25px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.10);
+
+            border-radius: 14px;
+
+            background:
+                rgba(255,255,255,.035);
+
+            font-size: 25px;
+        }
+
+
         .service-card h3 {
+            position: relative;
+
+            z-index: 2;
+
             margin-bottom: 10px;
 
             font-size: 20px;
         }
 
+
         .service-card p {
-            color: #858585;
+            position: relative;
+
+            z-index: 2;
+
+            color: #7f7f7f;
 
             font-size: 15px;
+
+            line-height: 1.65;
         }
 
 
@@ -523,49 +738,70 @@
 
         .pricing {
             width: 100%;
-            max-width: 850px;
 
-            margin: 0 auto;
+            max-width: 880px;
+
+            margin:
+                0 auto;
 
             overflow: hidden;
 
             background:
                 linear-gradient(
                     145deg,
-                    #111111,
-                    #090909
+                    #111,
+                    #080808
                 );
 
             border:
                 1px solid
                 var(--border);
 
-            border-radius: 18px;
+            border-radius:
+                var(--radius);
+
+            box-shadow:
+                0 25px 80px
+                rgba(0,0,0,.25);
         }
+
 
         .price-row {
             display: flex;
 
             align-items: center;
+
             justify-content: space-between;
 
             gap: 20px;
 
             padding:
-                22px 28px;
+                24px 30px;
 
             border-bottom:
                 1px solid
-                rgba(255,255,255,0.06);
+                rgba(255,255,255,.055);
+
+            transition:
+                background .2s ease;
         }
+
 
         .price-row:last-child {
             border-bottom: none;
         }
 
-        .price-service {
-            font-weight: 600;
+
+        .price-row:hover {
+            background:
+                rgba(255,255,255,.025);
         }
+
+
+        .price-service {
+            font-weight: 700;
+        }
+
 
         .price-service small {
             display: block;
@@ -574,23 +810,37 @@
 
             color: #666;
 
-            font-weight: normal;
+            font-size: 13px;
+
+            font-weight: 400;
         }
 
-        .price-value {
-            color: white;
 
-            font-size: 18px;
+        .price-value {
+            padding:
+                7px 12px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.10);
+
+            border-radius: 8px;
+
+            background:
+                rgba(255,255,255,.035);
+
+            font-size: 15px;
 
             font-weight: 800;
 
             white-space: nowrap;
         }
 
-        .price-note {
-            margin-top: 20px;
 
-            color: #666;
+        .price-note {
+            margin-top: 18px;
+
+            color: #5f5f5f;
 
             font-size: 13px;
 
@@ -599,25 +849,26 @@
 
 
         /* =========================
-           SOBRE NOSOTROS
+           SOBRE COLLITECH
         ========================= */
 
         .about-box {
             display: grid;
 
             grid-template-columns:
-                1fr 1fr;
+                1.3fr .7fr;
 
-            gap: 25px;
+            gap: 18px;
         }
 
+
         .about-card {
-            padding: 40px;
+            padding: 42px;
 
             background:
                 linear-gradient(
                     145deg,
-                    #111111,
+                    #111,
                     #090909
                 );
 
@@ -625,20 +876,26 @@
                 1px solid
                 var(--border);
 
-            border-radius: 18px;
+            border-radius:
+                var(--radius);
         }
+
 
         .about-card h3 {
-            margin-bottom: 15px;
+            margin-bottom: 17px;
 
-            font-size: 25px;
+            font-size: 26px;
         }
+
 
         .about-card p {
-            color: #888;
+            color: #858585;
 
             font-size: 16px;
+
+            line-height: 1.75;
         }
+
 
         .about-highlight {
             display: flex;
@@ -646,18 +903,44 @@
             flex-direction: column;
 
             justify-content: center;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #161616,
+                    #090909
+                );
         }
 
+
+        .highlight-item {
+            padding:
+                10px 0;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.07);
+        }
+
+
+        .highlight-item:last-child {
+            border-bottom: none;
+        }
+
+
         .highlight-number {
-            font-size: 48px;
+            font-size: 42px;
 
             font-weight: 900;
 
             letter-spacing: -2px;
         }
 
+
         .highlight-text {
-            color: #888;
+            color: #777;
+
+            font-size: 14px;
         }
 
 
@@ -668,12 +951,10 @@
         .contact-wrapper {
             position: relative;
 
-            width: 100%;
+            overflow: hidden;
 
             padding:
-                70px 30px;
-
-            overflow: hidden;
+                85px 30px;
 
             text-align: center;
 
@@ -686,18 +967,20 @@
 
             border:
                 1px solid
-                rgba(255,255,255,0.10);
+                rgba(255,255,255,.11);
 
-            border-radius: 24px;
+            border-radius:
+                25px;
         }
+
 
         .contact-wrapper::before {
             content: "";
 
             position: absolute;
 
-            width: 500px;
-            height: 500px;
+            width: 650px;
+            height: 650px;
 
             top: 50%;
             left: 50%;
@@ -708,12 +991,13 @@
             background:
                 radial-gradient(
                     circle,
-                    rgba(255,255,255,0.07),
+                    rgba(255,255,255,.075),
                     transparent 65%
                 );
 
             pointer-events: none;
         }
+
 
         .contact-content {
             position: relative;
@@ -721,28 +1005,39 @@
             z-index: 2;
         }
 
+
         .contact-wrapper h2 {
             margin-bottom: 15px;
 
-            font-size: 42px;
+            font-size:
+                clamp(
+                    36px,
+                    5vw,
+                    52px
+                );
 
-            letter-spacing: -1.5px;
+            letter-spacing: -2px;
         }
+
 
         .contact-wrapper p {
-            max-width: 550px;
+            max-width: 600px;
 
             margin:
-                0 auto 30px;
+                0 auto 32px;
 
-            color: #888;
+            color: #858585;
+
+            font-size: 16px;
         }
+
 
         .contact-buttons {
             display: flex;
 
-            justify-content: center;
             align-items: center;
+
+            justify-content: center;
 
             gap: 12px;
 
@@ -756,11 +1051,11 @@
 
         footer {
             padding:
-                35px 25px;
+                40px 20px;
 
             border-top:
                 1px solid
-                rgba(255,255,255,0.06);
+                rgba(255,255,255,.06);
 
             color: #555;
 
@@ -769,14 +1064,25 @@
             text-align: center;
         }
 
+
+        .footer-logo {
+            width: 130px;
+
+            margin:
+                0 auto 15px;
+
+            opacity: .65;
+        }
+
+
         .footer-brand {
-            margin-bottom: 7px;
+            margin-bottom: 5px;
 
-            color: #999;
+            color: #888;
 
-            font-weight: 700;
+            font-weight: 800;
 
-            letter-spacing: 2px;
+            letter-spacing: 3px;
         }
 
 
@@ -790,17 +1096,21 @@
                 gap: 15px;
             }
 
+
             .nav-links a {
-                font-size: 12px;
+                font-size: 11px;
             }
+
 
             .services-grid {
                 grid-template-columns:
                     repeat(2, 1fr);
             }
 
+
             .about-box {
-                grid-template-columns: 1fr;
+                grid-template-columns:
+                    1fr;
             }
         }
 
@@ -815,19 +1125,22 @@
                 height: 62px;
 
                 padding:
-                    0 16px;
+                    0 15px;
             }
+
 
             .nav-brand img {
                 width: 110px;
             }
 
+
             .nav-links {
-                gap: 9px;
+                gap: 8px;
             }
 
+
             .nav-links a {
-                font-size: 10px;
+                font-size: 9px;
             }
 
 
@@ -835,23 +1148,16 @@
                 min-height: 100svh;
 
                 padding:
-                    105px 18px 70px;
+                    105px 18px 75px;
             }
 
 
             .hero-logo {
                 width: 245px;
 
-                max-width: 78vw;
+                max-width: 80vw;
 
-                margin-bottom: 35px;
-            }
-
-
-            .hero-badge {
-                margin-bottom: 22px;
-
-                font-size: 11px;
+                margin-bottom: 32px;
             }
 
 
@@ -863,25 +1169,24 @@
                         58px
                     );
 
-                letter-spacing: -2px;
+                letter-spacing: -2.5px;
             }
 
 
             .hero-description {
                 font-size: 16px;
-
-                max-width: 500px;
             }
 
 
             section {
                 padding:
-                    80px 18px;
+                    85px 18px;
             }
 
 
             .services-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns:
+                    1fr;
             }
 
 
@@ -892,29 +1197,30 @@
 
             .price-row {
                 padding:
-                    18px 20px;
+                    19px 18px;
             }
 
 
             .price-service {
-                max-width: 65%;
+                max-width: 63%;
             }
 
 
             .price-value {
-                font-size: 16px;
+                font-size: 13px;
+            }
+
+
+            .about-card {
+                padding: 30px;
             }
 
 
             .contact-wrapper {
                 padding:
-                    55px 20px;
+                    60px 20px;
             }
 
-
-            .contact-wrapper h2 {
-                font-size: 34px;
-            }
         }
 
     </style>
@@ -925,7 +1231,7 @@
 
 
     <!-- =========================
-         BARRA SUPERIOR
+         NAVBAR
     ========================= -->
 
     <nav>
@@ -968,7 +1274,7 @@
 
 
     <!-- =========================
-         PORTADA
+         HERO
     ========================= -->
 
     <header class="hero">
@@ -991,6 +1297,7 @@
             <h1>
                 Tu tecnología.
                 <br>
+
                 <span>
                     Bien cuidada.
                 </span>
@@ -1000,8 +1307,9 @@
             <p class="hero-description">
 
                 Mantenimiento, mejoras, diagnóstico y
-                asesoramiento informático sin complicaciones,
-                con precios claros y trato cercano.
+                asesoramiento informático sin complicaciones.
+                Soluciones claras, precios razonables y
+                trato cercano.
 
             </p>
 
@@ -1043,9 +1351,11 @@
                 Qué hacemos
             </div>
 
+
             <h2 class="section-title">
                 Servicios
             </h2>
+
 
             <p class="section-description">
 
@@ -1078,6 +1388,7 @@
             </article>
 
 
+
             <article class="service-card">
 
                 <div class="service-icon">
@@ -1089,11 +1400,13 @@
                 </h3>
 
                 <p>
-                    RAM, SSD, tarjetas gráficas, fuentes y
-                    otros componentes para mejorar tu equipo.
+                    RAM, SSD, gráficas, fuentes y otros
+                    componentes para mejorar y alargar la vida
+                    de tu equipo.
                 </p>
 
             </article>
+
 
 
             <article class="service-card">
@@ -1114,6 +1427,7 @@
             </article>
 
 
+
             <article class="service-card">
 
                 <div class="service-icon">
@@ -1132,6 +1446,7 @@
             </article>
 
 
+
             <article class="service-card">
 
                 <div class="service-icon">
@@ -1148,6 +1463,7 @@
                 </p>
 
             </article>
+
 
 
             <article class="service-card">
@@ -1186,13 +1502,17 @@
                 Sin sorpresas
             </div>
 
+
             <h2 class="section-title">
                 Precios claros.
             </h2>
 
+
             <p class="section-description">
+
                 Precios orientativos para que sepas
                 aproximadamente cuánto puede costarte.
+
             </p>
 
         </div>
@@ -1213,11 +1533,13 @@
 
                 </div>
 
+
                 <div class="price-value">
                     Desde 15 €
                 </div>
 
             </div>
+
 
 
             <div class="price-row">
@@ -1232,11 +1554,13 @@
 
                 </div>
 
+
                 <div class="price-value">
                     Desde 15 €
                 </div>
 
             </div>
+
 
 
             <div class="price-row">
@@ -1251,11 +1575,13 @@
 
                 </div>
 
+
                 <div class="price-value">
                     Desde 20 €
                 </div>
 
             </div>
+
 
 
             <div class="price-row">
@@ -1270,11 +1596,13 @@
 
                 </div>
 
+
                 <div class="price-value">
                     Desde 10 €
                 </div>
 
             </div>
+
 
 
             <div class="price-row">
@@ -1289,11 +1617,13 @@
 
                 </div>
 
+
                 <div class="price-value">
                     Desde 10 €
                 </div>
 
             </div>
+
 
 
             <div class="price-row">
@@ -1307,6 +1637,7 @@
                     </small>
 
                 </div>
+
 
                 <div class="price-value">
                     Desde 40 €
@@ -1341,9 +1672,18 @@
                 Quiénes somos
             </div>
 
+
             <h2 class="section-title">
                 Tecnología sin humo.
             </h2>
+
+
+            <p class="section-description">
+
+                Informática cercana, transparente y sin
+                complicaciones innecesarias.
+
+            </p>
 
         </div>
 
@@ -1357,46 +1697,75 @@
                     ¿Qué es ColliTech?
                 </h3>
 
+
                 <p>
+
                     ColliTech nace de una pasión por la informática
                     y el hardware, con una idea muy sencilla:
                     ofrecer ayuda informática cercana, transparente
                     y a precios razonables.
+
                 </p>
+
 
                 <br>
 
+
                 <p>
+
                     No se trata de venderte cosas porque sí.
                     Primero buscamos qué necesitas y después
-                    vemos cuál es la mejor solución.
+                    vemos cuál es la solución que realmente tiene sentido.
+
                 </p>
 
             </div>
+
 
 
             <div class="about-card about-highlight">
 
-                <div class="highlight-number">
-                    100%
+
+                <div class="highlight-item">
+
+                    <div class="highlight-number">
+                        100%
+                    </div>
+
+                    <div class="highlight-text">
+                        Trato cercano
+                    </div>
+
                 </div>
 
-                <div class="highlight-text">
-                    Trato cercano y transparente.
+
+                <div class="highlight-item">
+
+                    <div class="highlight-number">
+                        0%
+                    </div>
+
+                    <div class="highlight-text">
+                        Historias raras con los precios
+                    </div>
+
                 </div>
 
-                <br>
 
-                <div class="highlight-number">
-                    0%
+                <div class="highlight-item">
+
+                    <div class="highlight-number">
+                        1
+                    </div>
+
+                    <div class="highlight-text">
+                        Objetivo: solucionar tu problema
+                    </div>
+
                 </div>
 
-                <div class="highlight-text">
-                    Historias raras con los precios.
-                </div>
 
             </div>
-
 
         </div>
 
@@ -1414,29 +1783,36 @@
 
             <div class="contact-content">
 
+
                 <div class="section-label">
                     Hablemos
                 </div>
+
 
                 <h2>
                     ¿Necesitas ayuda?
                 </h2>
 
+
                 <p>
+
                     Cuéntanos qué le pasa a tu equipo,
                     qué quieres mejorar o qué necesitas comprar.
                     Te responderemos lo antes posible.
+
                 </p>
 
 
                 <div class="contact-buttons">
 
+
                     <a
                         href="mailto:collitech1@gmail.com"
                         class="btn btn-primary"
                     >
-                        📧 Email
+                        📧 Escribir por email
                     </a>
+
 
 
                     <a
@@ -1447,6 +1823,7 @@
                     >
                         📸 Instagram
                     </a>
+
 
                 </div>
 
@@ -1459,24 +1836,36 @@
 
 
     <!-- =========================
-         PIE
+         FOOTER
     ========================= -->
 
     <footer>
+
+
+        <img
+            src="collitech-logo.png"
+            alt="ColliTech"
+            class="footer-logo"
+        >
+
 
         <div class="footer-brand">
             COLLITECH
         </div>
 
+
         <div>
             Informática · Mérida
         </div>
 
+
         <br>
+
 
         <div>
             © 2026 ColliTech
         </div>
+
 
     </footer>
 
