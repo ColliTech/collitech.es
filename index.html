@@ -5,12 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>ColliTech | Informática en Mérida</title>
+
+    <meta name="description"
+          content="ColliTech - Mantenimiento, reparación, mejoras y asesoramiento informático en Mérida.">
+
     <link rel="icon" type="image/png" href="collitech-logo.png">
+
     <style>
+
+        :root {
+            --bg: #050505;
+            --card: #101010;
+            --card-hover: #151515;
+            --border: rgba(255,255,255,0.09);
+            --border-hover: rgba(255,255,255,0.22);
+            --text: #ffffff;
+            --text-soft: #b8b8b8;
+            --text-muted: #707070;
+            --radius: 18px;
+        }
+
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         html {
@@ -18,56 +36,106 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #000000;
-            color: #ffffff;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background: var(--bg);
+            color: var(--text);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+
         /* =========================
-           NAVEGACIÓN
+           NAVBAR
         ========================= */
 
         nav {
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 1000;
 
-            background: rgba(0, 0, 0, 0.92);
-            border-bottom: 1px solid #222222;
-            backdrop-filter: blur(10px);
-
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
 
             padding: 15px 6%;
+
+            background: rgba(5,5,5,0.78);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
 
-        .nav-logo {
-            font-size: 20px;
-            font-weight: bold;
-            letter-spacing: 2px;
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-weight: 800;
+            letter-spacing: 3px;
+            font-size: 16px;
         }
 
-        nav a {
-            color: #cccccc;
-            text-decoration: none;
-            margin-left: 25px;
-            transition: 0.2s;
+        .nav-brand img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
         }
 
-        nav a:hover {
-            color: #ffffff;
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-soft);
+            font-size: 14px;
+            transition: 0.25s ease;
+        }
+
+        .nav-links a:hover {
+            color: white;
         }
 
 
         /* =========================
-           PORTADA
+           HERO
         ========================= */
 
         .hero {
-            min-height: 85vh;
+            min-height: 100vh;
 
             display: flex;
             flex-direction: column;
@@ -76,74 +144,147 @@
 
             text-align: center;
 
-            padding: 80px 20px;
+            padding: 140px 25px 100px;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+
+            position: absolute;
+
+            width: 650px;
+            height: 650px;
 
             background:
                 radial-gradient(
-                    circle at center,
-                    #151515 0%,
-                    #050505 45%,
-                    #000000 75%
+                    circle,
+                    rgba(255,255,255,0.08),
+                    transparent 65%
+                );
+
+            top: 50%;
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 850px;
+        }
+
+        .hero-logo {
+            width: 310px;
+            max-width: 75vw;
+
+            margin-bottom: 45px;
+
+            filter:
+                drop-shadow(
+                    0 15px 35px rgba(0,0,0,0.7)
                 );
         }
 
-        .logo {
-            width: 360px;
-            max-width: 85%;
-            height: auto;
+        .hero-badge {
+            display: inline-block;
 
-            margin-bottom: 35px;
+            padding: 7px 15px;
+            margin-bottom: 25px;
+
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 100px;
+
+            color: #aaa;
+
+            font-size: 13px;
+            letter-spacing: 0.5px;
         }
 
         .hero h1 {
-            font-size: 48px;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
+            font-size: clamp(42px, 7vw, 78px);
+
+            line-height: 1.02;
+            letter-spacing: -3px;
+
+            margin-bottom: 25px;
         }
 
-        .hero p {
-            max-width: 650px;
-            color: #aaaaaa;
-            font-size: 20px;
-            margin-bottom: 35px;
+        .hero h1 span {
+            color: #777;
         }
 
-        .buttons {
+        .hero-description {
+            max-width: 680px;
+
+            margin: 0 auto 40px;
+
+            color: var(--text-soft);
+
+            font-size: 19px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
             display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
+
             justify-content: center;
+
+            gap: 14px;
+
+            flex-wrap: wrap;
         }
 
-        .button {
-            padding: 14px 28px;
+        .btn {
+            display: inline-flex;
 
-            border-radius: 8px;
+            align-items: center;
+            justify-content: center;
 
-            text-decoration: none;
-            font-weight: bold;
+            gap: 8px;
 
-            border: 1px solid #ffffff;
+            padding: 14px 24px;
 
-            transition: 0.2s;
+            border-radius: 10px;
+
+            font-weight: 700;
+            font-size: 14px;
+
+            transition:
+                transform .25s ease,
+                background .25s ease,
+                border .25s ease;
         }
 
-        .button-primary {
-            background: #ffffff;
-            color: #000000;
+        .btn-primary {
+            background: white;
+            color: black;
         }
 
-        .button-primary:hover {
-            background: #dddddd;
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            background: #ddd;
         }
 
-        .button-secondary {
-            color: #ffffff;
+        .btn-secondary {
+            border: 1px solid rgba(255,255,255,0.15);
+
+            color: white;
+
+            background: rgba(255,255,255,0.03);
         }
 
-        .button-secondary:hover {
-            background: #ffffff;
-            color: #000000;
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+
+            border-color: rgba(255,255,255,0.35);
+
+            background: rgba(255,255,255,0.07);
         }
 
 
@@ -152,22 +293,46 @@
         ========================= */
 
         section {
-            max-width: 1100px;
+            max-width: 1150px;
             margin: auto;
-            padding: 90px 25px;
+            padding: 110px 25px;
         }
 
-        .section-title {
+        .section-header {
             text-align: center;
-            font-size: 38px;
+
+            max-width: 700px;
+
+            margin: 0 auto 60px;
+        }
+
+        .section-label {
+            color: #777;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            letter-spacing: 3px;
+
+            text-transform: uppercase;
+
             margin-bottom: 15px;
         }
 
-        .section-subtitle {
-            text-align: center;
-            color: #888888;
-            max-width: 650px;
-            margin: 0 auto 50px;
+        .section-title {
+            font-size: clamp(34px, 5vw, 52px);
+
+            letter-spacing: -2px;
+
+            line-height: 1.1;
+
+            margin-bottom: 18px;
+        }
+
+        .section-description {
+            color: var(--text-soft);
+            font-size: 17px;
         }
 
 
@@ -175,49 +340,87 @@
            SERVICIOS
         ========================= */
 
-        .services {
+        .services-grid {
             display: grid;
 
             grid-template-columns: repeat(3, 1fr);
 
-            gap: 20px;
+            gap: 18px;
         }
 
-        .card {
-            background: #0d0d0d;
+        .service-card {
+            position: relative;
 
-            border: 1px solid #252525;
+            padding: 32px;
 
-            border-radius: 14px;
+            min-height: 230px;
 
-            padding: 30px;
+            background:
+                linear-gradient(
+                    145deg,
+                    #111,
+                    #090909
+                );
+
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius);
+
+            overflow: hidden;
 
             transition:
-                transform 0.2s,
-                border-color 0.2s,
-                background 0.2s;
+                transform .3s ease,
+                border .3s ease,
+                background .3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
+        .service-card::after {
+            content: "";
 
-            background: #121212;
+            position: absolute;
 
-            border-color: #555555;
+            width: 150px;
+            height: 150px;
+
+            right: -70px;
+            bottom: -70px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,0.07),
+                    transparent 70%
+                );
         }
 
-        .card-icon {
-            font-size: 35px;
-            margin-bottom: 15px;
+        .service-card:hover {
+            transform: translateY(-8px);
+
+            border-color: var(--border-hover);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #161616,
+                    #0c0c0c
+                );
         }
 
-        .card h3 {
-            font-size: 21px;
+        .service-icon {
+            font-size: 32px;
+            margin-bottom: 25px;
+        }
+
+        .service-card h3 {
+            font-size: 20px;
             margin-bottom: 10px;
         }
 
-        .card p {
-            color: #999999;
+        .service-card p {
+            color: #888;
+            font-size: 15px;
         }
 
 
@@ -225,45 +428,78 @@
            PRECIOS
         ========================= */
 
-        .price-box {
-            background: #0d0d0d;
+        .pricing {
+            max-width: 850px;
 
-            border: 1px solid #252525;
+            margin: auto;
 
-            border-radius: 14px;
+            background:
+                linear-gradient(
+                    145deg,
+                    #111,
+                    #090909
+                );
+
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius);
 
             overflow: hidden;
         }
 
         .price-row {
             display: flex;
-            justify-content: space-between;
+
             align-items: center;
+            justify-content: space-between;
 
-            padding: 20px 25px;
+            padding: 22px 28px;
 
-            border-bottom: 1px solid #222222;
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            transition: background .2s ease;
         }
 
         .price-row:last-child {
             border-bottom: none;
         }
 
-        .price-name {
-            color: #dddddd;
+        .price-row:hover {
+            background: rgba(255,255,255,0.025);
         }
 
-        .price {
-            font-size: 20px;
-            font-weight: bold;
+        .price-service {
+            font-weight: 600;
+        }
+
+        .price-service small {
+            display: block;
+
+            color: #666;
+
+            font-weight: normal;
+
+            margin-top: 2px;
+        }
+
+        .price-value {
+            font-size: 18px;
+
+            font-weight: 800;
+
+            white-space: nowrap;
         }
 
         .price-note {
             text-align: center;
 
-            color: #777777;
+            color: #666;
 
             margin-top: 20px;
+
+            font-size: 13px;
         }
 
 
@@ -271,18 +507,67 @@
            SOBRE COLLITECH
         ========================= */
 
-        .about {
-            text-align: center;
+        .about-box {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 25px;
+
+            align-items: stretch;
         }
 
-        .about p {
-            max-width: 750px;
+        .about-card {
+            padding: 40px;
 
-            margin: auto;
+            border: 1px solid var(--border);
 
-            color: #999999;
+            border-radius: var(--radius);
 
-            font-size: 18px;
+            background:
+                linear-gradient(
+                    145deg,
+                    #111,
+                    #090909
+                );
+        }
+
+        .about-card h3 {
+            font-size: 25px;
+            margin-bottom: 15px;
+        }
+
+        .about-card p {
+            color: #888;
+            font-size: 16px;
+        }
+
+        .about-highlight {
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #181818,
+                    #0b0b0b
+                );
+        }
+
+        .highlight-number {
+            font-size: 48px;
+
+            font-weight: 900;
+
+            letter-spacing: -2px;
+        }
+
+        .highlight-text {
+            color: #888;
+            margin-top: 5px;
         }
 
 
@@ -290,22 +575,82 @@
            CONTACTO
         ========================= */
 
-        .contact-box {
+        .contact-wrapper {
+            position: relative;
+
+            padding: 70px 35px;
+
             text-align: center;
 
-            background: #0d0d0d;
+            border-radius: 24px;
 
-            border: 1px solid #252525;
+            overflow: hidden;
 
-            border-radius: 16px;
+            background:
+                linear-gradient(
+                    145deg,
+                    #151515,
+                    #080808
+                );
 
-            padding: 55px 25px;
+            border:
+                1px solid
+                rgba(255,255,255,0.1);
         }
 
-        .contact-box p {
-            color: #999999;
+        .contact-wrapper::before {
+            content: "";
 
-            margin-bottom: 30px;
+            position: absolute;
+
+            width: 500px;
+            height: 500px;
+
+            left: 50%;
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,0.08),
+                    transparent 65%
+                );
+
+            pointer-events: none;
+        }
+
+        .contact-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-wrapper h2 {
+            font-size: 42px;
+
+            letter-spacing: -1.5px;
+
+            margin-bottom: 15px;
+        }
+
+        .contact-wrapper p {
+            color: #888;
+
+            max-width: 550px;
+
+            margin: 0 auto 30px;
+        }
+
+        .contact-buttons {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
         }
 
 
@@ -314,15 +659,27 @@
         ========================= */
 
         footer {
+            border-top:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            padding: 35px 25px;
+
             text-align: center;
 
-            padding: 35px 20px;
+            color: #555;
 
-            border-top: 1px solid #1d1d1d;
+            font-size: 13px;
+        }
 
-            color: #666666;
+        .footer-brand {
+            color: #999;
 
-            font-size: 14px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 7px;
         }
 
 
@@ -330,103 +687,200 @@
            MÓVIL
         ========================= */
 
-        @media (max-width: 800px) {
+        @media (max-width: 850px) {
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-box {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 600px) {
 
             nav {
-                justify-content: center;
+                padding: 12px 16px;
             }
 
-            .nav-logo {
-                display: none;
+            .nav-brand {
+                font-size: 12px;
+                letter-spacing: 2px;
             }
 
-            nav a {
-                margin: 0 8px;
-                font-size: 14px;
+            .nav-brand img {
+                width: 32px;
+                height: 32px;
+            }
+
+            .nav-links {
+                gap: 8px;
+            }
+
+            .nav-links a {
+                font-size: 10px;
             }
 
             .hero {
-                min-height: 80vh;
+                padding: 120px 20px 80px;
+            }
+
+            .hero-logo {
+                width: 240px;
+                margin-bottom: 35px;
             }
 
             .hero h1 {
-                font-size: 34px;
+                letter-spacing: -1.5px;
             }
 
-            .hero p {
-                font-size: 17px;
+            .hero-description {
+                font-size: 16px;
             }
 
-            .services {
+            section {
+                padding: 80px 20px;
+            }
+
+            .services-grid {
                 grid-template-columns: 1fr;
             }
 
-            .section-title {
-                font-size: 32px;
+            .service-card {
+                min-height: auto;
             }
 
             .price-row {
-                gap: 20px;
+                padding: 18px 20px;
+            }
+
+            .price-service {
+                max-width: 65%;
+            }
+
+            .price-value {
+                font-size: 16px;
+            }
+
+            .contact-wrapper {
+                padding: 55px 20px;
+            }
+
+            .contact-wrapper h2 {
+                font-size: 34px;
             }
         }
+
     </style>
+
 </head>
 
 
 <body>
 
 
-    <!-- NAVEGACIÓN -->
+    <!-- NAVBAR -->
 
     <nav>
 
-        <div class="nav-logo">
-            COLLITECH
-        </div>
+        <a href="#" class="nav-brand">
 
-        <div>
-            <a href="#servicios">Servicios</a>
-            <a href="#precios">Precios</a>
-            <a href="#sobre">Sobre nosotros</a>
-            <a href="#contacto">Contacto</a>
+            <img
+                src="collitech-logo.png"
+                alt="Logo de ColliTech"
+            >
+
+            <span>
+                COLLITECH
+            </span>
+
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="#servicios">
+                Servicios
+            </a>
+
+            <a href="#precios">
+                Precios
+            </a>
+
+            <a href="#sobre">
+                Nosotros
+            </a>
+
+            <a href="#contacto">
+                Contacto
+            </a>
+
         </div>
 
     </nav>
 
 
 
-    <!-- PORTADA -->
+    <!-- HERO -->
 
     <header class="hero">
 
-        <img
-            src="collitech-logo.png"
-            alt="Logo de ColliTech"
-            class="logo"
-        >
+        <div class="hero-content">
 
-        <h1>Informática sin complicaciones.</h1>
-
-        <p>
-            Mantenimiento, mejoras y asesoramiento informático
-            en Mérida, con precios claros y sin historias raras.
-        </p>
-
-        <div class="buttons">
-
-            <a
-                href="#servicios"
-                class="button button-primary"
+            <img
+                src="collitech-logo.png"
+                alt="Logo de ColliTech"
+                class="hero-logo"
             >
-                Ver servicios
-            </a>
 
-            <a
-                href="#contacto"
-                class="button button-secondary"
-            >
-                Contactar
-            </a>
+
+            <div class="hero-badge">
+                INFORMÁTICA · MÉRIDA
+            </div>
+
+
+            <h1>
+                Tu tecnología.
+                <br>
+                <span>Bien cuidada.</span>
+            </h1>
+
+
+            <p class="hero-description">
+                Mantenimiento, mejoras, diagnóstico y
+                asesoramiento informático sin complicaciones,
+                con precios claros y trato cercano.
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a
+                    href="#servicios"
+                    class="btn btn-primary"
+                >
+                    Ver servicios
+                </a>
+
+
+                <a
+                    href="#contacto"
+                    class="btn btn-secondary"
+                >
+                    Contactar
+                </a>
+
+            </div>
 
         </div>
 
@@ -438,23 +892,30 @@
 
     <section id="servicios">
 
-        <h2 class="section-title">
-            Servicios
-        </h2>
+        <div class="section-header">
 
-        <p class="section-subtitle">
-            Soluciones para mantener tu ordenador,
-            mejorar tu equipo o simplemente dejar de
-            pelearte con Windows.
-        </p>
+            <div class="section-label">
+                Qué hacemos
+            </div>
+
+            <h2 class="section-title">
+                Servicios
+            </h2>
+
+            <p class="section-description">
+                Desde una limpieza hasta una actualización
+                completa. Si podemos ayudarte, lo hacemos.
+            </p>
+
+        </div>
 
 
-        <div class="services">
+        <div class="services-grid">
 
 
-            <div class="card">
+            <article class="service-card">
 
-                <div class="card-icon">
+                <div class="service-icon">
                     🖥️
                 </div>
 
@@ -464,16 +925,15 @@
 
                 <p>
                     Limpieza, optimización y puesta a punto
-                    de ordenadores.
+                    para que tu ordenador vuelva a rendir como debe.
                 </p>
 
-            </div>
+            </article>
 
 
+            <article class="service-card">
 
-            <div class="card">
-
-                <div class="card-icon">
+                <div class="service-icon">
                     🔧
                 </div>
 
@@ -482,17 +942,16 @@
                 </h3>
 
                 <p>
-                    Instalación de RAM, SSD, gráficas,
-                    fuentes y otros componentes.
+                    RAM, SSD, tarjetas gráficas, fuentes y
+                    otros componentes para alargar la vida de tu equipo.
                 </p>
 
-            </div>
+            </article>
 
 
+            <article class="service-card">
 
-            <div class="card">
-
-                <div class="card-icon">
+                <div class="service-icon">
                     💻
                 </div>
 
@@ -501,17 +960,16 @@
                 </h3>
 
                 <p>
-                    Windows, Linux, drivers, programas
-                    y configuración del sistema.
+                    Windows, Linux, drivers, configuración
+                    y solución de problemas de software.
                 </p>
 
-            </div>
+            </article>
 
 
+            <article class="service-card">
 
-            <div class="card">
-
-                <div class="card-icon">
+                <div class="service-icon">
                     🎮
                 </div>
 
@@ -520,17 +978,16 @@
                 </h3>
 
                 <p>
-                    Limpieza y mantenimiento básico
-                    de consolas.
+                    Limpieza y mantenimiento básico para
+                    mantener tu consola en buenas condiciones.
                 </p>
 
-            </div>
+            </article>
 
 
+            <article class="service-card">
 
-            <div class="card">
-
-                <div class="card-icon">
+                <div class="service-icon">
                     💡
                 </div>
 
@@ -539,17 +996,16 @@
                 </h3>
 
                 <p>
-                    Te ayudamos a elegir componentes
-                    y montar un equipo equilibrado.
+                    ¿No sabes qué comprar? Te ayudamos a elegir
+                    componentes que realmente tengan sentido.
                 </p>
 
-            </div>
+            </article>
 
 
+            <article class="service-card">
 
-            <div class="card">
-
-                <div class="card-icon">
+                <div class="service-icon">
                     🔍
                 </div>
 
@@ -558,11 +1014,11 @@
                 </h3>
 
                 <p>
-                    Analizamos el problema antes de
-                    recomendarte una solución.
+                    Analizamos qué está fallando antes de
+                    recomendarte gastar dinero.
                 </p>
 
-            </div>
+            </article>
 
 
         </div>
@@ -575,99 +1031,125 @@
 
     <section id="precios">
 
-        <h2 class="section-title">
-            Precios
-        </h2>
+        <div class="section-header">
 
-        <p class="section-subtitle">
-            Precios orientativos y transparentes.
-            Siempre te informamos antes de realizar
-            cualquier trabajo.
-        </p>
+            <div class="section-label">
+                Sin sorpresas
+            </div>
+
+            <h2 class="section-title">
+                Precios claros.
+            </h2>
+
+            <p class="section-description">
+                Precios orientativos para que sepas
+                aproximadamente cuánto puede costarte.
+            </p>
+
+        </div>
 
 
-        <div class="price-box">
+        <div class="pricing">
 
 
             <div class="price-row">
 
-                <span class="price-name">
+                <div class="price-service">
                     Limpieza de PC
-                </span>
 
-                <span class="price">
+                    <small>
+                        Limpieza y puesta a punto
+                    </small>
+                </div>
+
+                <div class="price-value">
                     Desde 15 €
-                </span>
+                </div>
 
             </div>
 
 
-
             <div class="price-row">
 
-                <span class="price-name">
+                <div class="price-service">
                     Limpieza de consola
-                </span>
 
-                <span class="price">
+                    <small>
+                        Limpieza exterior e interior
+                    </small>
+                </div>
+
+                <div class="price-value">
                     Desde 15 €
-                </span>
+                </div>
 
             </div>
 
 
-
             <div class="price-row">
 
-                <span class="price-name">
-                    Instalación de Windows / Linux
-                </span>
+                <div class="price-service">
+                    Windows / Linux
 
-                <span class="price">
+                    <small>
+                        Instalación y configuración
+                    </small>
+                </div>
+
+                <div class="price-value">
                     Desde 20 €
-                </span>
+                </div>
 
             </div>
 
 
-
             <div class="price-row">
 
-                <span class="price-name">
+                <div class="price-service">
                     Instalación de componentes
-                </span>
 
-                <span class="price">
+                    <small>
+                        RAM, SSD, GPU, fuente, etc.
+                    </small>
+                </div>
+
+                <div class="price-value">
                     Desde 10 €
-                </span>
+                </div>
 
             </div>
 
 
-
             <div class="price-row">
 
-                <span class="price-name">
+                <div class="price-service">
                     Diagnóstico
-                </span>
 
-                <span class="price">
+                    <small>
+                        Identificación del problema
+                    </small>
+                </div>
+
+                <div class="price-value">
                     Desde 10 €
-                </span>
+                </div>
 
             </div>
 
 
-
             <div class="price-row">
 
-                <span class="price-name">
+                <div class="price-service">
                     Montaje de PC
-                </span>
 
-                <span class="price">
+                    <small>
+                        Montaje y comprobación
+                    </small>
+                </div>
+
+                <div class="price-value">
                     Desde 40 €
-                </span>
+                </div>
 
             </div>
 
@@ -677,7 +1159,7 @@
 
         <p class="price-note">
             El precio final puede variar según la complejidad
-            del trabajo y los componentes necesarios.
+            del trabajo. Siempre se informa antes de realizarlo.
         </p>
 
     </section>
@@ -686,19 +1168,72 @@
 
     <!-- SOBRE COLLITECH -->
 
-    <section id="sobre" class="about">
+    <section id="sobre">
 
-        <h2 class="section-title">
-            Sobre ColliTech
-        </h2>
+        <div class="section-header">
 
-        <p>
-            ColliTech nace de una afición por la informática
-            y el hardware, con la intención de ofrecer
-            soluciones sencillas, transparentes y económicas.
-            Desde pequeñas mejoras hasta mantenimiento y
-            asesoramiento para tu equipo.
-        </p>
+            <div class="section-label">
+                Quiénes somos
+            </div>
+
+            <h2 class="section-title">
+                Tecnología sin humo.
+            </h2>
+
+        </div>
+
+
+        <div class="about-box">
+
+
+            <div class="about-card">
+
+                <h3>
+                    ¿Qué es ColliTech?
+                </h3>
+
+                <p>
+                    ColliTech nace de una pasión por la informática
+                    y el hardware, con una idea muy sencilla:
+                    ofrecer ayuda informática cercana, transparente
+                    y a precios razonables.
+                </p>
+
+                <br>
+
+                <p>
+                    No se trata de venderte cosas porque sí.
+                    Primero buscamos qué necesitas y después
+                    vemos cuál es la mejor solución.
+                </p>
+
+            </div>
+
+
+            <div class="about-card about-highlight">
+
+                <div class="highlight-number">
+                    100%
+                </div>
+
+                <div class="highlight-text">
+                    Trato cercano y transparente.
+                </div>
+
+                <br>
+
+                <div class="highlight-number">
+                    0%
+                </div>
+
+                <div class="highlight-text">
+                    Historias raras con los precios.
+                </div>
+
+            </div>
+
+
+        </div>
 
     </section>
 
@@ -708,37 +1243,52 @@
 
     <section id="contacto">
 
-        <div class="contact-box">
+        <div class="contact-wrapper">
 
-            <h2 class="section-title">
-                ¿Necesitas ayuda?
-            </h2>
+            <div class="contact-content">
 
-            <p>
-                Cuéntanos qué le pasa a tu equipo
-                y vemos cómo podemos ayudarte.
-            </p>
+                <div class="section-label">
+                    Hablemos
+                </div>
 
 
-            <div class="buttons">
+                <h2>
+                    ¿Necesitas ayuda?
+                </h2>
 
-    <a
-        href="mailto:collitech1@gmail.com"
-        class="button button-primary"
-    >
-        📧 Email
-    </a>
 
-    <a
-        href="https://www.instagram.com/collitech_/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="button button-secondary"
-    >
-        📸 Instagram
-    </a>
+                <p>
+                    Cuéntanos qué le pasa a tu equipo,
+                    qué quieres mejorar o qué necesitas comprar.
+                    Te responderemos lo antes posible.
+                </p>
 
-  </div>
+
+                <div class="contact-buttons">
+
+
+                    <a
+                        href="mailto:collitech1@gmail.com"
+                        class="btn btn-primary"
+                    >
+                        📧 Email
+                    </a>
+
+
+                    <a
+                        href="https://www.instagram.com/collitech_/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn btn-secondary"
+                    >
+                        📸 Instagram
+                    </a>
+
+
+                </div>
+
+            </div>
+
         </div>
 
     </section>
@@ -749,7 +1299,19 @@
 
     <footer>
 
-        © 2026 ColliTech · Mérida
+        <div class="footer-brand">
+            COLLITECH
+        </div>
+
+        <div>
+            Informática · Mérida
+        </div>
+
+        <br>
+
+        <div>
+            © 2026 ColliTech
+        </div>
 
     </footer>
 
