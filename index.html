@@ -2346,6 +2346,369 @@
         );
 
 </script>
+<script>
+/* =========================
+   SISTEMA DE RESEÑAS
+========================= */
 
+let selectedRating = 0;
+
+
+/* =========================
+   SELECCIÓN DE ESTRELLAS
+========================= */
+
+const starButtons =
+    document.querySelectorAll(".stars-input button");
+
+starButtons.forEach((button) => {
+
+    button.addEventListener("click", () => {
+
+        selectedRating =
+            Number(button.dataset.rating);
+
+        starButtons.forEach((star) => {
+
+            const rating =
+                Number(star.dataset.rating);
+
+            star.classList.toggle(
+                "selected",
+                rating <= selectedRating
+            );
+
+        });
+
+    });
+
+});
+
+
+/* =========================
+   ELEMENTOS
+========================= */
+
+const nameInput =
+    document.getElementById("review-name");
+
+const messageInput =
+    document.getElementById("review-message");
+
+const submitButton =
+    document.getElementById("submit-review");
+
+const statusMessage =
+    document.getElementById("review-status");
+
+const reviewsList =
+    document.getElementById("reviews-list");
+
+const averageRating =
+    document.getElementById("average-rating");
+
+const reviewsCount =
+    document.getElementById("reviews-count");
+
+
+/* =========================
+   ENVIAR RESEÑA
+========================= */
+
+submitButton.addEventListener("click", async () => {
+
+    const name =
+        nameInput.value.trim();
+
+    const message =
+        messageInput.value.trim();
+
+
+    /* Comprobaciones */
+
+    if (selectedRating === 0) {
+
+        statusMessage.textContent =
+            "Selecciona una valoración de 1 a 5 estrellas.";
+
+        return;
+    }
+
+
+    if (name.length < 1) {
+
+        statusMessage.textContent =
+            "Escribe tu nombre.";
+
+        nameInput.focus();
+
+        return;
+    }
+
+
+    if (message.length < 1) {
+
+        statusMessage.textContent =
+            "Escribe tu opinión.";
+
+        messageInput.focus();
+
+        return;
+    }
+
+
+    /* Desactivar botón */
+
+    submitButton.disabled = true;
+
+    statusMessage.textContent =
+        "Enviando reseña...";
+
+
+    try {
+
+        const { error } =
+            await supabaseClient
+                .from("reviews")
+                .insert([
+                    {
+                        name: name,
+                        rating: selectedRating,
+                        message: message
+                    }
+                ]);
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        /* Limpiar formulario */
+
+        nameInput.value = "";
+
+        messageInput.value = "";
+
+        selectedRating = 0;
+
+
+        starButtons.forEach((star) => {
+
+            star.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+        statusMessage.textContent =
+            "¡Gracias por tu reseña!";
+
+
+        /* Actualizar reseñas */
+
+        await loadReviews();
+
+
+    } catch (error) {
+
+        console.error(
+            "Error al enviar la reseña:",
+            error
+        );
+
+        statusMessage.textContent =
+            "No se ha podido enviar la reseña. Inténtalo de nuevo.";
+
+    }
+
+
+    submitButton.disabled = false;
+
+});
+
+
+/* =========================
+   CARGAR RESEÑAS
+========================= */
+
+async function loadReviews() {
+
+    try {
+
+        const { data, error } =
+            await supabaseClient
+                .from("reviews")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        /* Número de reseñas */
+
+        const total =
+            data.length;
+
+        reviewsCount.textContent =
+            total;
+
+
+        /* Si no hay reseñas */
+
+        if (total === 0) {
+
+            averageRating.textContent =
+                "—";
+
+            reviewsList.innerHTML = `
+                <div class="review-card">
+                    <div class="review-text">
+                        Todavía no hay reseñas.
+                        ¡Sé el primero en dejar tu opinión!
+                    </div>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        /* Calcular media */
+
+        const totalRating =
+            data.reduce(
+                (sum, review) =>
+                    sum + review.rating,
+                0
+            );
+
+
+        const average =
+            totalRating / total;
+
+
+        averageRating.textContent =
+            average.toFixed(1);
+
+
+        /* Crear tarjetas */
+
+        reviewsList.innerHTML =
+            data.map((review) => {
+
+                const stars =
+                    "★".repeat(review.rating) +
+                    "☆".repeat(5 - review.rating);
+
+
+                const date =
+                    new Date(
+                        review.created_at
+                    ).toLocaleDateString(
+                        "es-ES",
+                        {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric"
+                        }
+                    );
+
+
+                /*
+                 * Escapamos el contenido
+                 * antes de introducirlo en HTML.
+                 */
+
+                const safeName =
+                    escapeHTML(review.name);
+
+                const safeMessage =
+                    escapeHTML(review.message);
+
+
+                return `
+                    <article class="review-card">
+
+                        <div class="review-card-header">
+
+                            <div class="review-author">
+                                ${safeName}
+                            </div>
+
+                            <div class="review-date">
+                                ${date}
+                            </div>
+
+                        </div>
+
+
+                        <div class="review-stars">
+                            ${stars}
+                        </div>
+
+
+                        <div class="review-text">
+                            ${safeMessage}
+                        </div>
+
+                    </article>
+                `;
+
+            }).join("");
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando las reseñas:",
+            error
+        );
+
+        reviewsList.innerHTML = `
+            <div class="review-card">
+                <div class="review-text">
+                    No se han podido cargar las reseñas.
+                </div>
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =========================
+   PROTECCIÓN DEL TEXTO
+========================= */
+
+function escapeHTML(text) {
+
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================
+   CARGAR AL ABRIR LA WEB
+========================= */
+
+loadReviews();
+
+</script>
 </body>
 </html>
