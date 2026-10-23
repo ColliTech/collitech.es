@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>STEEL SWARM — Cooperativo Online · Audio + AA 4.0</title>
+<title>STEEL SWARM — Cooperativo Online · MP3 Soundtrack + AA 4.1</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#18391f;color:#f3f5d4;font-family:ui-monospace,Consolas,monospace}button,select{font:inherit}
 #game{display:block;width:100vw;height:100vh;image-rendering:pixelated;cursor:crosshair}
@@ -898,6 +898,13 @@ function buyBaseUpgrade(stat){
 function resize(){W=innerWidth;H=innerHeight;dpr=Math.min(devicePixelRatio||1,1.5);canvas.width=Math.floor(W*dpr);canvas.height=Math.floor(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}addEventListener('resize',resize);resize();
 function toast(s,t=1800){$('toast').textContent=s;$('toast').style.display='block';toastTimer=t/1000}
 
+// Bandas sonoras externas: ambos MP3 deben estar en la misma carpeta que index.html.
+const menuMusicTrack = new Audio('./musica_menu.mp3');
+const battleMusicTrack = new Audio('./musica_partida.mp3');
+menuMusicTrack.loop=true;battleMusicTrack.loop=true;
+menuMusicTrack.preload='auto';battleMusicTrack.preload='auto';
+let activeMusicTrack=null;
+
 function ensureAudioContext(){
  if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();
  audioUnlocked=true;
@@ -967,43 +974,28 @@ function sfx(name){
 }
 function stopMusic(){
  musicToken++;if(musicTimer!==null){clearTimeout(musicTimer);musicTimer=null}musicMode='none';
- if(musicBus&&audioCtx){try{const old=musicBus,now=audioCtx.currentTime;old.gain.cancelScheduledValues(now);old.gain.setValueAtTime(Math.max(.0001,old.gain.value),now);old.gain.exponentialRampToValueAtTime(.0001,now+.24);setTimeout(()=>{try{old.disconnect()}catch(e){}},320)}catch(e){}}
+ // La música principal procede de los dos MP3 junto al index.html.
+ for(const track of [menuMusicTrack,battleMusicTrack]){
+  try{track.pause();track.currentTime=0;track.volume=clamp(Number(save.settings.musicVolume??.42),0,1)}catch(e){}
+ }
+ activeMusicTrack=null;
+ if(musicBus&&audioCtx){try{const old=musicBus,now=audioCtx.currentTime;old.gain.cancelScheduledValues(now);old.gain.setValueAtTime(Math.max(.0001,old.gain.value),now);old.gain.exponentialRampToValueAtTime(.0001,now+.12);setTimeout(()=>{try{old.disconnect()}catch(e){}},180)}catch(e){}}
  musicBus=null;
 }
 function startMusic(mode='battle'){
  if(!save.settings.music||!audioUnlocked)return;
- if(mode===musicMode)return;
+ const track=mode==='menu'?menuMusicTrack:battleMusicTrack;
+ if(mode===musicMode&&activeMusicTrack===track&&!track.paused){track.volume=clamp(Number(save.settings.musicVolume??.42),0,1);return}
  stopMusic();
- if(!audioCtx)return;
- const token=musicToken;musicMode=mode;
- const bus=audioCtx.createGain(),now=audioCtx.currentTime;musicBus=bus;bus.gain.setValueAtTime(.0001,now);bus.gain.exponentialRampToValueAtTime(Math.max(.0002,clamp(Number(save.settings.musicVolume??.42),0,1)),now+.5);bus.connect(audioCtx.destination);
- musicStep=0;
- const menuMelody=[0,7,3,10,0,7,5,3,0,7,3,10,12,10,7,3,5,10,7,3,2,7,5,3,0,7,3,10,14,10,7,3];
- const battleMelody=[0,0,7,3,5,3,10,7,0,3,7,10,12,10,7,3,0,0,7,3,5,8,7,3,10,7,5,3,2,3,7,10];
- const roots=mode==='menu'?[0,5,3,7]:[0,3,5,2];
- const base=mode==='menu'?196:130.81;
- const stepMs=mode==='menu'?390:238;
- const tick=()=>{
-  if(token!==musicToken||!save.settings.music||musicMode!==mode)return;
-  try{
-   const n=audioCtx.currentTime,step=musicStep%32,semi=(mode==='menu'?menuMelody:battleMelody)[step];
-   // Melodía del menú: pulsos cálidos y notas aireadas de sala de mando.
-   // Combate: ostinato más grave, percusión sintetizada y bajo rítmico.
-   if(mode==='menu'){
-    audioTone(base*Math.pow(2,semi/12),base*Math.pow(2,semi/12)*.998,.32,'triangle',.021,0,bus);
-    if(step%4===0){const root=roots[Math.floor(step/8)%4];audioTone(65.41*Math.pow(2,root/12),58.27*Math.pow(2,root/12),.72,'sine',.014,0,bus);}
-    if(step%8===0){const chord=[0,3,7];chord.forEach((c,i)=>audioTone(base*.5*Math.pow(2,(roots[Math.floor(step/8)%4]+c)/12),base*.5*Math.pow(2,(roots[Math.floor(step/8)%4]+c)/12),1.8,'sine',.007,i*.012,bus));}
-   }else{
-    audioTone(base*Math.pow(2,semi/12),base*Math.pow(2,semi/12)*.995,.18,'square',.013,0,bus);
-    if(step%2===0){const r=roots[Math.floor(step/8)%4];audioTone(55*Math.pow(2,r/12),48*Math.pow(2,r/12),.20,'sawtooth',.022,0,bus);}
-    if(step%4===0){audioTone(80,38,.12,'triangle',.022*v,0,bus);audioNoise(.045,.012,6500,0,'highpass',bus);}
-    if(step%4===2)audioNoise(.025,.006,7200,0,'highpass',bus);
-    if(step%8===0){const chord=[0,3,7];chord.forEach((c,i)=>audioTone(65*Math.pow(2,(roots[Math.floor(step/8)%4]+c)/12),64*Math.pow(2,(roots[Math.floor(step/8)%4]+c)/12),.72,'triangle',.005,i*.018,bus));}
-   }
-  }catch(e){}
-  musicStep++;musicTimer=setTimeout(tick,stepMs);
- };
- tick();
+ const token=musicToken;musicMode=mode;activeMusicTrack=track;
+ try{
+  track.loop=true;track.preload='auto';track.volume=clamp(Number(save.settings.musicVolume??.42),0,1);track.currentTime=0;
+  const playResult=track.play();
+  if(playResult&&typeof playResult.catch==='function')playResult.catch(()=>{
+   // Si el MP3 no está subido o el navegador bloquea su reproducción, evitar reintentos cada frame.
+   if(token===musicToken&&activeMusicTrack===track){activeMusicTrack=null;musicMode=mode;}
+  });
+ }catch(e){if(token===musicToken&&activeMusicTrack===track){activeMusicTrack=null;musicMode=mode;}}
 }
 function syncMusicForState(){
  if(!audioUnlocked)return;
