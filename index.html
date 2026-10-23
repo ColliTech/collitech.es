@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>STEEL SWARM — Cooperativo Online</title>
+<title>STEEL SWARM — Cooperativo Online · Audio + AA 4.0</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#18391f;color:#f3f5d4;font-family:ui-monospace,Consolas,monospace}button,select{font:inherit}
 #game{display:block;width:100vw;height:100vh;image-rendering:pixelated;cursor:crosshair}
@@ -33,6 +33,7 @@ button:hover{background:#38563a;border-color:#dfd36b}button:disabled{opacity:.45
 .chanceGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:10px 0}.chance{padding:8px 4px;border:1px solid #566b4a;background:#15271a;text-align:center;font-size:10px}.chance b{display:block;font-size:13px;margin-bottom:4px}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}.cards button{text-align:left;min-height:92px}.cards small{display:block;color:#b2cca5;margin-top:7px;font-weight:normal;line-height:1.4}
 select{background:#13261a;color:#edf4d6;border:2px solid #637b53;padding:8px;max-width:100%}
+input[type="range"]{accent-color:#e6c66e;width:min(260px,48%);cursor:pointer}.volume-row{gap:14px}.volume-row label{max-width:58%;font-size:11px;color:#c4d1bb}.volume-row input{flex-shrink:0}
 .r-common{color:#c6d1c4}.r-uncommon{color:#6be080}.r-rare{color:#63a8ff}.r-epic{color:#d38bff}.r-legendary{color:#ffd46c}
 #bossBar{position:absolute;left:50%;transform:translateX(-50%);top:62px;width:min(420px,70vw);display:none}
 #bossName{text-align:center;font-size:10px;color:#f3ce83;margin-bottom:3px}
@@ -571,7 +572,7 @@ body.hud-suppressed #hud{display:none!important}
     <div class="intro-emblem"><span>SS</span></div>
     <div class="intro-kicker">TACTICAL SURVIVAL PROJECT</div>
     <h1 class="intro-title">STEEL<br>SWARM</h1>
-    <div class="intro-version">ARMORED SURVIVAL · 3.5</div>
+    <div class="intro-version">ARMORED SURVIVAL · AUDIO + AA EDITION 4.0</div>
     <div class="intro-rule"></div>
     <div class="intro-credit">HECHO POR<br><strong>SrAntonio</strong> <span style="color:#748b70">&amp;</span> <strong>ESPWT</strong></div>
     <div class="intro-inspired">Inspirado en <strong>POKESURVIVOR</strong> y <strong>War Thunder</strong>.</div>
@@ -582,7 +583,7 @@ body.hud-suppressed #hud{display:none!important}
 <canvas id="game"></canvas>
 <div id="mpGameTag" class="mp-game-tag"></div>
 <div id="hud">
- <div id="topLeft"><div id="brand">STEEL SWARM <span style="font-size:10px;color:#f0bd66">3.7 COOP</span></div><div><span id="vehicleName">Panzer I</span> · Nv. <span id="level">1</span></div><div id="hpOuter"><div id="hp"></div></div><div><span id="hptext">100 / 100</span> HP · <span id="xptext">0 / 10 XP</span></div></div>
+ <div id="topLeft"><div id="brand">STEEL SWARM <span style="font-size:10px;color:#f0bd66">4.0 COOP</span></div><div><span id="vehicleName">Panzer I</span> · Nv. <span id="level">1</span></div><div id="hpOuter"><div id="hp"></div></div><div><span id="hptext">100 / 100</span> HP · <span id="xptext">0 / 10 XP</span></div></div>
  <div id="timer"><span id="clock">0:00</span><div id="subtimer">HORDAS · OLEADA <span id="wave">1</span></div></div>
  <div id="bossBar"><div id="bossName">JEFE</div><div id="bossOuter"><div id="bossHealth"></div></div></div>
  <div id="toast"></div>
@@ -712,7 +713,7 @@ if(mpSocket){
  const showMPConfigNotice=()=>mpSetStatus('error');
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',showMPConfigNotice,{once:true});else showMPConfigNotice();
 }
-function mpSendStateNow(){if(!mpSocket||!mpInRoom()||!player)return;mpSocket.emit('player:state',{name:mpProfile.name,x:player.x,y:player.y,a:player.a,hullA:player.hullA??player.a,hp:player.hp,maxHp:player.max,base:player.base,color:player.color,isMoving:!!player.isMoving,inGame:true,wave,level,damage:player.damage,speed:player.speed,rate:player.rate,projectileCount:player.projectileCount||1,upgrades:player.upgrades||{}})}
+function mpSendStateNow(){if(!mpSocket||!mpInRoom()||!player)return;mpSocket.emit('player:state',{name:mpProfile.name,x:player.x,y:player.y,a:player.a,hullA:player.hullA??player.a,hp:player.hp,maxHp:player.max,base:player.base,color:player.color,isMoving:!!player.isMoving,inGame:true,wave,level,damage:player.damage,speed:player.speed,rate:player.rate,projectileCount:player.projectileCount||1,baseBarrels:player.baseBarrels||1,projectilesPerBarrel:player.projectilesPerBarrel||1,upgrades:player.upgrades||{}})}
 function mpHandleAction(action){
  const nameEl=$('mpPlayerName'),roomEl=$('mpRoomInput');
  if(action==='saveName'){if(mpSaveProfile(nameEl?.value)){mpStatus='Nombre guardado: '+mpProfile.name;mpSetStatus('ok')}else mpSetStatus('error');return true}
@@ -729,7 +730,7 @@ function mpHandleAction(action){
  if(action==='play'){mpStartLocalGame();return true}
  return false;
 }
-let W=innerWidth,H=innerHeight,dpr=1,keys={},player, enemies=[],shots=[],enemyShots=[],gears=[],coinDrops=[],particles=[],texts=[],audioCtx=null,pendingUpgrades=0,mines=[],oils=[],airstrikes=[],airstrikeBursts=[],toolCrates=[],tankLootCrates=[],tankCrateSpawnT=14,slotSpinTimers=[],smokeGrenades=[],smokeClouds=[],musicTimer=null,musicToken=0,musicStep=0,trackMarks=[],dustPuffs=[],artilleryZones=[],ambientNature=[],natureSpawnTimer=0,visualTime=0,shakeOffsetX=0,shakeOffsetY=0;
+let W=innerWidth,H=innerHeight,dpr=1,keys={},player, enemies=[],shots=[],enemyShots=[],gears=[],coinDrops=[],particles=[],texts=[],audioCtx=null,audioUnlocked=false,audioNoiseBuffer=null,musicBus=null,musicMode='none',lastSlotSfxAt=0,pendingUpgrades=0,mines=[],oils=[],airstrikes=[],airstrikeBursts=[],toolCrates=[],tankLootCrates=[],tankCrateSpawnT=14,slotSpinTimers=[],smokeGrenades=[],smokeClouds=[],musicTimer=null,musicToken=0,musicStep=0,trackMarks=[],dustPuffs=[],artilleryZones=[],ambientNature=[],natureSpawnTimer=0,visualTime=0,shakeOffsetX=0,shakeOffsetY=0;
 const CAMERA_ZOOM=1.25, PROJECTILE_RANGE=420;
 let gameState='menu',last=0,startTime=0,spawnT=0,wave=1,kills=0,level=1,xp=0,nextXP=8,gearCount=0,toastTimer=0,waveRemaining=0,waveTransition=0,bossSpawned=false,banner='',bannerTime=0,shakeTime=0;
 const rand=(a,b)=>a+Math.random()*(b-a),clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
@@ -858,7 +859,7 @@ radar:{name:'Radar de tiro',desc:'+45 de alcance de adquisición por nivel',max:
 airburst:{name:'Munición de proximidad',desc:'Los impactos dañan también a los enemigos cercanos',max:5,aaOnly:true},
 overclock:{name:'Sobrecarga de cañones',desc:'Aumenta aún más la cadencia del antiaéreo',max:5,aaOnly:true}
 };
-let save={unlocked:['panzer1'],selected:'panzer1',crates:0,crateInventory:EMPTY_CRATE_INVENTORY(),scrap:0,coins:0,tankUpgrades:{},redeemedCodes:[],testMode:false,settings:{damageNumbers:true,screenShake:false,sound:true,music:true,difficulty:'normal'}};
+let save={unlocked:['panzer1'],selected:'panzer1',crates:0,crateInventory:EMPTY_CRATE_INVENTORY(),scrap:0,coins:0,tankUpgrades:{},redeemedCodes:[],testMode:false,settings:{damageNumbers:true,screenShake:false,sound:true,music:true,musicVolume:.42,sfxVolume:.78,difficulty:'normal'}};
 let hadCrateInventory=false;
 try{const s=JSON.parse(localStorage.getItem('steelSwarmSave')||'null');if(s){hadCrateInventory=Object.prototype.hasOwnProperty.call(s,'crateInventory');save={...save,...s,coins:Number.isFinite(s.coins)?Math.max(0,s.coins):0,tankUpgrades:Object.fromEntries(Object.entries(s.tankUpgrades||{}).map(([id,u])=>[id,{bounty:Number.isFinite(u.bounty)?u.bounty:(u.damage||0),logistics:Number.isFinite(u.logistics)?u.logistics:(u.speed||0),quartermaster:Number.isFinite(u.quartermaster)?u.quartermaster:(u.hp||0),salvage:Number.isFinite(u.salvage)?u.salvage:(u.reload||0)}])),redeemedCodes:Array.isArray(s.redeemedCodes)?s.redeemedCodes:[],testMode:!!s.testMode,settings:{damageNumbers:true,screenShake:false,sound:true,music:true,difficulty:'normal',...(s.settings||{})}}}}catch(e){}
 save.crateInventory=normalizeCrateInventory(hadCrateInventory?save.crateInventory:null,save.crates||0);syncCrateCount();
@@ -897,61 +898,124 @@ function buyBaseUpgrade(stat){
 function resize(){W=innerWidth;H=innerHeight;dpr=Math.min(devicePixelRatio||1,1.5);canvas.width=Math.floor(W*dpr);canvas.height=Math.floor(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}addEventListener('resize',resize);resize();
 function toast(s,t=1800){$('toast').textContent=s;$('toast').style.display='block';toastTimer=t/1000}
 
+function ensureAudioContext(){
+ if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+ audioUnlocked=true;
+ if(audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});
+ return audioCtx;
+}
+function audioTone(f0,f1,duration,type='triangle',amp=.04,delay=0,destination){
+ if(!audioCtx||!Number.isFinite(f0)||!Number.isFinite(f1)||duration<=0)return;
+ const now=audioCtx.currentTime+delay,o=audioCtx.createOscillator(),g=audioCtx.createGain();
+ o.type=type;o.frequency.setValueAtTime(Math.max(25,f0),now);
+ o.frequency.exponentialRampToValueAtTime(Math.max(25,f1),now+Math.max(.015,duration));
+ g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(Math.max(.0002,amp),now+.008);
+ g.gain.exponentialRampToValueAtTime(.0001,now+duration);
+ o.connect(g);g.connect(destination||audioCtx.destination);o.start(now);o.stop(now+duration+.025);
+}
+function audioNoise(duration,amp=.03,cutoff=1200,delay=0,filterType='lowpass',destination){
+ if(!audioCtx||duration<=0)return;
+ try{
+  if(!audioNoiseBuffer){const length=Math.ceil(audioCtx.sampleRate*1.5);audioNoiseBuffer=audioCtx.createBuffer(1,length,audioCtx.sampleRate);const d=audioNoiseBuffer.getChannelData(0);for(let i=0;i<length;i++)d[i]=Math.random()*2-1;}
+  const now=audioCtx.currentTime+delay,src=audioCtx.createBufferSource(),f=audioCtx.createBiquadFilter(),g=audioCtx.createGain();
+  src.buffer=audioNoiseBuffer;f.type=filterType;f.frequency.setValueAtTime(Math.max(80,cutoff),now);g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(Math.max(.0002,amp),now+.006);g.gain.exponentialRampToValueAtTime(.0001,now+duration);
+  src.connect(f);f.connect(g);g.connect(destination||audioCtx.destination);src.start(now);src.stop(now+duration+.02);
+ }catch(e){}
+}
 function sfx(name){
  if(!save.settings.sound)return;
  try{
-  if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-  if(audioCtx.state==='suspended')audioCtx.resume();
-  const now=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain();
-  const presets={start:[240,360,.12,'triangle',.055],shoot:[115,68,.075,'square',.025],enemy:[165,95,.11,'sawtooth',.025],hit:[90,55,.08,'square',.035],pickup:[520,780,.12,'triangle',.05],level:[360,720,.22,'triangle',.055],boss:[110,65,.38,'sawtooth',.06],explode:[95,42,.19,'triangle',.05],crate:[390,880,.28,'triangle',.06],upgrade:[430,650,.16,'triangle',.05],coin:[670,1020,.09,'triangle',.035]};
-  const p=presets[name]||presets.shoot;o.type=p[3];o.frequency.setValueAtTime(p[0],now);o.frequency.exponentialRampToValueAtTime(Math.max(35,p[1]),now+p[2]);
-  g.gain.setValueAtTime(p[4],now);g.gain.exponentialRampToValueAtTime(.001,now+p[2]);o.connect(g);g.connect(audioCtx.destination);o.start(now);o.stop(now+p[2]+.01);
+  ensureAudioContext();
+  const vol=clamp(Number(save.settings.sfxVolume??.78),0,1);if(vol<.01)return;
+  const tone=(a,b,d,w='triangle',v=.04,delay=0)=>audioTone(a,b,d,w,v*vol,delay);
+  const noise=(d,v=.03,cut=1200,delay=0,filter='lowpass')=>audioNoise(d,v*vol,cut,delay,filter);
+  const note=(freq,delay=0,d=.13,v=.035,w='triangle')=>tone(freq,freq*.995,d,w,v,delay);
+  switch(name){
+   case 'menuClick': tone(760,470,.045,'square',.026);tone(1160,880,.035,'triangle',.012,.012);break;
+   case 'menuBack': tone(390,220,.09,'triangle',.035);noise(.035,.012,1300,.01);break;
+   case 'menuOpen': tone(280,440,.12,'triangle',.03);tone(440,660,.15,'sine',.024,.06);break;
+   case 'start': noise(.18,.025,650);tone(70,145,.3,'sawtooth',.05);tone(155,310,.22,'triangle',.027,.12);break;
+   case 'shoot': tone(145,54,.08,'square',.032);noise(.05,.024,900);break;
+   case 'enemy': tone(210,86,.105,'sawtooth',.027);noise(.045,.015,1900,.015);break;
+   case 'hit': tone(190,72,.075,'square',.037);noise(.04,.021,1500);break;
+   case 'playerDamage': tone(165,43,.2,'sawtooth',.052);noise(.11,.034,750,.01);break;
+   case 'enemyDeath': noise(.12,.035,1100);tone(125,42,.16,'triangle',.044);tone(430,190,.07,'square',.014,.02);break;
+   case 'pickup': note(620,0,.1,.032);note(880,.055,.13,.035);break;
+   case 'medkit': [440,554,659,880].forEach((f,i)=>note(f,i*.065,.17,.03));break;
+   case 'level': [392,494,587,784].forEach((f,i)=>note(f,i*.075,.20,.035));break;
+   case 'boss': tone(100,48,.45,'sawtooth',.05);tone(164,74,.38,'square',.024,.1);noise(.22,.025,430,.02);break;
+   case 'explode': tone(115,31,.25,'triangle',.062);noise(.24,.055,520);noise(.075,.027,3400,.015,'highpass');break;
+   case 'cratePickup': tone(410,560,.12,'triangle',.035);noise(.04,.019,2100);break;
+   case 'crate': tone(230,410,.19,'triangle',.037);noise(.09,.027,850);tone(620,880,.23,'sine',.023,.11);break;
+   case 'crateOpen': tone(165,72,.18,'sawtooth',.035);noise(.14,.038,1000,.01);tone(390,520,.16,'triangle',.028,.10);[660,880,1108].forEach((f,i)=>note(f,.18+i*.065,.20,.027));break;
+   case 'slotSpin': tone(170,760,.43,'sawtooth',.024);tone(240,540,.38,'triangle',.018,.035);noise(.28,.02,1800,.015);break;
+   case 'reelTick': {const t=performance.now();if(t-lastSlotSfxAt<.095)return;lastSlotSfxAt=t;tone(900,470,.028,'square',.012);break;}
+   case 'reelStop': tone(670,135,.115,'square',.038);noise(.03,.024,3900);tone(240,120,.10,'triangle',.018,.025);break;
+   case 'tankUnlock': [523.25,659.25,783.99,1046.5,1318.5].forEach((f,i)=>note(f,i*.07,.22,.037));tone(130,260,.24,'triangle',.024,.08);break;
+   case 'duplicate': note(740,0,.075,.028,'square');note(520,.07,.11,.031,'triangle');tone(320,180,.10,'triangle',.018,.03);break;
+   case 'crateComplete': [392,523,659,784,1046].forEach((f,i)=>note(f,i*.09,.24,.035));break;
+   case 'upgrade': [440,554,659,880].forEach((f,i)=>note(f,i*.055,.16,.033));break;
+   case 'coin': note(990,0,.06,.026,'triangle');note(1320,.05,.075,.025,'sine');break;
+   case 'airstrike': tone(580,80,.38,'sawtooth',.027);noise(.12,.018,2200,.20);break;
+   case 'artilleryWarning': tone(660,420,.16,'square',.024);tone(660,420,.16,'square',.024,.22);break;
+   default:{
+    const presets={upgrade:[430,650,.16,'triangle',.05],coin:[670,1020,.09,'triangle',.035],crate:[390,880,.28,'triangle',.06],explode:[95,42,.19,'triangle',.05],level:[360,720,.22,'triangle',.055],enemy:[165,95,.11,'sawtooth',.025],hit:[90,55,.08,'square',.035],pickup:[520,780,.12,'triangle',.05],shoot:[115,68,.075,'square',.025],boss:[110,65,.38,'sawtooth',.06]};
+    const p=presets[name]||presets.shoot;tone(p[0],p[1],p[2],p[3],p[4]);
+   }
+  }
  }catch(e){}
 }
-// Melodía ambiental en pentatónica mayor: tempo lento, timbres suaves y volumen bajo.
-const MUSIC_MELODY=[0,4,7,9,7,4,2,4,0,4,7,9,12,9,7,4,2,4,7,9,7,4,2,0,0,4,7,11,9,7,4,2];
-const MUSIC_BASE=261.63; // Do4
-function startMusic(){
- if(!save.settings.music)return;
+function stopMusic(){
+ musicToken++;if(musicTimer!==null){clearTimeout(musicTimer);musicTimer=null}musicMode='none';
+ if(musicBus&&audioCtx){try{const old=musicBus,now=audioCtx.currentTime;old.gain.cancelScheduledValues(now);old.gain.setValueAtTime(Math.max(.0001,old.gain.value),now);old.gain.exponentialRampToValueAtTime(.0001,now+.24);setTimeout(()=>{try{old.disconnect()}catch(e){}},320)}catch(e){}}
+ musicBus=null;
+}
+function startMusic(mode='battle'){
+ if(!save.settings.music||!audioUnlocked)return;
+ if(mode===musicMode)return;
  stopMusic();
- const token=musicToken;musicStep=0;
+ if(!audioCtx)return;
+ const token=musicToken;musicMode=mode;
+ const bus=audioCtx.createGain(),now=audioCtx.currentTime;musicBus=bus;bus.gain.setValueAtTime(.0001,now);bus.gain.exponentialRampToValueAtTime(Math.max(.0002,clamp(Number(save.settings.musicVolume??.42),0,1)),now+.5);bus.connect(audioCtx.destination);
+ musicStep=0;
+ const menuMelody=[0,7,3,10,0,7,5,3,0,7,3,10,12,10,7,3,5,10,7,3,2,7,5,3,0,7,3,10,14,10,7,3];
+ const battleMelody=[0,0,7,3,5,3,10,7,0,3,7,10,12,10,7,3,0,0,7,3,5,8,7,3,10,7,5,3,2,3,7,10];
+ const roots=mode==='menu'?[0,5,3,7]:[0,3,5,2];
+ const base=mode==='menu'?196:130.81;
+ const stepMs=mode==='menu'?390:238;
  const tick=()=>{
-  if(token!==musicToken||!save.settings.music)return;
+  if(token!==musicToken||!save.settings.music||musicMode!==mode)return;
   try{
-   if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-   if(audioCtx.state==='suspended')audioCtx.resume();
-   const now=audioCtx.currentTime,step=musicStep%MUSIC_MELODY.length;
-   // Melodía redondeada, sin onda cuadrada estridente.
-   const lead=audioCtx.createOscillator(),lg=audioCtx.createGain();
-   lead.type='sine';lead.frequency.setValueAtTime(MUSIC_BASE*Math.pow(2,MUSIC_MELODY[step]/12),now);
-   lg.gain.setValueAtTime(.0001,now);lg.gain.linearRampToValueAtTime(.013,now+.045);lg.gain.exponentialRampToValueAtTime(.0001,now+.30);
-   lead.connect(lg);lg.connect(audioCtx.destination);lead.start(now);lead.stop(now+.32);
-   // Warm bass on the beat.
-   if(musicStep%2===0){
-    const bar=Math.floor(musicStep/8)%4;
-    const roots=[0,5,7,0],bass=audioCtx.createOscillator(),bg=audioCtx.createGain();
-    bass.type='triangle';bass.frequency.setValueAtTime(65.41*Math.pow(2,roots[bar]/12),now);
-    bg.gain.setValueAtTime(.0001,now);bg.gain.linearRampToValueAtTime(.018,now+.04);bg.gain.exponentialRampToValueAtTime(.0001,now+.38);
-    bass.connect(bg);bg.connect(audioCtx.destination);bass.start(now);bass.stop(now+.4);
-   }
-   // Soft three-note chord pad every four beats; slow attack/release prevents clicks.
-   if(musicStep%8===0){
-    const chordIndex=Math.floor(musicStep/8)%4;
-    const chords=[[0,4,7],[5,9,12],[7,11,14],[0,4,7]][chordIndex];
-    for(const semi of chords){
-     const pad=audioCtx.createOscillator(),pg=audioCtx.createGain();
-     pad.type='triangle';pad.frequency.setValueAtTime(MUSIC_BASE*.5*Math.pow(2,semi/12),now);
-     pg.gain.setValueAtTime(.0001,now);pg.gain.linearRampToValueAtTime(.0045,now+.24);pg.gain.setValueAtTime(.0045,now+1.8);pg.gain.exponentialRampToValueAtTime(.0001,now+2.8);
-     pad.connect(pg);pg.connect(audioCtx.destination);pad.start(now);pad.stop(now+2.85);
-    }
+   const n=audioCtx.currentTime,step=musicStep%32,semi=(mode==='menu'?menuMelody:battleMelody)[step];
+   // Melodía del menú: pulsos cálidos y notas aireadas de sala de mando.
+   // Combate: ostinato más grave, percusión sintetizada y bajo rítmico.
+   if(mode==='menu'){
+    audioTone(base*Math.pow(2,semi/12),base*Math.pow(2,semi/12)*.998,.32,'triangle',.021,0,bus);
+    if(step%4===0){const root=roots[Math.floor(step/8)%4];audioTone(65.41*Math.pow(2,root/12),58.27*Math.pow(2,root/12),.72,'sine',.014,0,bus);}
+    if(step%8===0){const chord=[0,3,7];chord.forEach((c,i)=>audioTone(base*.5*Math.pow(2,(roots[Math.floor(step/8)%4]+c)/12),base*.5*Math.pow(2,(roots[Math.floor(step/8)%4]+c)/12),1.8,'sine',.007,i*.012,bus));}
+   }else{
+    audioTone(base*Math.pow(2,semi/12),base*Math.pow(2,semi/12)*.995,.18,'square',.013,0,bus);
+    if(step%2===0){const r=roots[Math.floor(step/8)%4];audioTone(55*Math.pow(2,r/12),48*Math.pow(2,r/12),.20,'sawtooth',.022,0,bus);}
+    if(step%4===0){audioTone(80,38,.12,'triangle',.022*v,0,bus);audioNoise(.045,.012,6500,0,'highpass',bus);}
+    if(step%4===2)audioNoise(.025,.006,7200,0,'highpass',bus);
+    if(step%8===0){const chord=[0,3,7];chord.forEach((c,i)=>audioTone(65*Math.pow(2,(roots[Math.floor(step/8)%4]+c)/12),64*Math.pow(2,(roots[Math.floor(step/8)%4]+c)/12),.72,'triangle',.005,i*.018,bus));}
    }
   }catch(e){}
-  musicStep++;musicTimer=setTimeout(tick,360); // ~83 BPM, eighth notes
+  musicStep++;musicTimer=setTimeout(tick,stepMs);
  };
  tick();
 }
-function stopMusic(){musicToken++;if(musicTimer!==null){clearTimeout(musicTimer);musicTimer=null}}
-
+function syncMusicForState(){
+ if(!audioUnlocked)return;
+ if(!save.settings.music){if(musicMode!=='none')stopMusic();return}
+ const wanted=['playing','upgrade'].includes(gameState)?'battle':'menu';
+ if(musicMode!==wanted)startMusic(wanted);
+}
+function unlockAudio(){
+ try{ensureAudioContext();syncMusicForState()}catch(e){}
+}
+document.addEventListener('pointerdown',unlockAudio,{passive:true});
+document.addEventListener('keydown',unlockAudio);
 function enemyGrowth(){
  // Crecimiento acumulado por tramos: 1% por oleada (1-10), 3% (11-20), 5% (21+).
  return Math.min(wave,10)*.01+Math.max(0,Math.min(wave-10,10))*.03+Math.max(0,wave-20)*.05;
@@ -960,12 +1024,15 @@ function openMenu(page='main',fromGame=false){if(fromGame&&gameState==='playing'
 function closeMenu(){ $('menuScreen').classList.add('hidden');if(gameState==='paused'||gameState==='menu')gameState='playing';if(mpIsCoopRun()&&mpIsHost)mpSocket.emit('game:resume');last=performance.now()}
 function basePlayer(){
  const t=selectedTank();
- const p={x:0,y:0,a:0,hullA:0,isMoving:false,trailTimer:.1,recoil:0,flash:0,hp:t.hp,max:t.hp,speed:t.speed*1.15,damage:t.damage,rate:t.rate*.9,cool:.15,magnet:52,r:12,invuln:0,baseBarrels:t.guns||1,projectileCount:t.guns||1,targetRange:PROJECTILE_RANGE,aa:!!t.aa,pierce:0,mineTimer:2.5,oilTimer:2,airTimer:6,toolCrateTimer:rand(7,11)*(1-(getBaseLevels(t.id).logistics||0)*.08),upgrades:Object.fromEntries(Object.keys(UPGRADE_DEFS).map(k=>[k,0])),base:t.id,color:t.color};
+ const p={x:0,y:0,a:0,hullA:0,isMoving:false,trailTimer:.1,recoil:0,flash:0,hp:t.hp,max:t.hp,speed:t.speed*1.15,damage:t.damage,rate:t.rate*.9,cool:.15,magnet:52,r:12,invuln:0,baseBarrels:t.guns||1,projectilesPerBarrel:1,projectileCount:t.guns||1,targetRange:PROJECTILE_RANGE,aa:!!t.aa,pierce:0,mineTimer:2.5,oilTimer:2,airTimer:6,toolCrateTimer:rand(7,11)*(1-(getBaseLevels(t.id).logistics||0)*.08),upgrades:Object.fromEntries(Object.keys(UPGRADE_DEFS).map(k=>[k,0])),base:t.id,color:t.color};
  if(save.testMode){
   p.upgrades=Object.fromEntries(Object.keys(UPGRADE_DEFS).map(k=>[k,5]));
   p.max=Math.round(p.max*1.08*1.10*1.12*1.15*1.18);p.hp=p.max;
   p.damage*=1.08*1.20;p.speed*=[1.07,1.08,1.09,1.10,1.12].reduce((a,b)=>a*b,1);
-  p.rate*=[.93,.93,.92,.91,.90].reduce((a,b)=>a*b,1);p.projectileCount=Math.max(4,p.baseBarrels);p.targetRange+=250;p.pierce=3;p.magnet+=146;
+  p.rate*=[.93,.93,.92,.91,.90].reduce((a,b)=>a*b,1);
+  p.projectilesPerBarrel=p.aa?4:1;
+  p.projectileCount=p.aa?p.baseBarrels*p.projectilesPerBarrel:Math.max(4,p.baseBarrels);
+  p.targetRange+=250;p.pierce=3;p.magnet+=146;
   p.mineTimer=.25;p.oilTimer=.25;p.airTimer=.25;
  }
  return p;
@@ -986,7 +1053,7 @@ function launchRun(){
  }
  requestAnimationFrame(tick);
 }
-function startRun(){$('loadingScreen').classList.add('hidden');player=basePlayer();if(mpRoomCode){const peers=mpRoomMembers.filter(p=>p.id!==mpClientId&&p.inGame);const cx=peers.length?peers.reduce((sum,p)=>sum+(p.x||0),0)/peers.length:0,cy=peers.length?peers.reduce((sum,p)=>sum+(p.y||0),0)/peers.length:0,spawnA=(mpSpawnIndex%4)*Math.PI/2;player.x=cx+Math.cos(spawnA)*72;player.y=cy+Math.sin(spawnA)*72;}sfx('start');startMusic();enemies=[];shots=[];enemyShots=[];gears=[];coinDrops=[];particles=[];texts=[];mines=[];oils=[];airstrikes=[];airstrikeBursts=[];toolCrates=[];tankLootCrates=[];tankCrateSpawnT=rand(12,20);slotSpinTimers.forEach(clearInterval);slotSpinTimers=[];smokeGrenades=[];smokeClouds=[];trackMarks=[];dustPuffs=[];artilleryZones=[];ambientNature=[];natureSpawnTimer=0;visualTime=0;level=1;xp=0;nextXP=8;pendingUpgrades=0;kills=0;gearCount=0;wave=1;waveRemaining=0;spawnT=.35;waveTransition=0;bossSpawned=false;mpEnemySeq=0;mpSeenKillEvents.clear();mpClaimedToolCrates.clear();mpClaimedTankCrates.clear();startTime=performance.now();gameState='playing';$('menuScreen').classList.add('hidden');$('upgradeScreen').classList.add('hidden');if(!mpIsGuestRun())beginWave();last=performance.now();mpSendStateNow();ui()}
+function startRun(){$('loadingScreen').classList.add('hidden');player=basePlayer();if(mpRoomCode){const peers=mpRoomMembers.filter(p=>p.id!==mpClientId&&p.inGame);const cx=peers.length?peers.reduce((sum,p)=>sum+(p.x||0),0)/peers.length:0,cy=peers.length?peers.reduce((sum,p)=>sum+(p.y||0),0)/peers.length:0,spawnA=(mpSpawnIndex%4)*Math.PI/2;player.x=cx+Math.cos(spawnA)*72;player.y=cy+Math.sin(spawnA)*72;}sfx('start');startMusic('battle');enemies=[];shots=[];enemyShots=[];gears=[];coinDrops=[];particles=[];texts=[];mines=[];oils=[];airstrikes=[];airstrikeBursts=[];toolCrates=[];tankLootCrates=[];tankCrateSpawnT=rand(12,20);slotSpinTimers.forEach(clearInterval);slotSpinTimers=[];smokeGrenades=[];smokeClouds=[];trackMarks=[];dustPuffs=[];artilleryZones=[];ambientNature=[];natureSpawnTimer=0;visualTime=0;level=1;xp=0;nextXP=8;pendingUpgrades=0;kills=0;gearCount=0;wave=1;waveRemaining=0;spawnT=.35;waveTransition=0;bossSpawned=false;mpEnemySeq=0;mpSeenKillEvents.clear();mpClaimedToolCrates.clear();mpClaimedTankCrates.clear();startTime=performance.now();gameState='playing';$('menuScreen').classList.add('hidden');$('upgradeScreen').classList.add('hidden');if(!mpIsGuestRun())beginWave();last=performance.now();mpSendStateNow();ui()}
 function beginWave(){waveRemaining=Math.min(Math.round(12+wave*2.5),82);spawnT=.62;bossSpawned=false;banner=wave%5===0?(wave===50?'¡JEFE FINAL!':'¡MINIBOSS!'):'OLEADA '+wave;bannerTime=2.1;if(wave%5===0){spawnBoss(wave===50);sfx('boss')}toast(wave%5===0?banner:'Oleada '+wave,1800)}
 function difficultyScale(){return save.settings.difficulty==='hard'?1.35:save.settings.difficulty==='easy'?.75:1}
 function enemyModelForWave(){
@@ -1070,12 +1137,29 @@ function firePlayer(){
  if(!valid.length)return;
  const target=valid.reduce((a,b)=>Math.hypot(a.x-player.x,a.y-player.y)<Math.hypot(b.x-player.x,b.y-player.y)?a:b);
  player.a=Math.atan2(target.y-player.y,target.x-player.x);const speed=585;player.recoil=.9;player.flash=.095;
- const count=player.projectileCount||1,spacing=player.aa?.12:.105,offsets=[];
- for(let i=0;i<count;i++)offsets.push((i-(count-1)/2)*spacing);
- const range=player.targetRange||PROJECTILE_RANGE,critChance=(player.upgrades.critical||0)*.04,burstLv=player.upgrades.airburst||0;
+ const count=player.projectileCount||1,range=player.targetRange||PROJECTILE_RANGE,critChance=(player.upgrades.critical||0)*.04,burstLv=player.upgrades.airburst||0;
  const burstRadius=[0,15,19,23,28,34][burstLv]||0,burstDamage=[0,.20,.24,.29,.36,.45][burstLv]||0;
- const fired=[];for(const off of offsets){const a=player.a+off,isCrit=Math.random()<critChance,shot={x:player.x+Math.cos(a)*18,y:player.y+Math.sin(a)*18,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,life:(range-18)/speed,remaining:range-18,damage:player.damage*(isCrit?2:1),isCrit,splashRadius:burstRadius,splashDamage:player.damage*burstDamage,pierceLeft:player.pierce||0,hitEnemies:[]};shots.push(shot);fired.push({x:shot.x,y:shot.y,vx:shot.vx,vy:shot.vy,life:shot.life,remaining:shot.remaining,damage:shot.damage,isCrit:shot.isCrit,splashRadius:shot.splashRadius,splashDamage:shot.splashDamage,pierceLeft:shot.pierceLeft})}
- player.cool=player.rate;particlesAt(player.x+Math.cos(player.a)*20,player.y+Math.sin(player.a)*20,'#f5df7a',3);if(mpSocket&&mpInRoom()){mpSocket.emit('player:fire',{x:player.x,y:player.y,a:player.a,color:player.color||selectedTank().color,base:player.base,name:mpProfile.name,count:player.projectileCount||1});mpSocket.emit('combat:fire',{projectiles:fired})}sfx('shoot')
+ const fired=[];
+ const spawnShot=(x,y,a)=>{const isCrit=Math.random()<critChance,shot={x,y,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,life:(range-18)/speed,remaining:range-18,damage:player.damage*(isCrit?2:1),isCrit,splashRadius:burstRadius,splashDamage:player.damage*burstDamage,pierceLeft:player.pierce||0,hitEnemies:[]};shots.push(shot);fired.push({x:shot.x,y:shot.y,vx:shot.vx,vy:shot.vy,life:shot.life,remaining:shot.remaining,damage:shot.damage,isCrit:shot.isCrit,splashRadius:shot.splashRadius,splashDamage:shot.splashDamage,pierceLeft:shot.pierceLeft})};
+ if(player.aa){
+  // Los proyectiles de la mejora de cañón se multiplican por cada tubo del antiaéreo.
+  // Cada tubo tiene su propia boca de fuego; las rondas extra salen agrupadas junto a ese tubo.
+  const barrels=Math.max(1,player.baseBarrels||1),perBarrel=Math.max(1,player.projectilesPerBarrel||Math.round(count/barrels));
+  const perpendicular=player.a+Math.PI/2,barrelGap=barrels===1?0:Math.min(3.8,8/(barrels-1));
+  for(let b=0;b<barrels;b++){
+   const side=(b-(barrels-1)/2)*barrelGap;
+   const muzzleX=player.x+Math.cos(player.a)*18+Math.cos(perpendicular)*side;
+   const muzzleY=player.y+Math.sin(player.a)*18+Math.sin(perpendicular)*side;
+   for(let n=0;n<perBarrel;n++){
+    const roundSpread=(n-(perBarrel-1)/2)*.012+(b-(barrels-1)/2)*.012;
+    spawnShot(muzzleX,muzzleY,player.a+roundSpread);
+   }
+  }
+ }else{
+  const spacing=.105;
+  for(let i=0;i<count;i++)spawnShot(player.x+Math.cos(player.a)*18,player.y+Math.sin(player.a)*18,player.a+(i-(count-1)/2)*spacing);
+ }
+ player.cool=player.rate;particlesAt(player.x+Math.cos(player.a)*20,player.y+Math.sin(player.a)*20,'#f5df7a',3);if(mpSocket&&mpInRoom()){mpSocket.emit('player:fire',{x:player.x,y:player.y,a:player.a,color:player.color||selectedTank().color,base:player.base,name:mpProfile.name,count:fired.length,barrels:player.baseBarrels||1,projectilesPerBarrel:player.projectilesPerBarrel||1});mpSocket.emit('combat:fire',{projectiles:fired})}sfx('shoot')
 }
 function enemyFire(e,target=null){
  target=target||mpNearestTarget(e.x,e.y);
@@ -1092,7 +1176,7 @@ function enemyFire(e,target=null){
   artilleryZones.push({x:tx,y:ty,radius:Math.min(78,58+wave*.38),life:flight,maxLife:flight,damage:e.damage*1.35,sx:e.x,sy:e.y,dead:false});
   if(artilleryZones.length>7)artilleryZones.shift();
   particlesAt(e.x+Math.cos(Math.atan2(ty-e.y,tx-e.x))*(e.r+6),e.y+Math.sin(Math.atan2(ty-e.y,tx-e.x))*(e.r+6),'#f0ab67',4);
-  sfx('boss');
+  sfx('artilleryWarning');
   return;
  }
  const a=Math.atan2(target.y-e.y,target.x-e.x);
@@ -1136,7 +1220,7 @@ function availableUpgrades(){return Object.keys(UPGRADE_DEFS).filter(k=>(!UPGRAD
 function upgradeDescription(k,lv){
  const next=lv+1;
  const rows={
-  damage:['+8% de daño por proyectil','Añade un segundo proyectil','Tercer proyectil y perfora 1 enemigo','+20% de daño y perfora hasta 2 enemigos','Cuarto proyectil y perfora hasta 3 enemigos'],
+  damage:player.aa?['+8% de daño por proyectil','2 proyectiles por cada cañón antiaéreo','3 proyectiles por cañón y perfora 1 enemigo','+20% de daño y perfora hasta 2 enemigos','4 proyectiles por cañón y perfora hasta 3 enemigos']:['+8% de daño por proyectil','Añade un segundo proyectil','Tercer proyectil y perfora 1 enemigo','+20% de daño y perfora hasta 2 enemigos','Cuarto proyectil y perfora hasta 3 enemigos'],
   speed:['+7% de velocidad','+8% de velocidad','+9% de velocidad','+10% de velocidad','+12% de velocidad'],
   rate:['+7% de cadencia','+7% de cadencia','+8% de cadencia','+9% de cadencia','+10% de cadencia'],
   armor:['+8% de vida máxima','+10% de vida máxima','+12% de vida máxima','+15% de vida máxima','+18% de vida máxima'],
@@ -1164,10 +1248,10 @@ function chooseUpgrade(k){
  switch(k){
   case'damage':
    if(lv===1)player.damage*=1.08;
-   else if(lv===2)player.projectileCount=Math.max(player.baseBarrels||1,2);
-   else if(lv===3){player.projectileCount=Math.max(player.baseBarrels||1,3);player.pierce=Math.max(player.pierce,1)}
+   else if(lv===2){if(player.aa){player.projectilesPerBarrel=2;player.projectileCount=player.baseBarrels*2}else player.projectileCount=Math.max(player.baseBarrels||1,2)}
+   else if(lv===3){if(player.aa){player.projectilesPerBarrel=3;player.projectileCount=player.baseBarrels*3}else player.projectileCount=Math.max(player.baseBarrels||1,3);player.pierce=Math.max(player.pierce,1)}
    else if(lv===4){player.damage*=1.20;player.pierce=Math.max(player.pierce,2)}
-   else if(lv===5){player.projectileCount=Math.max(player.baseBarrels||1,4);player.pierce=Math.max(player.pierce,3)}
+   else if(lv===5){if(player.aa){player.projectilesPerBarrel=4;player.projectileCount=player.baseBarrels*4}else player.projectileCount=Math.max(player.baseBarrels||1,4);player.pierce=Math.max(player.pierce,3)}
    break;
   case'speed':player.speed*=[1.07,1.08,1.09,1.10,1.12][lv-1];break;
   case'rate':player.rate*=[.93,.93,.92,.91,.90][lv-1];break;
@@ -1190,7 +1274,7 @@ function chooseUpgrade(k){
  if(pendingUpgrades>0){showUpgrade()}else{gameState='playing';last=performance.now()}
  sfx('upgrade');toast(`${UPGRADE_DEFS[k].name}: nivel ${lv}/5`,1400);ui()
 }
-$('upgradeChoices').addEventListener('click',e=>{const b=e.target.closest('[data-up],[data-resume]');if(b)chooseUpgrade(b.dataset.up||'resume')});
+$('upgradeChoices').addEventListener('click',e=>{const b=e.target.closest('[data-up],[data-resume]');if(b){sfx('menuClick');chooseUpgrade(b.dataset.up||'resume')}});
 const TANK_RENDER_PROFILES={
 
   panzer1:{fam:'p1',len:24,wid:18, wheels:4,tx:-1,tw:7,th:7, turret:'box',gun:8,barrel:2},
@@ -1733,7 +1817,7 @@ function awardDeath(e){
  particlesAt(e.x+rand(-4,4),e.y+rand(-4,4),'#4d5441',e.isBoss?17:7);
  particlesAt(e.x,e.y,'#ffedb0',e.isBoss?10:4);
  if(coinValue>=20)particlesAt(e.x,e.y,'#f6d36e',10);
- sfx('explode')
+ sfx(e.isBoss?'explode':'enemyDeath')
 }
 function damageArea(x,y,radius,damage,color='#ffb566'){
  particlesAt(x,y,color,22);
@@ -1770,7 +1854,7 @@ function updateSpecialWeapons(dt){
      const second=enemies.filter(e=>e!==target&&!e.dead).sort((a,b)=>Math.hypot(a.x-target.x,a.y-target.y)-Math.hypot(b.x-target.x,b.y-target.y))[0];
      if(second){const secondStrike={x:second.x,y:second.y,delay:3.55,duration:3.55,flightAngle:rand(0,Math.PI*2),bombCount:2,radius:radius*.78,damage:damage*.65,level:up.airstrike,impactDone:false,ownerId:mpClientId};airstrikes.push(secondStrike);if(mpIsGuestRun())mpSocket.emit('combat:special',{kind:'airstrike',item:secondStrike})}
     }
-    toast(up.airstrike>=3?'¡Ataque aéreo doble!':'¡Avión de ataque a tierra en aproximación!',1100)
+    toast(up.airstrike>=3?'¡Ataque aéreo doble!':'¡Avión de ataque a tierra en aproximación!',1100);sfx('airstrike')
    }
    player.airTimer=[12,10,8.5,7,5.8][i];
   }
@@ -1896,13 +1980,13 @@ function update(dt,now){
  dustPuffs=dustPuffs.filter(dust=>dust.life>0);if(dustPuffs.length>120)dustPuffs.splice(0,dustPuffs.length-120);
  player.toolCrateTimer-=dt;
  if(!mpIsGuestRun()&&player.toolCrateTimer<=0){spawnToolCrate();player.toolCrateTimer=rand(15,23)*(1-(getBaseLevels(player.base).logistics||0)*.08)}
- for(const box of toolCrates){if(!mpIsGuestRun()){box.bob+=dt*3;box.life-=dt}const claimed=mpIsCoopRun()&&box.netId&&mpClaimedToolCrates.has(box.netId);if(!claimed&&Math.hypot(player.x-box.x,player.y-box.y)<27&&player.hp<player.max){if(mpIsCoopRun()&&box.netId)mpClaimedToolCrates.add(box.netId);else box.picked=true;const healed=Math.min(player.max-player.hp,Math.ceil(player.max*.5));player.hp+=healed;toast('CAJA MÉDICA: +'+healed+' HP',1800);sfx('pickup');particlesAt(box.x,box.y,'#b9e889',14)}}
+ for(const box of toolCrates){if(!mpIsGuestRun()){box.bob+=dt*3;box.life-=dt}const claimed=mpIsCoopRun()&&box.netId&&mpClaimedToolCrates.has(box.netId);if(!claimed&&Math.hypot(player.x-box.x,player.y-box.y)<27&&player.hp<player.max){if(mpIsCoopRun()&&box.netId)mpClaimedToolCrates.add(box.netId);else box.picked=true;const healed=Math.min(player.max-player.hp,Math.ceil(player.max*.5));player.hp+=healed;toast('CAJA MÉDICA: +'+healed+' HP',1800);sfx('medkit');particlesAt(box.x,box.y,'#b9e889',14)}}
  toolCrates=toolCrates.filter(box=>box.life>0&&(!box.picked||mpIsCoopRun()));
  // Las cajas del campo comparten posición, pero cada comandante las recoge y abre para sí mismo.
  if(!mpIsGuestRun())tankCrateSpawnT-=dt;
  if(!mpIsGuestRun()&&tankCrateSpawnT<=0){if(tankLootCrates.length<2&&Math.random()<.10&&spawnTankLootCrate()){const found=tankLootCrates[tankLootCrates.length-1],quality=CRATE_TIERS[found?.tier||'standard'];toast(`CAJA ${quality.label.toUpperCase()} DETECTADA EN LAS CERCANÍAS`,2400)}tankCrateSpawnT=rand(9,14)}
  let openedFieldCrate=false;
- for(const box of tankLootCrates){if(!mpIsGuestRun()){box.bob+=dt*3.1;box.life-=dt}const claimed=mpIsCoopRun()&&box.netId&&mpClaimedTankCrates.has(box.netId);if(!claimed&&Math.hypot(player.x-box.x,player.y-box.y)<30){if(mpIsCoopRun()&&box.netId)mpClaimedTankCrates.add(box.netId);else box.picked=true;openedFieldCrate=true;particlesAt(box.x,box.y,'#f2d176',18);sfx('crate');beginTankSlot('field',box.tier);break}}
+ for(const box of tankLootCrates){if(!mpIsGuestRun()){box.bob+=dt*3.1;box.life-=dt}const claimed=mpIsCoopRun()&&box.netId&&mpClaimedTankCrates.has(box.netId);if(!claimed&&Math.hypot(player.x-box.x,player.y-box.y)<30){if(mpIsCoopRun()&&box.netId)mpClaimedTankCrates.add(box.netId);else box.picked=true;openedFieldCrate=true;particlesAt(box.x,box.y,'#f2d176',18);sfx('cratePickup');beginTankSlot('field',box.tier);break}}
  tankLootCrates=tankLootCrates.filter(box=>box.life>0&&(!box.picked||mpIsCoopRun()));
  if(openedFieldCrate)return;
  if(!mpIsGuestRun()){
@@ -1961,7 +2045,7 @@ function update(dt,now){
   e.cool-=dt;
   if(e.cool<=0&&d<(e.range||550)){if(e.kind!=='charger')enemyFire(e,target);e.cool=e.isBoss?(e.finalBoss?.68:1.05):e.kind==='artillery'?rand(2.8,3.3):e.kind==='sniper'?rand(2.6,3.3):e.kind==='support'?rand(2.3,2.9):e.kind==='scout'?rand(.95,1.35):rand(1.5,2.2)}
   const contactDamage=e.kind==='charger'?(e.charging&&(e.telegraph||0)<=0?26:12):e.isBoss?20:e.kind==='heavy'?16:13;
-  if(d<target.r+e.r*.65){if(target.local){if(player.invuln<=0){const hurt=contactDamage*(1-(player.upgrades.shield||0)*.08);player.hp-=hurt;player.invuln=.45;if(save.settings.screenShake)shakeTime=.12;particlesAt(player.x,player.y,e.kind==='charger'?'#f68a55':'#e85d4b',5)}}else{mpHitRemote(target,contactDamage,'contact',target.x,target.y)}}
+  if(d<target.r+e.r*.65){if(target.local){if(player.invuln<=0){const hurt=contactDamage*(1-(player.upgrades.shield||0)*.08);player.hp-=hurt;player.invuln=.45;if(save.settings.screenShake)shakeTime=.12;particlesAt(player.x,player.y,e.kind==='charger'?'#f68a55':'#e85d4b',5);sfx('playerDamage')}}else{mpHitRemote(target,contactDamage,'contact',target.x,target.y)}}
  }
  enemies=enemies.filter(e=>!e.dead);
  updateSmoke(dt);
@@ -1969,7 +2053,7 @@ function update(dt,now){
  for(const s of enemyShots){
    s.x+=s.vx*dt;s.y+=s.vy*dt;s.life-=dt;
    const targets=mpCombatants();let hitTarget=null;for(const t of targets){const hitRadius=(t.r||12)+(s.role==='artillery'?3:2.5);if(Math.hypot(s.x-t.x,s.y-t.y)<hitRadius){hitTarget=t;break}}
-   if(hitTarget){s.dead=true;if(hitTarget.local){if(player.invuln<=0){player.hp-=s.damage*(1-(player.upgrades.shield||0)*.08);player.invuln=s.splashRadius?.38:.26;particlesAt(player.x,player.y,s.splashRadius?'#ffbd68':'#ee6351',s.splashRadius?24:4);if(s.splashRadius){texts.push({x:player.x,y:player.y-30,text:'ARTILLERÍA',life:.7,color:'#ffc06e'});sfx('explode')}if(save.settings.screenShake)shakeTime=s.splashRadius?.16:.1}}else{mpHitRemote(hitTarget,s.damage,s.splashRadius?'artillery':'enemy-shot',hitTarget.x,hitTarget.y)}}
+   if(hitTarget){s.dead=true;if(hitTarget.local){if(player.invuln<=0){player.hp-=s.damage*(1-(player.upgrades.shield||0)*.08);player.invuln=s.splashRadius?.38:.26;particlesAt(player.x,player.y,s.splashRadius?'#ffbd68':'#ee6351',s.splashRadius?24:4);if(s.splashRadius){texts.push({x:player.x,y:player.y-30,text:'ARTILLERÍA',life:.7,color:'#ffc06e'});sfx('explode')}else sfx('playerDamage');if(save.settings.screenShake)shakeTime=s.splashRadius?.16:.1}}else{mpHitRemote(hitTarget,s.damage,s.splashRadius?'artillery':'enemy-shot',hitTarget.x,hitTarget.y)}}
  }
  enemyShots=enemyShots.filter(s=>s.life>0&&!s.dead);
  } else {for(const s of enemyShots){s.x+=s.vx*dt;s.y+=s.vy*dt;s.life-=dt;}enemyShots=enemyShots.filter(s=>s.life>0&&!s.dead);}
@@ -2145,14 +2229,14 @@ function tankSvg(t){
  <rect x="${x+8}" y="${trackY+trackH+2}" width="${cfg.length-16}" height="3" fill="#111912"/>
  </svg>`;
 }
-function header(title,back='main'){return `<div class="subpage-head"><button class="secondary backButton" data-page="${back}">← MENÚ</button><div><div class="eyebrow">STEEL SWARM / FIELD COMMAND</div><h2>${title}</h2></div><div class="subpage-mark">SS<span> // 3.5</span></div></div>`}
+function header(title,back='main'){return `<div class="subpage-head"><button class="secondary backButton" data-page="${back}">← MENÚ</button><div><div class="eyebrow">STEEL SWARM / FIELD COMMAND</div><h2>${title}</h2></div><div class="subpage-mark">SS<span> // 4.0</span></div></div>`}
 function drawMenu(page){
  const box=$('menuContent');
  box.classList.remove('page-pop');void box.offsetWidth;box.classList.add('page-pop');
  if(page==='main'){
   const t=selectedTank();
   box.innerHTML=`<div class="simple-main">
-    <div class="simple-top"><div class="simple-logo"><span class="logo-mark">SS</span><span>STEEL SWARM<small>PIXEL TANK SURVIVAL</small></span></div><span class="wallet-tag">🪙 ${save.coins||0} monedas</span><span class="version-tag">V3.6</span></div>
+    <div class="simple-top"><div class="simple-logo"><span class="logo-mark">SS</span><span>STEEL SWARM<small>PIXEL TANK SURVIVAL</small></span></div><span class="wallet-tag">🪙 ${save.coins||0} monedas</span><span class="version-tag">V4.0</span></div>
     <div class="simple-hero">
       <div class="simple-title"><div class="eyebrow">CAMPAÑA DE SUPERVIVENCIA</div><h1>STEEL <em>SWARM</em></h1><p>Hordas con roles diferentes: exploradores que flanquean, artillería de largo alcance, ingenieros que reparan, francotiradores y tanques de asalto.</p></div>
       <div class="side-preview"><div class="preview-caption">VEHÍCULO SELECCIONADO</div><div class="side-tank">${tankSvg(t)}</div><div class="preview-name">${t.name}</div><div class="preview-meta">${t.nation} · ${t.era}</div><div class="preview-stats"><span>VIDA <b>${t.hp}</b></span><span>DAÑO <b>${t.damage}</b></span><span>VELOCIDAD <b>${t.speed}</b></span></div></div>
@@ -2227,8 +2311,9 @@ function drawMenu(page){
  }else if(page==='settings'){
   box.innerHTML=header('AJUSTES')+`<div class="row"><label for="difficulty">Dificultad de enemigos</label><select id="difficulty"><option value="easy" ${save.settings.difficulty==='easy'?'selected':''}>Fácil</option><option value="normal" ${save.settings.difficulty==='normal'?'selected':''}>Normal</option><option value="hard" ${save.settings.difficulty==='hard'?'selected':''}>Difícil</option></select></div>
   <div class="row"><label for="damageNumbers">Mostrar números de daño</label><input id="damageNumbers" type="checkbox" ${save.settings.damageNumbers?'checked':''}></div>
-  <div class="row"><label for="screenShake">Sacudida al recibir daño</label><input id="screenShake" type="checkbox" ${save.settings.screenShake?'checked':''}></div><div class="row"><label for="sound">Sonidos del juego</label><input id="sound" type="checkbox" ${save.settings.sound?'checked':''}></div><div class="row"><label for="music">Música ambiental 8-bit</label><input id="music" type="checkbox" ${save.settings.music?'checked':''}></div>
-  <p class="note">Los cambios se guardan automáticamente en este navegador. La dificultad afecta a la vida y daño de los enemigos.</p><button data-action="saveSettings">GUARDAR AJUSTES</button><p class="reset-note">ZONA DE PELIGRO · Esta acción borra los tanques desbloqueados, monedas, cajas, piezas, mejoras permanentes y códigos canjeados. Los ajustes de sonido y dificultad se conservarán.</p><button class="danger-button" data-action="resetProgress">↺ REINICIAR PROGRESO</button>`;
+  <div class="row"><label for="screenShake">Sacudida al recibir daño</label><input id="screenShake" type="checkbox" ${save.settings.screenShake?'checked':''}></div><div class="row"><label for="sound">Efectos de sonido del juego</label><input id="sound" type="checkbox" ${save.settings.sound?'checked':''}></div><div class="row"><label for="music">Música de menú y combate</label><input id="music" type="checkbox" ${save.settings.music?'checked':''}></div>
+  <div class="row volume-row"><label for="musicVolume">Volumen de música</label><input id="musicVolume" aria-label="Volumen de música" type="range" min="0" max="1" step="0.05" value="${save.settings.musicVolume??.42}"></div><div class="row volume-row"><label for="sfxVolume">Volumen de efectos</label><input id="sfxVolume" aria-label="Volumen de efectos" type="range" min="0" max="1" step="0.05" value="${save.settings.sfxVolume??.78}"></div>
+  <p class="note">La música del menú es más ambiental; durante el combate cambia a una pista rítmica militar. Ajusta los volúmenes aquí. El navegador puede necesitar una primera interacción para activar el audio.</p><button data-action="saveSettings">GUARDAR AJUSTES</button><p class="reset-note">ZONA DE PELIGRO · Esta acción borra los tanques desbloqueados, monedas, cajas, piezas, mejoras permanentes y códigos canjeados. Los ajustes de sonido y dificultad se conservarán.</p><button class="danger-button" data-action="resetProgress">↺ REINICIAR PROGRESO</button>`;
  }else if(page==='victory'){
   box.innerHTML=`<h1>¡VICTORIA, COMANDANTE!</h1><p>Has derrotado a ${BOSS_TYPES[BOSS_TYPES.length-1].name}, el jefe final de la oleada 50.</p><p>Cajas disponibles: <b>${save.crates}</b> · Bajas: <b>${kills}</b></p><div class="menuGrid"><button class="primary" data-action="play">NUEVA PARTIDA</button><button data-page="boxes">ABRIR CAJAS</button><button data-page="garage">GARAGE</button></div>`;
  }else if(page==='gameover'){
@@ -2268,6 +2353,7 @@ function redeemCode(){
 $('menuContent').addEventListener('submit',e=>{if(e.target.id==='redeemCodeForm'){e.preventDefault();redeemCode()}});
 $('menuContent').addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
+ sfx('menuClick');syncMusicForState();
  if(b.dataset.mp&&mpHandleAction(b.dataset.mp))return;
  if(b.dataset.page){drawMenu(b.dataset.page);return}
  if(b.dataset.select){save.selected=b.dataset.select;persist();drawMenu('garage');ui();return}
@@ -2295,7 +2381,7 @@ function resetProgress(){
  $('loadingScreen').classList.add('hidden');
  ui();syncScreenLayers();last=performance.now();
 }
-function saveSettings(){save.settings.difficulty=$('difficulty').value;save.settings.damageNumbers=$('damageNumbers').checked;save.settings.screenShake=$('screenShake').checked;save.settings.sound=$('sound').checked;save.settings.music=$('music').checked;persist();if(save.settings.music&&(gameState==='playing'||gameState==='paused'))startMusic();else if(!save.settings.music)stopMusic()}
+function saveSettings(){save.settings.difficulty=$('difficulty').value;save.settings.damageNumbers=$('damageNumbers').checked;save.settings.screenShake=$('screenShake').checked;save.settings.sound=$('sound').checked;save.settings.music=$('music').checked;save.settings.musicVolume=clamp(Number($('musicVolume').value),0,1);save.settings.sfxVolume=clamp(Number($('sfxVolume').value),0,1);persist();if(audioUnlocked){if(save.settings.music){stopMusic();syncMusicForState()}else stopMusic()}sfx('menuOpen')}
 function chooseCrateRarity(tier='standard'){
  const weights=(CRATE_TIERS[tier]||CRATE_TIERS.standard).weights;const total=Object.values(weights).reduce((a,b)=>a+b,0);let roll=Math.random()*total;
  for(const k of ['common','uncommon','rare','epic','legendary']){roll-=weights[k]||0;if(roll<0)return k}
@@ -2332,7 +2418,7 @@ function beginTankSlot(source='inventory',crateTier='standard'){
  const returnPage=$('menuContent')?.dataset.page||'boxes';
  const previousState=source==='field'?'playing':returnState;
  slotSession={source,returnState:previousState,returnPage,crateTier,drawIndex:0,rewards:[],current:null,finished:false};
- gameState='crateOpening';$('tankSlotScreen').dataset.tier=crateTier;
+ gameState='crateOpening';sfx('crateOpen');$('tankSlotScreen').dataset.tier=crateTier;
  const tierInfo=CRATE_TIERS[crateTier],badge=$('slotTierBadge');badge.textContent=`CAJA ${tierInfo.label.toUpperCase()}`;badge.style.setProperty('--tier-color',tierInfo.color);
  $('slotSubtitle').textContent=(source==='field'?'¡Caja encontrada en el campo! ':'')+`${tierInfo.desc}. Esta caja concede cuatro tiradas independientes: las probabilidades de rareza son Común ${tierInfo.weights.common}%, Poco común ${tierInfo.weights.uncommon}%, Raro ${tierInfo.weights.rare}%, Épico ${tierInfo.weights.epic}% y Legendario ${tierInfo.weights.legendary}%.`;
  $('slotCandidatesTitle').textContent='4 CANDIDATOS PARA ESTA TIRADA';$('slotWinnings').innerHTML='';$('slotCandidates').innerHTML='';
@@ -2344,7 +2430,7 @@ function startSlotDraw(){
  const session=slotSession;if(!session||session.finished)return;
  if(session.drawIndex>=4){finishTankSlot();return}
  session.drawIndex++;
- const drawNo=session.drawIndex,{rarity,prize,candidates}=buildSlotPrize(session.crateTier);
+ const drawNo=session.drawIndex,{rarity,prize,candidates}=buildSlotPrize(session.crateTier);sfx('slotSpin');
  session.current={drawNo,rarity,prize,candidates,settled:false};
  $('slotCandidates').innerHTML=candidates.map(t=>`<div class="slot-candidate">${tankSvg(t)}<strong>${t.name}</strong><small>${RARITY[t.rarity].label} · ${t.nation}</small></div>`).join('');
  $('slotCandidatesTitle').textContent=`TIRADA ${drawNo}/4 · 4 TANQUES POSIBLES`;
@@ -2353,12 +2439,12 @@ function startSlotDraw(){
  const initial=shuffled([...candidates,...candidates,...candidates]);
  $('slotReels').innerHTML=[0,1,2].map(i=>slotReelContent(initial[i],i,drawNo,true)).join('');
  [0,1,2].forEach(i=>{
-  const tick=()=>{if(!slotSession||slotSession!==session||session.finished||!session.current||session.current.drawNo!==drawNo)return;const t=candidates[Math.floor(Math.random()*candidates.length)];showReelTank(i,t,drawNo,true,false)};
+  const tick=()=>{if(!slotSession||slotSession!==session||session.finished||!session.current||session.current.drawNo!==drawNo)return;const t=candidates[Math.floor(Math.random()*candidates.length)];showReelTank(i,t,drawNo,true,false);sfx('reelTick')};
   const interval=setInterval(tick,48+i*7);slotSpinTimers.push(interval);
   const timeout=setTimeout(()=>{
    if(!slotSession||slotSession!==session||session.finished||!session.current||session.current.drawNo!==drawNo)return;
    clearInterval(interval);
-   showReelTank(i,prize,drawNo,false,true);
+   showReelTank(i,prize,drawNo,false,true);sfx('reelStop');
    if(i===2){const t=setTimeout(()=>awardSlotDraw(),280);slotSpinTimers.push(t)}
   },[760,1120,1490][i]);slotSpinTimers.push(timeout);
  });
@@ -2371,7 +2457,7 @@ function awardSlotDraw(){
  draw.settled=true;session.rewards.push({tank,duplicate:dup,scrapGain:dup?scrapGain:0});
  const number=String(session.rewards.length).padStart(2,'0');
  $('slotWinnings').insertAdjacentHTML('beforeend',`<div class="slot-win-card ${dup?'duplicate':'unlocked'}"><span class="slot-win-number">${number}/04</span>${tankSvg(tank)}<strong>${tank.name}</strong><small>${dup?`DUPLICADO · +${scrapGain} PIEZAS`:'¡DESBLOQUEADO!'}</small></div>`);
- persist();ui();sfx(dup?'coin':'upgrade');
+ persist();ui();sfx(dup?'duplicate':'tankUnlock');
  $('slotResult').innerHTML=`<div class="slot-result-name">${dup?'¡TANQUE DUPLICADO!':'¡TANQUE DESBLOQUEADO!'}</div><div>${tank.name} · ${tank.nation} · ${RARITY[tank.rarity].label}</div><div>Premio ${session.rewards.length} de 4${dup?` · +${scrapGain} piezas de repuesto`:' · añadido al garaje'}</div>`;
  if(session.drawIndex<4){const t=setTimeout(()=>startSlotDraw(),520);slotSpinTimers.push(t)}else finishTankSlot();
 }
@@ -2379,7 +2465,7 @@ function finishTankSlot(){
  if(!slotSession||slotSession.finished)return;
  const session=slotSession;session.finished=true;
  const unlocked=session.rewards.filter(r=>!r.duplicate).length,duplicates=session.rewards.length-unlocked,totalScrap=session.rewards.reduce((n,r)=>n+r.scrapGain,0);
- persist();ui();sfx('crate');
+ persist();ui();sfx('crateComplete');
  $('slotResult').innerHTML=`<div class="slot-result-name">¡CAJA ABIERTA: 4 TANQUES!</div><div>${unlocked} nuevos desbloqueados · ${duplicates} duplicados · +${totalScrap} piezas de repuesto</div><div>Los cuatro resultados se han guardado en tu progreso.</div>`;
  const btn=$('slotContinue');btn.disabled=false;btn.textContent=session.source==='field'?'REANUDAR COMBATE':'RECIBIR LOS 4 TANQUES · VOLVER AL ARSENAL';
 }
@@ -2393,13 +2479,14 @@ function continueTankSlot(){
 }
 function openCrate(tier='standard'){
  if(!removeCrate(tier))return;
- persist();ui();sfx('crate');beginTankSlot('inventory',tier);
+ persist();ui();beginTankSlot('inventory',tier);
 }
-$('tankSlotScreen').addEventListener('click',e=>{const b=e.target.closest('[data-slot-action]');if(b?.dataset.slotAction==='continue')continueTankSlot()});
+$('tankSlotScreen').addEventListener('click',e=>{const b=e.target.closest('[data-slot-action]');if(b?.dataset.slotAction==='continue'){sfx('menuClick');continueTankSlot()}});
 addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();if(e.key==='Escape'){if(gameState==='playing')openMenu('pause',true);else if(gameState==='paused'){gameState='playing';$('menuScreen').classList.add('hidden');if(mpIsCoopRun()&&mpIsHost)mpSocket.emit('game:resume');last=performance.now()}else if(gameState==='upgrade'){/* upgrade choices must be picked */}}});
 addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
 function syncScreenLayers(){
  const state=gameState;
+ syncMusicForState();
  document.body.classList.toggle('hud-suppressed',state!=='playing');
  const menuVisible=['menu','paused','gameover','victory'].includes(state);
  $('menuScreen').classList.toggle('hidden',!menuVisible);
