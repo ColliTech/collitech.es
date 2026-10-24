@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>STEEL SWARM — Cooperativo Online · Modelos realistas 4.2</title>
+<title>STEEL SWARM — Supervivencia infinita · Mejoras 4.4</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#18391f;color:#f3f5d4;font-family:ui-monospace,Consolas,monospace}button,select{font:inherit}
 #game{display:block;width:100vw;height:100vh;image-rendering:pixelated;cursor:crosshair}
@@ -347,7 +347,9 @@ select{background:#0e1b19;color:#e6edd9;border:1px solid #4f6c56;padding:9px 12p
 .base-upgrade-info>small{font-size:9px;color:#a3b6a0;line-height:1.45;margin-top:4px}
 .base-current{font-size:8px;color:#d9c27d;margin-top:5px}
 .base-level-track{display:flex;gap:3px;margin-top:7px}
-.base-level-track i{display:block;width:14px;height:4px;background:#304134;border:1px solid #435945}
+.base-level-track i{display:block;width:9px;height:4px;background:#304134;border:1px solid #435945}
+.infinite-mode-button{border-color:#6c8b55!important;background:linear-gradient(135deg,#172a1d,#16241d)!important}
+.infinite-mode-button .nav-icon{color:#d8bb68;font-size:20px}
 .base-level-track i.filled{background:#e6b95f;border-color:#f4d78d;box-shadow:0 0 5px #e6b95f45}
 .base-buy{padding:8px 9px;min-width:78px;font-size:9px;line-height:1.4;box-shadow:0 2px #09110d}
 .base-buy small{display:block;font-size:7px;color:#9db197;margin-top:3px}
@@ -704,6 +706,112 @@ body.hud-suppressed #hud{display:none!important}
 @media(max-width:500px){.ss-news-head,.ss-news-body{padding:15px}.ss-news-foot{align-items:stretch}.ss-news-actions{width:100%}.ss-news-actions button{flex:1}}
 </style>
 
+
+<style id="menu-rework-v45">
+:root{--ss-bg:#09110f;--ss-panel:#111d18;--ss-panel2:#172820;--ss-line:#304b3b;--ss-muted:#a8bca9;--ss-gold:#efc36e;--ss-lime:#c4d49a;--ss-cream:#f3f1d9}
+#menuScreen{align-items:flex-start!important;justify-content:center!important;padding:clamp(10px,2.4vh,26px)!important;background:radial-gradient(ellipse at 50% 0%,#243b2c 0%,#111e18 44%,#050b09 100%)!important;backdrop-filter:blur(6px)}
+#menuScreen:before{opacity:.10!important}
+#menuContent.panel{width:min(1060px,100%)!important;max-width:1060px!important;max-height:calc(100vh - 2*clamp(10px,2.4vh,26px))!important;padding:0!important;overflow:auto!important;border:1px solid #49634b!important;border-radius:16px!important;background:#0d1713!important;box-shadow:0 28px 90px #000b,0 0 0 1px #b8ca8c12!important;scrollbar-color:#435b43 #0c1510;scrollbar-width:thin}
+#menuContent.panel::-webkit-scrollbar{width:8px}#menuContent.panel::-webkit-scrollbar-thumb{background:#405842;border-radius:20px;border:2px solid #0d1713}
+.ss-menu-v45{width:100%;color:var(--ss-cream);overflow:hidden}
+.ss-menu-v45 .simple-top{position:relative;display:flex;gap:16px;align-items:center;justify-content:space-between;padding:16px clamp(16px,3vw,30px);background:linear-gradient(115deg,#0b1410,#14221a 60%,#17251a);border-bottom:1px solid #2f4635}
+.ss-menu-v45 .simple-logo{min-width:0;gap:12px;font-size:16px;letter-spacing:2px;line-height:1.1}
+.ss-menu-v45 .logo-mark{width:44px;height:44px;border-radius:10px;border:1px solid #b5a66b;background:linear-gradient(145deg,#354b35,#17271c);box-shadow:inset 0 0 0 3px #17251a,0 4px 14px #0004;font-size:15px;color:#f5d68a}
+.ss-menu-v45 .simple-logo small{font-size:8px;letter-spacing:1.8px;margin-top:6px;color:#92a894}
+.simple-top-right{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.ss-menu-v45 .wallet-tag{margin:0;padding:9px 12px;border-radius:9px;background:#25291c;border:1px solid #72613d;color:#f4d67d;font-size:12px;box-shadow:none}
+.ss-menu-v45 .wallet-tag small{font-size:8px;letter-spacing:.8px;color:#c2b786}
+.ss-menu-v45 .version-tag{padding:8px 10px;border-radius:8px;font-size:9px;background:#14241a;border-color:#425d45;color:#c9d5a1}
+.news-mini-btn{display:inline-flex;align-items:center;gap:7px;border-radius:8px!important;padding:9px 11px!important;background:#1b2e24!important;border:1px solid #516c4d!important;box-shadow:none!important;color:#dfebcd!important;font-size:9px!important;letter-spacing:.7px;white-space:nowrap}
+.news-mini-btn span{font-size:14px;color:var(--ss-gold)}.news-mini-btn:hover{background:#2a4431!important;border-color:#d3bc70!important}
+.ss-menu-v45 .simple-hero{grid-template-columns:minmax(0,1.22fr) minmax(260px,.78fr);gap:clamp(18px,3vw,36px);padding:clamp(22px,4vw,40px) clamp(18px,3vw,34px) clamp(24px,3vw,30px);background:radial-gradient(ellipse at 24% 0%,#30493250,transparent 45%),linear-gradient(110deg,#19291f,#10201a 66%,#14221b);align-items:center}
+.ss-menu-v45 .simple-title .eyebrow{display:flex;align-items:center;gap:8px;font-size:9px;line-height:1.5;letter-spacing:1.55px;color:#d7c27e;margin-bottom:16px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#b9df85;box-shadow:0 0 10px #b9df8570;flex:0 0 7px}
+.ss-menu-v45 .simple-title h1{font-size:clamp(42px,6.4vw,76px);line-height:.98;letter-spacing:-2.4px;margin:0 0 16px;color:#f3f2dd;text-shadow:0 3px #0003}
+.ss-menu-v45 .simple-title h1 em{color:#c5d392;text-shadow:0 0 24px #c5d39212}
+.ss-menu-v45 .simple-title p{max-width:460px;font-size:13px;line-height:1.8;color:#b1c4b0}
+.hero-feature-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:20px}
+.hero-feature-row span{padding:7px 9px;border:1px solid #405941;border-radius:6px;background:#101c16a8;color:#bdcda8;font-size:8px;font-weight:900;letter-spacing:.7px}
+.ss-menu-v45 .side-preview{position:relative;min-width:0;padding:16px 17px 14px;border:1px solid #526749;border-radius:13px;background:linear-gradient(150deg,#16261c,#0b1511);box-shadow:0 18px 35px #0003,inset 0 1px #ffffff08;overflow:hidden}
+.ss-menu-v45 .side-preview:before{content:"";position:absolute;width:190px;height:190px;border-radius:50%;right:-80px;top:-110px;background:#c8d69d12;pointer-events:none}
+.preview-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ss-menu-v45 .preview-caption{font-size:8px;letter-spacing:1.5px;color:#9db19b}
+.equipped-pill{font-size:7px;letter-spacing:.7px;color:#bad89b;border:1px solid #426442;background:#192d1e;padding:5px 7px;border-radius:20px;white-space:nowrap}
+.ss-menu-v45 .side-tank{height:135px;margin:8px 0 3px;border-radius:9px;background:radial-gradient(ellipse at center,#96a66a35,transparent 72%)}
+.ss-menu-v45 .side-tank svg{width:min(100%,330px);height:130px;filter:drop-shadow(0 9px 9px #0009)}
+.ss-menu-v45 .preview-name{font-size:19px;margin-top:5px;letter-spacing:.1px}
+.ss-menu-v45 .preview-meta{font-size:10px;color:#9db49b}.ss-menu-v45 .preview-meta span{color:#d6bd79}
+.ss-menu-v45 .preview-stats{gap:10px;margin-top:14px;padding-top:13px;border-color:#304735}
+.ss-menu-v45 .preview-stats span{flex:1;text-align:left;font-size:8px;color:#91a591;letter-spacing:1px}
+.ss-menu-v45 .preview-stats b{font-size:15px;color:#f0d187;margin-top:5px}
+.preview-change{display:flex;justify-content:space-between;align-items:center;width:100%;margin-top:13px;padding:10px 12px!important;border:1px solid #475f45!important;border-radius:7px;background:#1b3022!important;box-shadow:none!important;color:#d7e2c6!important;font-size:9px!important;letter-spacing:.8px}
+.preview-change span{font-size:14px;color:#e9c873}.preview-change:hover{background:#2a4531!important}
+.simple-mode-section,.simple-nav-section{padding:0 clamp(18px,3vw,34px)}
+.simple-mode-section{padding-top:24px;padding-bottom:25px;background:#0e1914}
+.simple-nav-section{padding-top:23px;padding-bottom:28px;background:linear-gradient(180deg,#101b16,#0c1511)}
+.menu-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:14px}
+.section-index{font-size:8px;letter-spacing:1.8px;color:#c6b370;font-weight:900}
+.menu-section-head h2{font-size:clamp(17px,2.6vw,22px);line-height:1.2;letter-spacing:.6px;margin:6px 0 0;color:#f1f0d9}
+.menu-section-head p{margin:0 0 1px;color:#839889;font-size:10px;text-align:right}
+.simple-mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.simple-mode-card{position:relative;display:flex;align-items:flex-start;gap:14px;min-width:0;min-height:146px;padding:19px 18px!important;text-align:left!important;border:1px solid #405b42!important;border-radius:12px!important;background:linear-gradient(140deg,#1a3022,#111f17)!important;box-shadow:0 7px 0 #080f0b,0 12px 24px #0002!important;color:#edf2dd!important;overflow:hidden;transition:transform .16s,border-color .16s,filter .16s}
+.simple-mode-card:after{content:"";position:absolute;width:130px;height:130px;right:-40px;bottom:-80px;border-radius:50%;background:#b8cd8e0c;pointer-events:none}
+.simple-mode-card:hover{transform:translateY(-3px);border-color:#9bb175!important;filter:brightness(1.08)}
+.simple-mode-card.classic-mode{background:linear-gradient(135deg,#4a3b20,#332b1b 55%,#19241a)!important;border-color:#b79b57!important}
+.simple-mode-card.infinite-mode-button{background:linear-gradient(135deg,#1c4135,#122b24 65%,#13221a)!important;border-color:#4a8571!important}
+.mode-symbol{display:grid;place-items:center;flex:0 0 47px;width:47px;height:47px;border-radius:11px;background:#edc776;color:#20271a;font-size:21px;font-weight:1000;box-shadow:0 5px 14px #0003}
+.infinite-mode-button .mode-symbol{background:#a5d4b0;color:#10241a;font-size:27px}
+.mode-copy{display:block;min-width:0;position:relative;z-index:1}.mode-copy b{display:block;font-size:12px;line-height:1.4;letter-spacing:.6px;color:#f6efd6}
+.mode-copy small{display:block;margin-top:8px;font-size:10px;line-height:1.65;font-weight:500;color:#b7c6ae}
+.mode-copy em{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:17px;font-size:8px;line-height:1.4;font-weight:900;font-style:normal;letter-spacing:1.1px;color:#f1cb78}
+.infinite-mode-button .mode-copy em{color:#a8dfbc}.mode-copy em span{font-size:15px;line-height:1}
+.mode-tag{position:absolute;top:10px;right:10px;padding:4px 6px;border-radius:4px;background:#a4d6b21a;border:1px solid #70ac8a;color:#a6d8b9;font-size:7px;letter-spacing:.8px}
+.simple-nav-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.ss-menu-v45 .simple-nav{position:relative;display:flex;align-items:center;gap:11px;min-width:0;min-height:74px;padding:12px 13px!important;text-align:left;border:1px solid #2e4938!important;border-radius:9px!important;background:linear-gradient(145deg,#17261d,#111c16)!important;box-shadow:0 3px 0 #070d09!important;transition:transform .15s,border-color .15s,background .15s}
+.ss-menu-v45 .simple-nav:hover{transform:translateY(-2px);background:linear-gradient(145deg,#223a29,#16251b)!important;border-color:#8ba66a!important}
+.ss-menu-v45 .simple-nav .nav-icon{display:grid;place-items:center;flex:0 0 37px;width:37px;height:37px;border-radius:8px;background:#283a29;border:1px solid #405b3e;color:#efc66e;font-size:19px}
+.ss-menu-v45 .simple-nav b{font-size:10px;line-height:1.4;letter-spacing:.7px;color:#e9efd9}
+.ss-menu-v45 .simple-nav small{font-size:9px;line-height:1.5;color:#90a791;margin-top:4px;overflow-wrap:anywhere}
+.ss-menu-v45 .simple-nav .nav-arrow{margin-left:auto;color:#849b83;font-size:17px;flex-shrink:0}
+.ss-menu-v45 .simple-nav.online-soon{border-style:dashed!important;background:#141d18!important;opacity:.82}
+.ss-menu-v45 .online-soon .nav-icon{background:#202c23;color:#92a28a}
+.soon-pill{margin-left:auto;font-size:7px;line-height:1.4;letter-spacing:.5px;color:#c6b77b;border:1px solid #665b38;padding:5px 6px;border-radius:5px;max-width:77px;text-align:center}
+.ss-menu-v45 .simple-footer{padding:13px clamp(18px,3vw,34px);font-size:8px;color:#718b78;background:#09110d;border-top:1px solid #293b2e;letter-spacing:1px}
+.ss-news{border-radius:15px;border-color:#657e50;box-shadow:0 28px 100px #000d,0 0 0 1px #d6d59a1a}
+.ss-news-head{padding:20px 22px;border-radius:12px 12px 0 0;align-items:center}
+.ss-news-x{margin-left:auto;flex:0 0 34px;width:34px;height:34px;padding:0!important;border:1px solid #536c4c!important;border-radius:8px!important;background:#101d16!important;box-shadow:none!important;color:#d5dfc9!important;font-size:22px!important;line-height:1}
+.ss-news-x:hover{background:#273d2b!important;color:#fff!important}
+.ss-news-item{border-radius:9px}.ss-news-item b{font-size:12px}.ss-news-item p{font-size:11px}
+@media(max-width:760px){
+ #menuScreen{padding:8px!important}#menuContent.panel{max-height:calc(100vh - 16px)!important}
+ .ss-menu-v45 .simple-top{align-items:flex-start;padding:14px 16px;flex-wrap:wrap}
+ .simple-top-right{width:100%;justify-content:flex-start}.ss-menu-v45 .wallet-tag{margin-left:auto}
+ .ss-menu-v45 .simple-hero{grid-template-columns:minmax(0,1fr);gap:18px;padding:23px 18px}
+ .ss-menu-v45 .simple-title h1{font-size:clamp(42px,9vw,60px)}
+ .ss-menu-v45 .side-preview{width:100%;max-width:520px;margin:0 auto}
+ .ss-menu-v45 .side-tank{height:118px}.ss-menu-v45 .side-tank svg{height:115px}
+ .simple-nav-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .menu-section-head{align-items:flex-start;flex-direction:column;gap:6px}.menu-section-head p{text-align:left}
+}
+@media(max-width:520px){
+ .ss-menu-v45 .simple-logo{font-size:14px}.ss-menu-v45 .logo-mark{width:37px;height:37px}
+ .news-mini-btn{order:4}.ss-menu-v45 .wallet-tag{font-size:10px;padding:8px}
+ .ss-menu-v45 .simple-hero{padding:21px 14px}.ss-menu-v45 .simple-title p{font-size:12px}
+ .hero-feature-row span{font-size:7px;padding:6px}
+ .simple-mode-section,.simple-nav-section{padding-left:14px;padding-right:14px}
+ .simple-mode-grid{grid-template-columns:1fr;gap:10px}
+ .simple-mode-card{min-height:130px;padding:16px!important}
+ .mode-copy small{font-size:10px}.mode-copy em{margin-top:12px}
+ .simple-nav-grid{grid-template-columns:1fr 1fr;gap:8px}
+ .ss-menu-v45 .simple-nav{min-height:76px;padding:10px 9px!important;gap:8px}
+ .ss-menu-v45 .simple-nav .nav-icon{width:31px;height:31px;flex-basis:31px;font-size:16px}
+ .ss-menu-v45 .simple-nav b{font-size:9px}.ss-menu-v45 .simple-nav small{font-size:8px}
+ .soon-pill{font-size:6px;padding:4px;max-width:56px}
+ .ss-menu-v45 .simple-footer{font-size:7px;flex-direction:column;gap:6px}
+ .ss-news-head{gap:10px;padding:15px}.ss-news-mark{width:40px;height:40px;flex-basis:40px}.ss-news-kicker{font-size:7px;letter-spacing:1px}.ss-news-body{padding:15px}.ss-news-item{padding:10px;gap:9px}
+}
+@media(max-width:360px){.simple-nav-grid{grid-template-columns:1fr}.ss-menu-v45 .simple-nav{min-height:64px}.news-mini-btn{font-size:8px!important}}
+</style>
 </head>
 <body>
 <div id="introScreen" role="status" aria-label="Pantalla de carga de STEEL SWARM">
@@ -711,7 +819,7 @@ body.hud-suppressed #hud{display:none!important}
     <div class="intro-emblem"><span>SS</span></div>
     <div class="intro-kicker">TACTICAL SURVIVAL PROJECT</div>
     <h1 class="intro-title">STEEL<br>SWARM</h1>
-    <div class="intro-version">ARMORED SURVIVAL · REALISTIC MODEL TEST 4.2</div>
+    <div class="intro-version">ARMORED SURVIVAL · COMMAND REWORK 4.5</div>
     <div class="intro-rule"></div>
     <div class="intro-credit">HECHO POR<br><strong>SrAntonio</strong> <span style="color:#748b70">&amp;</span> <strong>ESPWT</strong></div>
     <div class="intro-inspired">Inspirado en <strong>POKESURVIVOR</strong> y <strong>War Thunder</strong>.</div>
@@ -722,7 +830,7 @@ body.hud-suppressed #hud{display:none!important}
 <canvas id="game"></canvas>
 <div id="mpGameTag" class="mp-game-tag"></div>
 <div id="hud">
- <div id="topLeft"><div id="brand">STEEL SWARM <span style="font-size:10px;color:#f0bd66">4.2 COOP</span></div><div><span id="vehicleName">Panzer I</span> · Nv. <span id="level">1</span></div><div id="hpOuter"><div id="hp"></div></div><div><span id="hptext">100 / 100</span> HP · <span id="xptext">0 / 10 XP</span></div></div>
+ <div id="topLeft"><div id="brand">STEEL SWARM <span style="font-size:10px;color:#f0bd66">4.5 COOP</span></div><div><span id="vehicleName">Panzer I</span> · Nv. <span id="level">1</span></div><div id="hpOuter"><div id="hp"></div></div><div><span id="hptext">100 / 100</span> HP · <span id="xptext">0 / 10 XP</span></div></div>
  <div id="timer"><span id="clock">0:00</span><div id="subtimer">HORDAS · OLEADA <span id="wave">1</span></div></div>
  <div id="bossBar"><div id="bossName">JEFE</div><div id="bossOuter"><div id="bossHealth"></div></div></div>
  <div id="toast"></div>
@@ -801,7 +909,7 @@ function mpEnemyId(){return 'E'+Date.now().toString(36)+'-'+(++mpEnemySeq).toStr
 function mpCombatants(){const arr=[];if(player)arr.push({id:mpClientId||'local',name:mpProfile?.name||'Comandante',x:player.x,y:player.y,hp:player.hp,maxHp:player.max,r:player.r||12,local:true,upgrades:player.upgrades||{},hitCooldown:0});if(mpIsHost&&mpIsCoopRun())for(const rp of mpRemotePlayers.values())if(rp.inGame)arr.push({...rp,local:false,r:12,upgrades:rp.upgrades||{},hitCooldown:rp.hitCooldown||0});return arr.filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.hp>0)}
 function mpNearestTarget(x,y){const list=mpCombatants();return list.reduce((best,p)=>!best||Math.hypot(p.x-x,p.y-y)<Math.hypot(best.x-x,best.y-y)?p:best,null)||{id:mpClientId,x:player.x,y:player.y,hp:player.hp,maxHp:player.max,r:player.r||12,local:true,upgrades:player.upgrades||{}}}
 function mpHitRemote(target,damage,source='enemy',x=target?.x||0,y=target?.y||0){if(!target||target.local||!mpSocket||!mpIsHost||!mpIsCoopRun())return;const rp=mpRemotePlayers.get(target.id),cd=mpHitCooldowns.get(target.id)||0;if(!rp||cd>0)return;mpHitCooldowns.set(target.id,.32);mpSocket.emit('combat:playerHit',{targetId:target.id,damage,source,x,y})}
-function mpSpawnPersonalKillDrops(data){if(!data||!data.enemyId||mpSeenKillEvents.has(data.enemyId))return;mpSeenKillEvents.add(data.enemyId);if(mpSeenKillEvents.size>4000)mpSeenKillEvents.clear();const x=Number(data.x)||0,y=Number(data.y)||0,coinX=Number.isFinite(Number(data.dropX))?Number(data.dropX):x,coinY=Number.isFinite(Number(data.dropY))?Number(data.dropY):y;gears.push({x,y,t:rand(0,6.2),value:Math.max(0,Math.round(data.gearXP||8)),netId:data.enemyId+'-g'});const base=Math.max(0,Math.round(data.baseCoinValue||4)),bonus=getBaseLevels(player?.base||save.selected).bounty||0;coinDrops.push({x:coinX,y:coinY,t:rand(0,6.2),value:Math.round(base*(1+bonus*.12)),bob:rand(0,6.2),netId:data.enemyId+'-c'});particlesAt(x,y,data.boss?'#ffb566':'#e6a74b',data.boss?18:8)}
+function mpSpawnPersonalKillDrops(data){if(!data||!data.enemyId||mpSeenKillEvents.has(data.enemyId))return;mpSeenKillEvents.add(data.enemyId);if(mpSeenKillEvents.size>4000)mpSeenKillEvents.clear();const x=Number(data.x)||0,y=Number(data.y)||0,coinX=Number.isFinite(Number(data.dropX))?Number(data.dropX):x,coinY=Number.isFinite(Number(data.dropY))?Number(data.dropY):y;gears.push({x,y,t:rand(0,6.2),value:Math.max(0,Math.round(data.gearXP||8)),netId:data.enemyId+'-g'});const base=Math.max(0,Math.round(data.baseCoinValue||4)),bonus=getBaseLevels(player?.base||save.selected).bounty||0;coinDrops.push({x:coinX,y:coinY,t:rand(0,6.2),age:0,value:Math.round(base*(1+bonus*.20)),bob:rand(0,6.2),netId:data.enemyId+'-c'});particlesAt(x,y,data.boss?'#ffb566':'#e6a74b',data.boss?18:8)}
 function mpMakeWorldSnapshot(){return {wave,kills,waveRemaining,waveTransition,spawnT,banner,bannerTime,elapsedMs:Math.max(0,performance.now()-startTime),phase:gameState,enemies:enemies.map(e=>({...e,hitEnemies:undefined})),enemyShots:enemyShots.map(e=>({...e})),artilleryZones:artilleryZones.map(e=>({...e})),smokeGrenades:smokeGrenades.map(e=>({...e})),smokeClouds:smokeClouds.map(e=>({...e})),airstrikes:airstrikes.map(e=>({...e})),airstrikeBursts:airstrikeBursts.map(e=>({...e})),mines:mines.map(e=>({...e})),oils:oils.map(e=>({...e})),toolCrates:toolCrates.map(e=>({...e})),tankLootCrates:tankLootCrates.map(e=>({...e}))}}
 function mpApplyWorldSnapshot(data){if(!mpIsGuestRun()||!data)return;mpLatestSnapshot=data;wave=data.wave||wave;kills=data.kills||0;waveRemaining=data.waveRemaining||0;waveTransition=data.waveTransition||0;spawnT=data.spawnT||0;banner=data.banner||'';bannerTime=data.bannerTime||0;startTime=performance.now()-Math.max(0,data.elapsedMs||0);enemies=(data.enemies||[]).map(e=>({...e}));enemyShots=(data.enemyShots||[]).map(e=>({...e}));artilleryZones=(data.artilleryZones||[]).map(e=>({...e}));smokeGrenades=(data.smokeGrenades||[]).map(e=>({...e}));smokeClouds=(data.smokeClouds||[]).map(e=>({...e}));airstrikes=(data.airstrikes||[]).map(e=>({...e}));airstrikeBursts=(data.airstrikeBursts||[]).map(e=>({...e}));mines=(data.mines||[]).map(e=>({...e}));oils=(data.oils||[]).map(e=>({...e}));toolCrates=(data.toolCrates||[]).filter(b=>!b.netId||!mpClaimedToolCrates.has(b.netId)).map(b=>({...b,picked:false}));tankLootCrates=(data.tankLootCrates||[]).filter(b=>!b.netId||!mpClaimedTankCrates.has(b.netId)).map(b=>({...b,picked:false}));ui()}
 
@@ -837,7 +945,7 @@ if(mpSocket){
   $('menuScreen').classList.remove('hidden');$('upgradeScreen').classList.add('hidden');persist();last=performance.now();
  });
  mpSocket.on('combat:enemyKilled',data=>{if(data?.by===mpClientId)return;mpSpawnPersonalKillDrops(data)});
- mpSocket.on('combat:playerHit',data=>{if(!player||!data)return;if(player.invuln>0)return;const hurt=Math.max(0,Number(data.damage)||0)*(1-(player.upgrades.shield||0)*.08);player.hp=Math.max(0,player.hp-hurt);player.invuln=.42;particlesAt(player.x,player.y,data.source==='artillery'?'#ffbd68':'#ee6351',data.source==='artillery'?22:8);if(data.source==='artillery')texts.push({x:player.x,y:player.y-30,text:'ARTILLERÍA -'+Math.round(hurt),life:.9,color:'#ffbb73'});if(save.settings.screenShake)shakeTime=.16;mpSendStateNow();});
+ mpSocket.on('combat:playerHit',data=>{if(!player||!data)return;if(player.invuln>0)return;const hurt=Math.max(0,Number(data.damage)||0)*(1-Math.min(.60,(player.upgrades.shield||0)*.12));player.hp=Math.max(0,player.hp-hurt);player.invuln=.42;particlesAt(player.x,player.y,data.source==='artillery'?'#ffbd68':'#ee6351',data.source==='artillery'?22:8);if(data.source==='artillery')texts.push({x:player.x,y:player.y-30,text:'ARTILLERÍA -'+Math.round(hurt),life:.9,color:'#ffbb73'});if(save.settings.screenShake)shakeTime=.16;mpSendStateNow();});
  mpSocket.on('progress:crateReward',data=>{if(!data||data.by===mpClientId)return;for(const tier of data.tiers||[])addCrate(tier);persist();ui();toast(`Oleada ${data.wave}: +${(data.tiers||[]).length} caja(s) de recompensa`,2600)});
  mpSocket.on('combat:specialFromPlayer',data=>{if(!mpIsHost||!data?.item)return;const item={...data.item,ownerId:data.id};if(data.kind==='mine')mines.push(item);else if(data.kind==='oil')oils.push(item);else if(data.kind==='airstrike')airstrikes.push(item);});
  mpSocket.on('room:players',data=>{mpRoster(data)});
@@ -873,6 +981,7 @@ function mpHandleAction(action){if(true){mpSetStatus('El modo online estará dis
 let W=innerWidth,H=innerHeight,dpr=1,keys={},player, enemies=[],shots=[],enemyShots=[],gears=[],coinDrops=[],particles=[],texts=[],audioCtx=null,audioUnlocked=false,audioNoiseBuffer=null,musicBus=null,musicMode='none',lastSlotSfxAt=0,pendingUpgrades=0,mines=[],oils=[],airstrikes=[],airstrikeBursts=[],toolCrates=[],tankLootCrates=[],tankCrateSpawnT=14,slotSpinTimers=[],smokeGrenades=[],smokeClouds=[],musicTimer=null,musicToken=0,musicStep=0,trackMarks=[],dustPuffs=[],artilleryZones=[],ambientNature=[],natureSpawnTimer=0,visualTime=0,missionPersistTimer=0,terrainSeed=374761,shakeOffsetX=0,shakeOffsetY=0;
 const CAMERA_ZOOM=1.25, PROJECTILE_RANGE=420;
 let gameState='menu',last=0,startTime=0,spawnT=0,wave=1,kills=0,level=1,xp=0,nextXP=8,gearCount=0,toastTimer=0,waveRemaining=0,waveTransition=0,bossSpawned=false,banner='',bannerTime=0,shakeTime=0;
+let currentRunMode='classic',infiniteElapsed=0,infiniteNextMinute=60;
 const rand=(a,b)=>a+Math.random()*(b-a),clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const TANKS=[
 {id:'panzer1',name:'Panzer I',nation:'Alemania',era:'Entreguerras',rarity:'common',unlocked:true,hp:100,speed:150,damage:15,rate:.65,color:'#8c9e6d',desc:'Ligero · tanque inicial'},
@@ -990,27 +1099,27 @@ function rollWaveCrateTier(completedWave){
  return rollWeightedTier({standard:72,improved:22,elite:5,prototype:1});
 }
 const UPGRADE_DEFS={
-damage:{name:'Cañón modular',desc:'Mejora el patrón del cañón',max:5},
-speed:{name:'Motor mejorado',desc:'+7% de velocidad',max:5},
-rate:{name:'Recarga rápida',desc:'Dispara un 7% más rápido',max:5},
-armor:{name:'Blindaje adicional',desc:'+8% de vida máxima',max:5},
-repair:{name:'Kit de reparación',desc:'Recupera 28 de vida',max:5},
-magnet:{name:'Imán de engranajes',desc:'+20 de radio de recogida',max:5},
+damage:{name:'Cañón modular',desc:'Aumenta mucho el daño y añade proyectiles perforantes',max:5},
+speed:{name:'Motor mejorado',desc:'+12% a +25% de velocidad',max:5},
+rate:{name:'Recarga rápida',desc:'Aumenta claramente la cadencia de disparo',max:5},
+armor:{name:'Blindaje adicional',desc:'+15% a +40% de vida máxima',max:5},
+repair:{name:'Kit de reparación',desc:'Recupera hasta 140 puntos de vida',max:5},
+magnet:{name:'Imán de engranajes',desc:'+35 a +110 de radio de recogida',max:5},
 mines:{name:'Minas antitanque',desc:'Coloca minas que explotan bajo enemigos',max:5},
 oil:{name:'Rastro de aceite',desc:'Deja charcos que ralentizan y dañan',max:5},
 airstrike:{name:'Apoyo aéreo',desc:'Bombardea una zona cada cierto tiempo',max:5},
-shield:{name:'Campo defensivo',desc:'Reduce el daño recibido un 8%',max:5},
-gearXP:{name:'Ingeniero de recuperación',desc:'+5 XP por engranaje y nivel',max:5},
+shield:{name:'Campo defensivo',desc:'Reduce el daño recibido hasta un 60%',max:5},
+gearXP:{name:'Ingeniero de recuperación',desc:'+10 XP por engranaje y nivel',max:5},
 regeneration:{name:'Regeneración de campaña',desc:'Recupera salud continuamente cada segundo',max:5},
-coinMagnet:{name:'Imán de monedas',desc:'Aumenta el radio de recogida de monedas',max:5},
-critical:{name:'Munición de precisión',desc:'Aumenta la probabilidad de impacto crítico x2',max:5},
+coinMagnet:{name:'Imán de monedas',desc:'Aumenta mucho el radio de atracción de monedas',max:5},
+critical:{name:'Munición de precisión',desc:'Hasta un 35% de probabilidad de crítico x2',max:5},
 radar:{name:'Radar de tiro',desc:'+45 de alcance de adquisición por nivel',max:5,aaOnly:true},
 airburst:{name:'Munición de proximidad',desc:'Los impactos dañan también a los enemigos cercanos',max:5,aaOnly:true},
 overclock:{name:'Sobrecarga de cañones',desc:'Aumenta aún más la cadencia del antiaéreo',max:5,aaOnly:true}
 };
 let save={unlocked:['panzer1'],selected:'panzer1',crates:0,crateInventory:EMPTY_CRATE_INVENTORY(),scrap:0,coins:0,tankUpgrades:{},redeemedCodes:[],testMode:false,settings:{damageNumbers:true,screenShake:false,sound:true,music:true,musicVolume:.42,sfxVolume:.78,difficulty:'normal'}};
 let hadCrateInventory=false;
-try{const s=JSON.parse(localStorage.getItem('steelSwarmSave')||'null');if(s){hadCrateInventory=Object.prototype.hasOwnProperty.call(s,'crateInventory');save={...save,...s,coins:Number.isFinite(s.coins)?Math.max(0,s.coins):0,tankUpgrades:Object.fromEntries(Object.entries(s.tankUpgrades||{}).map(([id,u])=>[id,{bounty:Number.isFinite(u.bounty)?u.bounty:(u.damage||0),logistics:Number.isFinite(u.logistics)?u.logistics:(u.speed||0),quartermaster:Number.isFinite(u.quartermaster)?u.quartermaster:(u.hp||0),salvage:Number.isFinite(u.salvage)?u.salvage:(u.reload||0),firepower:Math.max(0,Math.min(5,Number(u.firepower)||0)),plating:Math.max(0,Math.min(5,Number(u.plating)||0)),engine:Math.max(0,Math.min(5,Number(u.engine)||0)),loading:Math.max(0,Math.min(5,Number(u.loading)||0))}])),redeemedCodes:Array.isArray(s.redeemedCodes)?s.redeemedCodes:[],testMode:!!s.testMode,settings:{damageNumbers:true,screenShake:false,sound:true,music:true,difficulty:'normal',...(s.settings||{})}}}}catch(e){}
+try{const s=JSON.parse(localStorage.getItem('steelSwarmSave')||'null');if(s){hadCrateInventory=Object.prototype.hasOwnProperty.call(s,'crateInventory');save={...save,...s,coins:Number.isFinite(s.coins)?Math.max(0,s.coins):0,tankUpgrades:Object.fromEntries(Object.entries(s.tankUpgrades||{}).map(([id,u])=>[id,{bounty:Math.max(0,Math.min(10,Number.isFinite(u.bounty)?u.bounty:(u.damage||0))),logistics:Math.max(0,Math.min(10,Number.isFinite(u.logistics)?u.logistics:(u.speed||0))),quartermaster:Math.max(0,Math.min(10,Number.isFinite(u.quartermaster)?u.quartermaster:(u.hp||0))),salvage:Math.max(0,Math.min(10,Number.isFinite(u.salvage)?u.salvage:(u.reload||0))),firepower:Math.max(0,Math.min(10,Number(u.firepower)||0)),plating:Math.max(0,Math.min(10,Number(u.plating)||0)),engine:Math.max(0,Math.min(10,Number(u.engine)||0)),loading:Math.max(0,Math.min(10,Number(u.loading)||0)),capacitor:Math.max(0,Math.min(10,Number(u.capacitor)||0)),magnetism:Math.max(0,Math.min(10,Number(u.magnetism)||0))}])),redeemedCodes:Array.isArray(s.redeemedCodes)?s.redeemedCodes:[],testMode:!!s.testMode,settings:{damageNumbers:true,screenShake:false,sound:true,music:true,difficulty:'normal',...(s.settings||{})}}}}catch(e){}
 save.missionProgress={kills:0,waves:0,bosses:0,aaKills:0,seconds:0,...(save.missionProgress||{})};
 save.claimedMissions=Array.isArray(save.claimedMissions)?save.claimedMissions:[];
 save.secretUnlocked=Array.isArray(save.secretUnlocked)?save.secretUnlocked:[];
@@ -1022,7 +1131,7 @@ if(save.testMode){
  if(!hadCrateInventory&&(save.crates||0)>=99){save.crateInventory={standard:50,improved:25,elite:15,prototype:9};syncCrateCount()}
  save.unlocked=[...new Set([...(save.unlocked||[]),...TANKS.map(t=>t.id)])];
  save.secretUnlocked=[...new Set([...(save.secretUnlocked||[]),...TANKS.filter(t=>t.secret).map(t=>t.id)])];
- for(const tank of TANKS)save.tankUpgrades[tank.id]={firepower:5,plating:5,engine:5,loading:5,bounty:5,logistics:5,quartermaster:5,salvage:5};
+ for(const tank of TANKS)save.tankUpgrades[tank.id]={firepower:10,plating:10,engine:10,loading:10,bounty:10,logistics:10,quartermaster:10,salvage:10,capacitor:10,magnetism:10};
  persist();
 }
 persist();
@@ -1043,28 +1152,30 @@ function unlockSecretTank(id){const t=TANKS.find(x=>x.id===id&&x.secret);if(!t||
 function grantSecretCollection(){const ids=['maus','is7secret','object292','tv8secret','spanishsecret'];for(const id of ids)unlockSecretTank(id);if(ids.every(id=>save.secretUnlocked.includes(id)))unlockSecretTank('ratte')}
 
 const BASE_UPGRADE_DEFS={
- firepower:{label:'Cañón reforzado',desc:'+6% de daño base por nivel',icon:'✦',costs:[55,100,165,250,360]},
- plating:{label:'Blindaje compuesto',desc:'+8% de vida máxima por nivel',icon:'⬟',costs:[50,95,155,235,340]},
- engine:{label:'Motor mejorado',desc:'+4% de velocidad por nivel',icon:'➤',costs:[45,85,140,215,310]},
- loading:{label:'Sistema de carga',desc:'Dispara un 4% más rápido por nivel',icon:'↻',costs:[60,110,180,270,390]},
- bounty:{label:'Contratos de recompensa',desc:'+12% monedas de enemigos por nivel',icon:'◈',costs:[35,65,105,160,230]},
- logistics:{label:'Ruta de suministros',desc:'Las cajas médicas aparecen un 8% antes por nivel',icon:'⌁',costs:[30,60,95,145,210]},
- quartermaster:{label:'Intendencia de campaña',desc:'+8% de probabilidad de una caja extra al vencer a un jefe por nivel',icon:'▦',costs:[45,80,130,190,275]},
- salvage:{label:'Recuperación de chatarra',desc:'+10 piezas por tanque duplicado por nivel',icon:'⚒',costs:[30,55,85,130,190]}
+ firepower:{label:'Cañón reforzado',desc:'+20% de daño base por nivel',icon:'✦',costs:[55,100,165,250,360]},
+ plating:{label:'Blindaje compuesto',desc:'+15% de vida máxima por nivel',icon:'⬟',costs:[50,95,155,235,340]},
+ engine:{label:'Motor mejorado',desc:'+8% de velocidad por nivel',icon:'➤',costs:[45,85,140,215,310]},
+ loading:{label:'Sistema de carga',desc:'Dispara un 8% más rápido por nivel',icon:'↻',costs:[60,110,180,270,390]},
+ bounty:{label:'Contratos de recompensa',desc:'+20% monedas de enemigos por nivel',icon:'◈',costs:[35,65,105,160,230]},
+ logistics:{label:'Ruta de suministros',desc:'Reduce un 9% el intervalo de suministros por nivel',icon:'⌁',costs:[30,60,95,145,210]},
+ quartermaster:{label:'Intendencia de campaña',desc:'+12% de probabilidad de una caja extra al vencer a un jefe por nivel (hasta 90%)',icon:'▦',costs:[45,80,130,190,275]},
+ salvage:{label:'Recuperación de chatarra',desc:'+20 piezas por tanque duplicado por nivel',icon:'⚒',costs:[30,55,85,130,190]},
+ capacitor:{label:'Núcleo de experiencia',desc:'+15% de XP conseguida por nivel',icon:'✧',costs:[70,120,190,285,400]},
+ magnetism:{label:'Imán industrial',desc:'+35 de radio magnético para engranajes y monedas por nivel',icon:'◎',costs:[50,90,145,220,320]}
 };
-function getBaseLevels(id=save.selected){return {...{firepower:0,plating:0,engine:0,loading:0,bounty:0,logistics:0,quartermaster:0,salvage:0},...(save.tankUpgrades[id]||{})}}
+function getBaseLevels(id=save.selected){return {...{firepower:0,plating:0,engine:0,loading:0,bounty:0,logistics:0,quartermaster:0,salvage:0,capacitor:0,magnetism:0},...(save.tankUpgrades[id]||{})}}
 function selectedTank(){
  const t=TANKS.find(t=>t.id===save.selected&&save.unlocked.includes(t.id))||TANKS[0];
  return {...t};
 }
-function baseUpgradeCost(stat,level){return BASE_UPGRADE_DEFS[stat].costs[level]||9999}
+function baseUpgradeCost(stat,level){const costs=BASE_UPGRADE_DEFS[stat].costs;return costs[level]??Math.round(costs[costs.length-1]*Math.pow(1.38,level-(costs.length-1)))}
 function buyBaseUpgrade(stat){
  const def=BASE_UPGRADE_DEFS[stat];if(!def)return;
  const t=selectedTank(),u=getBaseLevels(t.id),lv=u[stat]||0;
- if(lv>=5){toast('Esta mejora de campaña ya está al máximo',1400);return}
+ if(lv>=10){toast('Esta mejora de campaña ya está al máximo',1400);return}
  const cost=baseUpgradeCost(stat,lv);
  if((save.coins||0)<cost){toast('No tienes suficientes monedas',1500);sfx('hit');return}
- save.coins-=cost;u[stat]=lv+1;save.tankUpgrades[t.id]=u;persist();sfx('upgrade');drawMenu('workshop');ui();toast(`${def.label}: nivel ${u[stat]}/5`,1600)
+ save.coins-=cost;u[stat]=lv+1;save.tankUpgrades[t.id]=u;persist();sfx('upgrade');drawMenu('workshop');ui();toast(`${def.label}: nivel ${u[stat]}/10`,1600)
 }
 
 function resize(){W=innerWidth;H=innerHeight;dpr=Math.min(devicePixelRatio||1,1.5);canvas.width=Math.floor(W*dpr);canvas.height=Math.floor(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}addEventListener('resize',resize);resize();
@@ -1191,8 +1302,8 @@ function openMenu(page='main',fromGame=false){if(fromGame&&gameState==='playing'
 function closeMenu(){ $('menuScreen').classList.add('hidden');if(gameState==='paused'||gameState==='menu')gameState='playing';if(mpIsCoopRun()&&mpIsHost)mpSocket.emit('game:resume');last=performance.now()}
 function basePlayer(){
  const t=selectedTank(),baseLv=getBaseLevels(t.id);
- const baseHp=Math.round(t.hp*(1+(baseLv.plating||0)*.08));
- const p={x:0,y:0,a:0,hullA:0,isMoving:false,trailTimer:.1,recoil:0,flash:0,hp:baseHp,max:baseHp,speed:t.speed*1.15*(1+(baseLv.engine||0)*.04),damage:t.damage*(1+(baseLv.firepower||0)*.06),rate:t.rate*.9*Math.pow(.96,baseLv.loading||0),cool:.15,magnet:52,r:12,invuln:0,baseBarrels:t.guns||1,projectilesPerBarrel:1,projectileCount:t.guns||1,targetRange:PROJECTILE_RANGE,aa:!!t.aa,pierce:0,mineTimer:2.5,oilTimer:2,airTimer:6,toolCrateTimer:rand(7,11)*(1-(getBaseLevels(t.id).logistics||0)*.08),upgrades:Object.fromEntries(Object.keys(UPGRADE_DEFS).map(k=>[k,0])),base:t.id,color:t.color};
+ const baseHp=Math.round(t.hp*(1+(baseLv.plating||0)*.15));
+ const p={x:0,y:0,a:0,hullA:0,isMoving:false,trailTimer:.1,recoil:0,flash:0,hp:baseHp,max:baseHp,speed:t.speed*1.15*(1+(baseLv.engine||0)*.08),damage:t.damage*(1+(baseLv.firepower||0)*.20),rate:t.rate*.9*Math.pow(.92,baseLv.loading||0),cool:.15,magnet:52+(baseLv.magnetism||0)*35,xpMultiplier:1+(baseLv.capacitor||0)*.15,r:12,invuln:0,baseBarrels:t.guns||1,projectilesPerBarrel:1,projectileCount:t.guns||1,targetRange:PROJECTILE_RANGE,aa:!!t.aa,pierce:0,mineTimer:2.5,oilTimer:2,airTimer:6,toolCrateTimer:rand(7,11)*(1-(getBaseLevels(t.id).logistics||0)*.09),upgrades:Object.fromEntries(Object.keys(UPGRADE_DEFS).map(k=>[k,0])),base:t.id,color:t.color};
  if(save.testMode){
   p.upgrades=Object.fromEntries(Object.keys(UPGRADE_DEFS).map(k=>[k,5]));
   p.max=Math.round(p.max*1.08*1.10*1.12*1.15*1.18);p.hp=p.max;
@@ -1205,11 +1316,12 @@ function basePlayer(){
  }
  return p;
 }
-function launchRun(){
+function launchRun(mode='classic'){
+ currentRunMode=mode==='infinite'?'infinite':'classic';
  gameState='loading';
  const screen=$('loadingScreen'),progress=$('loadingProgress'),percent=$('loadingPercent');
- $('loadingTitle').textContent='PREPARANDO EL CAMPO DE BATALLA';
- $('loadingMessage').textContent='Repostando motores · Cargando vehículos · Preparando la siguiente oleada';
+ $('loadingTitle').textContent=currentRunMode==='infinite'?'ACTIVANDO SUPERVIVENCIA INFINITA':'PREPARANDO EL CAMPO DE BATALLA';
+ $('loadingMessage').textContent=currentRunMode==='infinite'?'Enemigos ilimitados · Densidad creciente · Jefes de élite cada cinco minutos':'Repostando motores · Cargando vehículos · Preparando la siguiente oleada';
  screen.classList.remove('hidden');
  progress.style.width='0%';percent.textContent='0%';
  const t0=performance.now();
@@ -1221,7 +1333,7 @@ function launchRun(){
  }
  requestAnimationFrame(tick);
 }
-function startRun(){$('loadingScreen').classList.add('hidden');terrainSeed=Math.floor(Math.random()*2147483646)+1;player=basePlayer();if(mpRoomCode){const peers=mpRoomMembers.filter(p=>p.id!==mpClientId&&p.inGame);const cx=peers.length?peers.reduce((sum,p)=>sum+(p.x||0),0)/peers.length:0,cy=peers.length?peers.reduce((sum,p)=>sum+(p.y||0),0)/peers.length:0,spawnA=(mpSpawnIndex%4)*Math.PI/2;player.x=cx+Math.cos(spawnA)*72;player.y=cy+Math.sin(spawnA)*72;}sfx('start');startMusic('battle');enemies=[];shots=[];enemyShots=[];gears=[];coinDrops=[];particles=[];texts=[];mines=[];oils=[];airstrikes=[];airstrikeBursts=[];toolCrates=[];tankLootCrates=[];tankCrateSpawnT=rand(12,20);slotSpinTimers.forEach(clearInterval);slotSpinTimers=[];smokeGrenades=[];smokeClouds=[];trackMarks=[];dustPuffs=[];artilleryZones=[];ambientNature=[];natureSpawnTimer=0;visualTime=0;missionPersistTimer=0;level=1;xp=0;nextXP=8;pendingUpgrades=0;kills=0;gearCount=0;wave=1;waveRemaining=0;spawnT=.35;waveTransition=0;bossSpawned=false;mpEnemySeq=0;mpSeenKillEvents.clear();mpClaimedToolCrates.clear();mpClaimedTankCrates.clear();startTime=performance.now();gameState='playing';$('menuScreen').classList.add('hidden');$('upgradeScreen').classList.add('hidden');if(!mpIsGuestRun())beginWave();last=performance.now();mpSendStateNow();ui()}
+function startRun(){$('loadingScreen').classList.add('hidden');terrainSeed=Math.floor(Math.random()*2147483646)+1;player=basePlayer();if(mpRoomCode){const peers=mpRoomMembers.filter(p=>p.id!==mpClientId&&p.inGame);const cx=peers.length?peers.reduce((sum,p)=>sum+(p.x||0),0)/peers.length:0,cy=peers.length?peers.reduce((sum,p)=>sum+(p.y||0),0)/peers.length:0,spawnA=(mpSpawnIndex%4)*Math.PI/2;player.x=cx+Math.cos(spawnA)*72;player.y=cy+Math.sin(spawnA)*72;}sfx('start');startMusic('battle');enemies=[];shots=[];enemyShots=[];gears=[];coinDrops=[];particles=[];texts=[];mines=[];oils=[];airstrikes=[];airstrikeBursts=[];toolCrates=[];tankLootCrates=[];tankCrateSpawnT=rand(12,20);slotSpinTimers.forEach(clearInterval);slotSpinTimers=[];smokeGrenades=[];smokeClouds=[];trackMarks=[];dustPuffs=[];artilleryZones=[];ambientNature=[];natureSpawnTimer=0;visualTime=0;missionPersistTimer=0;level=1;xp=0;nextXP=8;pendingUpgrades=0;kills=0;gearCount=0;wave=1;waveRemaining=0;spawnT=.35;waveTransition=0;bossSpawned=false;infiniteElapsed=0;infiniteNextMinute=60;mpEnemySeq=0;mpSeenKillEvents.clear();mpClaimedToolCrates.clear();mpClaimedTankCrates.clear();startTime=performance.now();gameState='playing';$('menuScreen').classList.add('hidden');$('upgradeScreen').classList.add('hidden');if(!mpIsGuestRun()){if(currentRunMode==='infinite'){banner='SUPERVIVENCIA INFINITA';bannerTime=2.5;toast('Modo infinito iniciado · sobrevive todo lo que puedas',2400)}else beginWave()}last=performance.now();mpSendStateNow();ui()}
 function beginWave(){waveRemaining=Math.min(Math.round(12+wave*2.5),82);spawnT=.62;bossSpawned=false;banner=wave%5===0?(wave===50?'¡JEFE FINAL!':'¡MINIBOSS!'):'OLEADA '+wave;bannerTime=2.1;if(wave%5===0){spawnBoss(wave===50);sfx('boss')}toast(wave%5===0?banner:'Oleada '+wave,1800)}
 function difficultyScale(){const base=save.settings.difficulty==='hard'?1.35:save.settings.difficulty==='easy'?.75:1;return base*(1+Math.max(0,wave-1)*.018+Math.max(0,wave-10)*.009)}
 function enemyModelForWave(){
@@ -1270,12 +1382,12 @@ function spawn(){
   smokeCooldown:rand(3.8,6.8)});
 }
 
-function spawnBoss(final=false){
- const info=BOSS_TYPES.find(b=>b.wave===wave)||BOSS_TYPES[BOSS_TYPES.length-1];const diff=difficultyScale();
+function spawnBoss(final=false,profileWave=wave){
+ const profile=Math.min(50,profileWave),info=BOSS_TYPES.find(b=>b.wave===profile)||BOSS_TYPES[BOSS_TYPES.length-1];const diff=difficultyScale();
  const growth=enemyGrowth(),stat=1+growth;
  let hp=(final?12500:420+wave*135)*stat*diff;let damage=(final?30:12+wave*.45)*stat*diff;
  const bossModels={5:'panzer4',10:'tiger1',15:'is2',20:'t72',25:'pershing',30:'t72',35:'leopard2',40:'t90',45:'abrams',50:'abrams'};
- enemies.push({netId:mpEnemyId(),x:player.x+rand(-W/(2*CAMERA_ZOOM),W/(2*CAMERA_ZOOM)),y:player.y-H/(2*CAMERA_ZOOM)-65,r:final?38:25,hp,max:hp,speed:(final?26:Math.max(22,36-wave*.18))*(1+growth*.25),kind:'boss',cool:1.1/(1+growth*.3),damage,shotSpeed:(final?275:230+wave*1.4)*(1+growth*.2),range:850,isBoss:true,finalBoss:final,bossName:info.name,nation:info.nation,era:info.era,color:info.color,dead:false,hit:0,burst:final?3:wave>=25?2:1,modelId:bossModels[wave]||'tiger1',hullA:0,isMoving:true,recoil:0,flash:0});
+ enemies.push({netId:mpEnemyId(),x:player.x+rand(-W/(2*CAMERA_ZOOM),W/(2*CAMERA_ZOOM)),y:player.y-H/(2*CAMERA_ZOOM)-65,r:final?38:25,hp,max:hp,speed:(final?26:Math.max(22,36-wave*.18))*(1+growth*.25),kind:'boss',cool:1.1/(1+growth*.3),damage,shotSpeed:(final?275:230+wave*1.4)*(1+growth*.2),range:850,isBoss:true,finalBoss:final,bossName:info.name,nation:info.nation,era:info.era,color:info.color,dead:false,hit:0,burst:final?3:wave>=25?2:1,modelId:bossModels[Math.min(50,profileWave)]||'tiger1',hullA:0,isMoving:true,recoil:0,flash:0});
  bossSpawned=true;
 }
 function particlesAt(x,y,color,n=7){
@@ -1305,8 +1417,8 @@ function firePlayer(){
  if(!valid.length)return;
  const target=valid.reduce((a,b)=>Math.hypot(a.x-player.x,a.y-player.y)<Math.hypot(b.x-player.x,b.y-player.y)?a:b);
  player.a=Math.atan2(target.y-player.y,target.x-player.x);const speed=585;player.recoil=.9;player.flash=.095;
- const count=player.projectileCount||1,range=player.targetRange||PROJECTILE_RANGE,critChance=(player.upgrades.critical||0)*.04,burstLv=player.upgrades.airburst||0;
- const burstRadius=[0,15,19,23,28,34][burstLv]||0,burstDamage=[0,.20,.24,.29,.36,.45][burstLv]||0;
+ const count=player.projectileCount||1,range=player.targetRange||PROJECTILE_RANGE,critChance=(player.upgrades.critical||0)*.07,burstLv=player.upgrades.airburst||0;
+ const burstRadius=[0,20,26,33,41,50][burstLv]||0,burstDamage=[0,.30,.38,.48,.60,.75][burstLv]||0;
  const fired=[];
  const spawnShot=(x,y,a)=>{const isCrit=Math.random()<critChance,shot={x,y,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,life:(range-18)/speed,remaining:range-18,damage:player.damage*(isCrit?2:1),isCrit,splashRadius:burstRadius,splashDamage:player.damage*burstDamage,pierceLeft:player.pierce||0,hitEnemies:[]};shots.push(shot);fired.push({x:shot.x,y:shot.y,vx:shot.vx,vy:shot.vy,life:shot.life,remaining:shot.remaining,damage:shot.damage,isCrit:shot.isCrit,splashRadius:shot.splashRadius,splashDamage:shot.splashDamage,pierceLeft:shot.pierceLeft})};
  if(player.aa){
@@ -1376,35 +1488,35 @@ function updateArtillery(dt){
     particles.push({x:z.x,y:z.y,vx:Math.cos(a)*rand(55,125),vy:Math.sin(a)*rand(55,125),life:rand(.22,.45),max:.45,color:i%2?'#f4c16e':'#b65d3c',size:rand(3,6)});
    }
    const targets=mpCombatants();let nearHit=false;
-   for(const target of targets){const d=Math.hypot(target.x-z.x,target.y-z.y);if(d<=z.radius+(target.r||12)){nearHit=true;const falloff=1-.34*Math.min(1,d/z.radius);if(target.local){if(player.invuln<=0){const hurt=z.damage*falloff*(1-(player.upgrades.shield||0)*.08);player.hp=Math.max(0,player.hp-hurt);player.invuln=.42;texts.push({x:player.x,y:player.y-30,text:'IMPACTO ARTILLERO -'+Math.round(hurt),life:1.0,color:'#ffbb73'});particlesAt(player.x,player.y,'#ffbc70',15);if(save.settings.screenShake)shakeTime=.24}}else mpHitRemote(target,z.damage*falloff,'artillery',target.x,target.y)}else if(save.settings.screenShake&&d<z.radius*1.8){shakeTime=.12}}
+   for(const target of targets){const d=Math.hypot(target.x-z.x,target.y-z.y);if(d<=z.radius+(target.r||12)){nearHit=true;const falloff=1-.34*Math.min(1,d/z.radius);if(target.local){if(player.invuln<=0){const hurt=z.damage*falloff*(1-Math.min(.60,(player.upgrades.shield||0)*.12));player.hp=Math.max(0,player.hp-hurt);player.invuln=.42;texts.push({x:player.x,y:player.y-30,text:'IMPACTO ARTILLERO -'+Math.round(hurt),life:1.0,color:'#ffbb73'});particlesAt(player.x,player.y,'#ffbc70',15);if(save.settings.screenShake)shakeTime=.24}}else mpHitRemote(target,z.damage*falloff,'artillery',target.x,target.y)}else if(save.settings.screenShake&&d<z.radius*1.8){shakeTime=.12}}
    sfx('explode');
   }
  }
  artilleryZones=artilleryZones.filter(z=>!z.dead);
 }
 
-function gainXP(n){xp+=n;while(xp>=nextXP){xp-=nextXP;level++;nextXP=Math.ceil(nextXP*1.34+2);pendingUpgrades++}if(pendingUpgrades>0&&gameState==='playing')showUpgrade();ui()}
+function gainXP(n){xp+=n;while(xp>=nextXP){xp-=nextXP;level++;nextXP=Math.ceil(nextXP*(level>=15?1.20:1.34)+(level>=15?1:2));pendingUpgrades++}if(pendingUpgrades>0&&gameState==='playing')showUpgrade();ui()}
 function availableUpgrades(){return Object.keys(UPGRADE_DEFS).filter(k=>(!UPGRADE_DEFS[k].aaOnly||player.aa)&&(player.upgrades[k]||0)<UPGRADE_DEFS[k].max)}
 function upgradeDescription(k,lv){
  const next=lv+1;
  const rows={
-  damage:player.aa?['+8% de daño por proyectil','2 proyectiles por cada cañón antiaéreo','3 proyectiles por cañón y perfora 1 enemigo','+20% de daño y perfora hasta 2 enemigos','4 proyectiles por cañón y perfora hasta 3 enemigos']:['+8% de daño por proyectil','Añade un segundo proyectil','Tercer proyectil y perfora 1 enemigo','+20% de daño y perfora hasta 2 enemigos','Cuarto proyectil y perfora hasta 3 enemigos'],
-  speed:['+7% de velocidad','+8% de velocidad','+9% de velocidad','+10% de velocidad','+12% de velocidad'],
-  rate:['+7% de cadencia','+7% de cadencia','+8% de cadencia','+9% de cadencia','+10% de cadencia'],
-  armor:['+8% de vida máxima','+10% de vida máxima','+12% de vida máxima','+15% de vida máxima','+18% de vida máxima'],
-  repair:['Repara 28 puntos de vida','Repara 36 puntos de vida','Repara 44 puntos de vida','Repara 54 puntos de vida','Repara 66 puntos de vida'],
-  magnet:['+20 de radio de recogida','+24 de radio de recogida','+28 de radio de recogida','+34 de radio de recogida','+40 de radio de recogida'],
-  mines:['Mina básica: radio 56, daño x2.1','Minas: radio 65 y daño x2.5','Minas: radio 74 y daño x3.0','Minas: radio 83, daño x3.5','Minas: radio 92, daño x4.0 y colocación más rápida'],
-  oil:['Aceite: charco 6 s, radio 26','Aceite: dura 7 s, radio 32','Aceite: dura 8 s, radio 38 y más daño','Aceite: dura 9 s, radio 44','Aceite: dura 11 s, radio 52 y más daño'],
-  airstrike:['Bombardeo: daño x3, radio 52','Bombardeo: daño x3.8, radio 62','Dos bombas por ataque, radio ampliado','Bombardeo: daño x5.7, radio 84','Bombardeo: daño x7, radio 96 y recarga rápida'],
-  shield:['Reduce un 8% el daño recibido (total 8%)','Reduce un 8% adicional (total 16%)','Reduce un 8% adicional (total 24%)','Reduce un 8% adicional (total 32%)','Reduce un 8% adicional (total 40%)'],
-  gearXP:['+5 XP extra por engranaje','+10 XP extra por engranaje','+15 XP extra por engranaje','+20 XP extra por engranaje','+25 XP extra por engranaje'],
-  regeneration:['Regenera 0,5 HP por segundo','Regenera 0,9 HP por segundo','Regenera 1,3 HP por segundo','Regenera 1,8 HP por segundo','Regenera 2,4 HP por segundo'],
-  coinMagnet:['+25 de radio para monedas','+40 de radio para monedas','+55 de radio para monedas','+75 de radio para monedas','+100 de radio para monedas'],
-  critical:['4% de probabilidad de crítico x2','8% de probabilidad de crítico x2','12% de probabilidad de crítico x2','16% de probabilidad de crítico x2','20% de probabilidad de crítico x2'],
-  radar:['+45 de alcance de tiro','+90 de alcance de tiro','+135 de alcance de tiro','+180 de alcance de tiro','+225 de alcance de tiro'],
-  airburst:['Explosión de proximidad: radio 15','Radio 19 y daño de área mejorado','Radio 23 y más daño de área','Radio 28 y más daño de área','Radio 34 y máximo daño de área'],
-  overclock:['Cadencia +6%','Cadencia +8%','Cadencia +10%','Cadencia +11%','Cadencia +13%']
+  damage:player.aa?['+25% de daño por proyectil','2 proyectiles por cada cañón antiaéreo','3 proyectiles por cañón y perfora 1 enemigo','+40% de daño y perfora hasta 2 enemigos','4 proyectiles por cañón y perfora hasta 3 enemigos']:['+25% de daño por proyectil','Añade un segundo proyectil','Tercer proyectil y perfora 1 enemigo','+40% de daño y perfora hasta 2 enemigos','Cuarto proyectil y perfora hasta 3 enemigos'],
+  speed:['+12% de velocidad','+15% de velocidad','+18% de velocidad','+21% de velocidad','+25% de velocidad'],
+  rate:['+12% de cadencia','+15% de cadencia','+18% de cadencia','+22% de cadencia','+28% de cadencia'],
+  armor:['+15% de vida máxima','+20% de vida máxima','+25% de vida máxima','+30% de vida máxima','+40% de vida máxima'],
+  repair:['Repara 45 puntos de vida','Repara 60 puntos de vida','Repara 80 puntos de vida','Repara 105 puntos de vida','Repara 140 puntos de vida'],
+  magnet:['+35 de radio de recogida','+45 de radio de recogida','+60 de radio de recogida','+80 de radio de recogida','+110 de radio de recogida'],
+  mines:['Mina: radio 65, daño x3.5','Minas: radio 78 y daño x4.5','Minas: radio 92 y daño x5.8','Minas: radio 108, daño x7.2','Minas: radio 126, daño x9 y colocación más rápida'],
+  oil:['Aceite: charco 7 s, radio 30','Aceite: dura 8 s, radio 38','Aceite: dura 9 s, radio 46 y más daño','Aceite: dura 11 s, radio 56','Aceite: dura 13 s, radio 68 y máximo daño'],
+  airstrike:['Bombardeo: daño x4, radio 60','Bombardeo: daño x5.5, radio 72','Dos bombas por ataque, radio ampliado','Bombardeo: daño x9, radio 100','Bombardeo: daño x12, radio 120 y recarga rápida'],
+  shield:['Reduce un 12% del daño recibido','Reduce un 12% adicional (total 24%)','Reduce un 12% adicional (total 36%)','Reduce un 12% adicional (total 48%)','Reduce un 12% adicional (total 60%)'],
+  gearXP:['+10 XP extra por engranaje','+20 XP extra por engranaje','+30 XP extra por engranaje','+40 XP extra por engranaje','+50 XP extra por engranaje'],
+  regeneration:['Regenera 1 HP por segundo','Regenera 1,8 HP por segundo','Regenera 2,8 HP por segundo','Regenera 4 HP por segundo','Regenera 5,5 HP por segundo'],
+  coinMagnet:['+40 de radio para monedas','+65 de radio para monedas','+95 de radio para monedas','+130 de radio para monedas','+180 de radio para monedas'],
+  critical:['7% de probabilidad de crítico x2','14% de probabilidad de crítico x2','21% de probabilidad de crítico x2','28% de probabilidad de crítico x2','35% de probabilidad de crítico x2'],
+  radar:['+70 de alcance de tiro','+140 de alcance de tiro','+210 de alcance de tiro','+280 de alcance de tiro','+350 de alcance de tiro'],
+  airburst:['Explosión de proximidad: radio 20, daño de área x0,30','Radio 26 y daño de área mejorado','Radio 33 y más daño de área','Radio 41 y más daño de área','Radio 50 y máximo daño de área'],
+  overclock:['Cadencia +11%','Cadencia +15%','Cadencia +19%','Cadencia +23%','Cadencia +30%']
  };
  return (rows[k]||[UPGRADE_DEFS[k].desc])[lv]||UPGRADE_DEFS[k].desc;
 }
@@ -1415,17 +1527,17 @@ function chooseUpgrade(k){
  player.upgrades[k]++;const lv=player.upgrades[k];
  switch(k){
   case'damage':
-   if(lv===1)player.damage*=1.08;
+   if(lv===1)player.damage*=1.25;
    else if(lv===2){if(player.aa){player.projectilesPerBarrel=2;player.projectileCount=player.baseBarrels*2}else player.projectileCount=Math.max(player.baseBarrels||1,2)}
    else if(lv===3){if(player.aa){player.projectilesPerBarrel=3;player.projectileCount=player.baseBarrels*3}else player.projectileCount=Math.max(player.baseBarrels||1,3);player.pierce=Math.max(player.pierce,1)}
-   else if(lv===4){player.damage*=1.20;player.pierce=Math.max(player.pierce,2)}
+   else if(lv===4){player.damage*=1.40;player.pierce=Math.max(player.pierce,2)}
    else if(lv===5){if(player.aa){player.projectilesPerBarrel=4;player.projectileCount=player.baseBarrels*4}else player.projectileCount=Math.max(player.baseBarrels||1,4);player.pierce=Math.max(player.pierce,3)}
    break;
-  case'speed':player.speed*=[1.07,1.08,1.09,1.10,1.12][lv-1];break;
-  case'rate':player.rate*=[.93,.93,.92,.91,.90][lv-1];break;
-  case'armor':{const pct=[.08,.10,.12,.15,.18][lv-1];player.max=Math.round(player.max*(1+pct));player.hp=Math.min(player.max,player.hp+Math.round(player.max*pct*.35));break}
-  case'repair':player.hp=Math.min(player.max,player.hp+[28,36,44,54,66][lv-1]);break;
-  case'magnet':player.magnet+=[20,24,28,34,40][lv-1];break;
+  case'speed':player.speed*=[1.12,1.15,1.18,1.21,1.25][lv-1];break;
+  case'rate':player.rate*=[.90,.87,.84,.80,.76][lv-1];break;
+  case'armor':{const pct=[.15,.20,.25,.30,.40][lv-1];player.max=Math.round(player.max*(1+pct));player.hp=Math.min(player.max,player.hp+Math.round(player.max*pct*.35));break}
+  case'repair':player.hp=Math.min(player.max,player.hp+[45,60,80,105,140][lv-1]);break;
+  case'magnet':player.magnet+=[35,45,60,80,110][lv-1];break;
   case'mines':player.mineTimer=Math.min(player.mineTimer,.25);break;
   case'oil':player.oilTimer=Math.min(player.oilTimer,.25);break;
   case'airstrike':player.airTimer=Math.min(player.airTimer,.25);break;
@@ -1434,9 +1546,9 @@ function chooseUpgrade(k){
   case'regeneration':break;
   case'coinMagnet':break;
   case'critical':break;
-  case'radar':player.targetRange=(player.targetRange||PROJECTILE_RANGE)+[45,45,45,45,45][lv-1];break;
+  case'radar':player.targetRange=(player.targetRange||PROJECTILE_RANGE)+[70,70,70,70,70][lv-1];break;
   case'airburst':break;
-  case'overclock':player.rate=Math.max(.065,player.rate*[.94,.92,.90,.89,.87][lv-1]);break;
+  case'overclock':player.rate=Math.max(.065,player.rate*[.90,.87,.84,.81,.77][lv-1]);break;
  }
  pendingUpgrades=Math.max(0,pendingUpgrades-1);$('upgradeScreen').classList.add('hidden');
  if(pendingUpgrades>0){showUpgrade()}else{gameState='playing';last=performance.now()}
@@ -1987,7 +2099,7 @@ function ui(){if(!player)return;
  const list=$('upgradeList'),dock=$('upgradeTracker');
  if(list)list.innerHTML=unlocked.map(k=>`<span class="upgrade-chip">${labels[k]||UPGRADE_DEFS[k].name} <b>${player.upgrades[k]}/5</b></span>`).join('');
  if(dock)dock.style.display=unlocked.length?'block':'none';
- $('level').textContent=level;$('vehicleName').textContent=selectedTank().name;$('hp').style.width=(100*player.hp/player.max)+'%';$('hptext').textContent=Math.ceil(player.hp)+' / '+player.max;$('xptext').textContent=xp+' / '+nextXP+' XP';$('kills').textContent=kills;$('wave').textContent=wave;$('gearCountHud').textContent=gearCount;$('coinsHud').textContent=save.coins||0;$('cratesHud').textContent=syncCrateCount()}
+ $('level').textContent=level;$('vehicleName').textContent=selectedTank().name;$('hp').style.width=(100*player.hp/player.max)+'%';$('hptext').textContent=Math.ceil(player.hp)+' / '+player.max;$('xptext').textContent=xp+' / '+nextXP+' XP';$('kills').textContent=kills;$('wave').textContent=currentRunMode==='infinite'?`∞ ${Math.floor(infiniteElapsed/60)}m`:wave;$('gearCountHud').textContent=gearCount;$('coinsHud').textContent=save.coins||0;$('cratesHud').textContent=syncCrateCount()}
 function awardDeath(e){
  kills++;
  save.missionProgress.kills=(save.missionProgress.kills||0)+1;
@@ -1995,12 +2107,12 @@ function awardDeath(e){
  if(selectedTank().aa)save.missionProgress.aaKills=(save.missionProgress.aaKills||0)+1;
  if(kills%10===0)persist();
  const gearXP=e.isBoss?30:e.kind==='heavy'?15:8;
- gears.push({x:e.x,y:e.y,t:rand(0,6.2),value:gearXP});
+ gears.push({x:e.x,y:e.y,t:rand(0,6.2),age:0,value:gearXP});
  const baseCoinValue=e.isBoss?(e.finalBoss?300:35+Math.floor(wave*2)):e.kind==='heavy'?8:e.kind==='artillery'?6:e.kind==='support'?7:e.kind==='charger'?6:e.kind==='sniper'?5:e.kind==='scout'?3:4;
- const campaignPerks=getBaseLevels(player?.base||save.selected),coinValue=Math.round(baseCoinValue*(1+(campaignPerks.bounty||0)*.12));
+ const campaignPerks=getBaseLevels(player?.base||save.selected),coinValue=Math.round(baseCoinValue*(1+(campaignPerks.bounty||0)*.20));
  const dropX=e.x+rand(-9,9),dropY=e.y+rand(-8,8);
  if(mpInRoom()&&mpIsHost&&mpSessionRunning&&e.netId){mpSeenKillEvents.add(e.netId);mpSocket.emit('combat:enemyKilled',{enemyId:e.netId,x:e.x,y:e.y,dropX,dropY,gearXP,boss:!!e.isBoss,baseCoinValue})}
- coinDrops.push({x:dropX,y:dropY,t:rand(0,6.2),value:coinValue,bob:rand(0,6.2),netId:e.netId?e.netId+'-c':undefined});
+ coinDrops.push({x:dropX,y:dropY,t:rand(0,6.2),age:0,value:coinValue,bob:rand(0,6.2),netId:e.netId?e.netId+'-c':undefined});
  particlesAt(e.x,e.y,e.isBoss?'#ffb566':'#e6a74b',e.isBoss?28:13);
  particlesAt(e.x+rand(-4,4),e.y+rand(-4,4),'#4d5441',e.isBoss?17:7);
  particlesAt(e.x,e.y,'#ffedb0',e.isBoss?10:4);
@@ -2016,9 +2128,9 @@ function updateSpecialWeapons(dt){
  if(up.mines>0){
   player.mineTimer-=dt;
   if(player.mineTimer<=0){
-   const i=up.mines-1,interval=[5,4.2,3.6,3.0,2.5][i];
+   const i=up.mines-1,interval=[4.2,3.5,2.9,2.3,1.8][i];
    const x=player.x-Math.cos(player.a)*26,y=player.y-Math.sin(player.a)*26;
-   const mine={x,y,arm:.65,life:24+up.mines*2,radius:56+i*9,damage:player.damage*[2.1,2.5,3,3.5,4][i],level:up.mines,ownerId:mpClientId};mines.push(mine);if(mpIsGuestRun())mpSocket.emit('combat:special',{kind:'mine',item:mine});
+   const mine={x,y,arm:.65,life:24+up.mines*3,radius:[65,78,92,108,126][i],damage:player.damage*[3.5,4.5,5.8,7.2,9][i],level:up.mines,ownerId:mpClientId};mines.push(mine);if(mpIsGuestRun())mpSocket.emit('combat:special',{kind:'mine',item:mine});
    player.mineTimer=interval;
   }
  }
@@ -2026,8 +2138,8 @@ function updateSpecialWeapons(dt){
   player.oilTimer-=dt;
   if(player.oilTimer<=0){
    const i=up.oil-1,x=player.x-Math.cos(player.a)*24,y=player.y-Math.sin(player.a)*24;
-   const oil={x,y,radius:[26,32,38,44,52][i],life:[6,7,8,9,11][i],tick:.2,level:up.oil,ownerId:mpClientId};oils.push(oil);if(mpIsGuestRun())mpSocket.emit('combat:special',{kind:'oil',item:oil});
-   player.oilTimer=[5.8,5,4.3,3.6,3][i];
+   const oil={x,y,radius:[30,38,46,56,68][i],life:[7,8,9,11,13][i],tick:.2,level:up.oil,ownerId:mpClientId};oils.push(oil);if(mpIsGuestRun())mpSocket.emit('combat:special',{kind:'oil',item:oil});
+   player.oilTimer=[5.2,4.2,3.5,2.8,2.2][i];
   }
  }
  if(up.airstrike>0){
@@ -2036,7 +2148,7 @@ function updateSpecialWeapons(dt){
    const target=enemies.length?enemies.reduce((a,b)=>Math.hypot(a.x-player.x,a.y-player.y)<Math.hypot(b.x-player.x,b.y-player.y)?a:b):null;
    const i=up.airstrike-1;
    if(target){
-    const radius=[52,62,72,84,96][i],damage=player.damage*[3,3.8,4.7,5.7,7][i];
+    const radius=[60,72,86,100,120][i],damage=player.damage*[4,5.5,7,9,12][i];
     const firstStrike={x:target.x,y:target.y,delay:3.35,duration:3.35,flightAngle:rand(0,Math.PI*2),bombCount:up.airstrike>=3?2:1,radius,damage,level:up.airstrike,impactDone:false,ownerId:mpClientId};airstrikes.push(firstStrike);if(mpIsGuestRun())mpSocket.emit('combat:special',{kind:'airstrike',item:firstStrike});
     if(up.airstrike>=3){
      const second=enemies.filter(e=>e!==target&&!e.dead).sort((a,b)=>Math.hypot(a.x-target.x,a.y-target.y)-Math.hypot(b.x-target.x,b.y-target.y))[0];
@@ -2044,7 +2156,7 @@ function updateSpecialWeapons(dt){
     }
     toast(up.airstrike>=3?'¡Ataque aéreo doble!':'¡Avión de ataque a tierra en aproximación!',1100);sfx('airstrike');sfx('aircraft')
    }
-   player.airTimer=[12,10,8.5,7,5.8][i];
+   player.airTimer=[10,8.5,7,5.8,4.6][i];
   }
  }
  for(const m of mines){
@@ -2056,7 +2168,7 @@ function updateSpecialWeapons(dt){
   oil.life-=dt;oil.tick-=dt;
   if(oil.tick<=0){oil.tick=.72;if(!mpIsGuestRun())for(const e of enemies){
    if(e.dead||Math.hypot(e.x-oil.x,e.y-oil.y)>oil.radius)continue;
-   const damage=player.damage*([.12,.16,.20,.25,.30][oil.level-1]);e.hp-=damage;
+   const damage=player.damage*([.20,.28,.36,.45,.55][oil.level-1]);e.hp-=damage;
    if(save.settings.damageNumbers)texts.push({x:e.x,y:e.y-e.r-12,text:'-'+Math.max(1,Math.round(damage)),life:.5,color:'#bce4a1'});
    if(e.hp<=0){e.dead=true;awardDeath(e)}
   }}
@@ -2080,7 +2192,7 @@ function completeWave(){
  if(wave%5===0){
   const earnedTier=rollWaveCrateTier(wave),tiers=[earnedTier];addCrate(earnedTier);
   const qLevel=getBaseLevels(player?.base||save.selected).quartermaster||0;
-  const extraCrate=qLevel>0&&Math.random()<qLevel*.08;
+  const extraCrate=qLevel>0&&Math.random()<Math.min(.90,qLevel*.12);
   if(extraCrate){const extraTier=rollWaveCrateTier(wave);tiers.push(extraTier);addCrate(extraTier)}
   if(mpInRoom()&&mpIsHost&&mpSessionRunning)mpSocket.emit('progress:crateReward',{wave,tiers});
   persist();toast(extraCrate?`¡Jefe derrotado! +2 cajas (${CRATE_TIERS[tiers[0]].label} y ${CRATE_TIERS[tiers[1]].label})`:`¡Jefe derrotado! +1 caja ${CRATE_TIERS[earnedTier].label}`,3000)
@@ -2157,7 +2269,7 @@ function update(dt,now){
  if(!terrainCollides(nextX,player.y,player.r||12))player.x=nextX;
  if(!terrainCollides(player.x,nextY,player.r||12))player.y=nextY;
  player.cool-=dt;player.invuln=Math.max(0,player.invuln-dt);visualTime+=dt;updateAmbientNature(dt);
- const regenPerSecond=[0,.5,.9,1.3,1.8,2.4][player.upgrades.regeneration||0]||0;
+ const regenPerSecond=[0,1,1.8,2.8,4,5.5][player.upgrades.regeneration||0]||0;
  if(regenPerSecond>0&&player.hp<player.max)player.hp=Math.min(player.max,player.hp+regenPerSecond*dt);
  player.recoil=Math.max(0,(player.recoil||0)-dt*8);player.flash=Math.max(0,(player.flash||0)-dt);
  player.trailTimer-=dt;
@@ -2172,7 +2284,7 @@ function update(dt,now){
  for(const dust of dustPuffs){dust.x+=dust.vx*dt;dust.y+=dust.vy*dt;dust.life-=dt;dust.vx*=.94;dust.vy*=.94}
  dustPuffs=dustPuffs.filter(dust=>dust.life>0);if(dustPuffs.length>120)dustPuffs.splice(0,dustPuffs.length-120);
  player.toolCrateTimer-=dt;
- if(!mpIsGuestRun()&&player.toolCrateTimer<=0){spawnToolCrate();player.toolCrateTimer=rand(15,23)*(1-(getBaseLevels(player.base).logistics||0)*.08)}
+ if(!mpIsGuestRun()&&player.toolCrateTimer<=0){spawnToolCrate();player.toolCrateTimer=rand(15,23)*(1-(getBaseLevels(player.base).logistics||0)*.09)}
  for(const box of toolCrates){if(!mpIsGuestRun()){box.bob+=dt*3;box.life-=dt}const claimed=mpIsCoopRun()&&box.netId&&mpClaimedToolCrates.has(box.netId);if(!claimed&&Math.hypot(player.x-box.x,player.y-box.y)<27&&player.hp<player.max){if(mpIsCoopRun()&&box.netId)mpClaimedToolCrates.add(box.netId);else box.picked=true;const healed=Math.min(player.max-player.hp,Math.ceil(player.max*.5));player.hp+=healed;toast('CAJA MÉDICA: +'+healed+' HP',1800);sfx('medkit');particlesAt(box.x,box.y,'#b9e889',14)}}
  toolCrates=toolCrates.filter(box=>box.life>0&&(!box.picked||mpIsCoopRun()));
  // Las cajas del campo comparten posición, pero cada comandante las recoge y abre para sí mismo.
@@ -2183,7 +2295,25 @@ function update(dt,now){
  tankLootCrates=tankLootCrates.filter(box=>box.life>0&&(!box.picked||mpIsCoopRun()));
  if(openedFieldCrate)return;
  if(!mpIsGuestRun()){
-  if(waveTransition>0){waveTransition-=dt;if(waveTransition<=0)beginWave()}
+  if(currentRunMode==='infinite'){
+   infiniteElapsed+=dt;
+   const minute=Math.floor(infiniteElapsed/60);
+   if(minute>=infiniteNextMinute/60){
+    infiniteNextMinute+=60;
+    wave=minute+1;
+    save.missionProgress.waves=(save.missionProgress.waves||0)+1;
+    banner=minute%5===0?'¡JEFE DE ÉLITE!':'SUPERVIVENCIA · MINUTO '+minute;
+    bannerTime=2.35;
+    if(minute%5===0){spawnBoss(false,Math.min(50,minute));sfx('boss');toast('Minuto '+minute+' · ¡jefe de élite!',2300)}
+    else toast('Minuto '+minute+' · la horda aumenta',1500);
+    persist();ui();
+   }
+   spawnT-=dt;
+   const activeCount=enemies.reduce((n,e)=>n+(!e.dead?1:0),0);
+   const enemyCap=Math.min(80,18+minute*5);
+   const spawnInterval=Math.max(.22,1.05-minute*.035);
+   if(spawnT<=0&&activeCount<enemyCap){spawn();spawnT=spawnInterval*rand(.78,1.22)}
+  }else if(waveTransition>0){waveTransition-=dt;if(waveTransition<=0)beginWave()}
   else {
    spawnT-=dt;if(spawnT<=0&&waveRemaining>0){spawn();waveRemaining--;spawnT=Math.max(.20,.58-wave*.0045)}
    if(waveRemaining===0&&enemies.length===0&&enemyShots.length===0)completeWave();
@@ -2239,7 +2369,7 @@ function update(dt,now){
   e.cool-=dt;
   if(e.cool<=0&&d<(e.range||550)){if(e.kind!=='charger')enemyFire(e,target);e.cool=e.isBoss?(e.finalBoss?.68:1.05):e.kind==='artillery'?rand(2.8,3.3):e.kind==='sniper'?rand(2.6,3.3):e.kind==='support'?rand(2.3,2.9):e.kind==='scout'?rand(.95,1.35):rand(1.5,2.2)}
   const contactDamage=e.kind==='charger'?(e.charging&&(e.telegraph||0)<=0?26:12):e.isBoss?20:e.kind==='heavy'?16:13;
-  if(d<target.r+e.r*.65){if(target.local){if(player.invuln<=0){const hurt=contactDamage*(1-(player.upgrades.shield||0)*.08);player.hp-=hurt;player.invuln=.45;if(save.settings.screenShake)shakeTime=.12;particlesAt(player.x,player.y,e.kind==='charger'?'#f68a55':'#e85d4b',5);sfx('playerDamage')}}else{mpHitRemote(target,contactDamage,'contact',target.x,target.y)}}
+  if(d<target.r+e.r*.65){if(target.local){if(player.invuln<=0){const hurt=contactDamage*(1-Math.min(.60,(player.upgrades.shield||0)*.12));player.hp-=hurt;player.invuln=.45;if(save.settings.screenShake)shakeTime=.12;particlesAt(player.x,player.y,e.kind==='charger'?'#f68a55':'#e85d4b',5);sfx('playerDamage')}}else{mpHitRemote(target,contactDamage,'contact',target.x,target.y)}}
  }
  enemies=enemies.filter(e=>!e.dead);
  updateSmoke(dt);
@@ -2247,16 +2377,38 @@ function update(dt,now){
  for(const s of enemyShots){
    s.x+=s.vx*dt;s.y+=s.vy*dt;s.life-=dt;
    const targets=mpCombatants();let hitTarget=null;for(const t of targets){const hitRadius=(t.r||12)+(s.role==='artillery'?3:2.5);if(Math.hypot(s.x-t.x,s.y-t.y)<hitRadius){hitTarget=t;break}}
-   if(hitTarget){s.dead=true;if(hitTarget.local){if(player.invuln<=0){player.hp-=s.damage*(1-(player.upgrades.shield||0)*.08);player.invuln=s.splashRadius?.38:.26;particlesAt(player.x,player.y,s.splashRadius?'#ffbd68':'#ee6351',s.splashRadius?24:4);if(s.splashRadius){texts.push({x:player.x,y:player.y-30,text:'ARTILLERÍA',life:.7,color:'#ffc06e'});sfx('explode')}else sfx('playerDamage');if(save.settings.screenShake)shakeTime=s.splashRadius?.16:.1}}else{mpHitRemote(hitTarget,s.damage,s.splashRadius?'artillery':'enemy-shot',hitTarget.x,hitTarget.y)}}
+   if(hitTarget){s.dead=true;if(hitTarget.local){if(player.invuln<=0){player.hp-=s.damage*(1-Math.min(.60,(player.upgrades.shield||0)*.12));player.invuln=s.splashRadius?.38:.26;particlesAt(player.x,player.y,s.splashRadius?'#ffbd68':'#ee6351',s.splashRadius?24:4);if(s.splashRadius){texts.push({x:player.x,y:player.y-30,text:'ARTILLERÍA',life:.7,color:'#ffc06e'});sfx('explode')}else sfx('playerDamage');if(save.settings.screenShake)shakeTime=s.splashRadius?.16:.1}}else{mpHitRemote(hitTarget,s.damage,s.splashRadius?'artillery':'enemy-shot',hitTarget.x,hitTarget.y)}}
  }
  enemyShots=enemyShots.filter(s=>s.life>0&&!s.dead);
  } else {for(const s of enemyShots){s.x+=s.vx*dt;s.y+=s.vy*dt;s.life-=dt;}enemyShots=enemyShots.filter(s=>s.life>0&&!s.dead);}
- for(const g of gears){g.t+=dt;if(Math.hypot(player.x-g.x,player.y-g.y)<player.magnet){g.gone=true;gearCount++;const earned=g.value+(player.upgrades.gearXP||0)*5;gainXP(earned);sfx('pickup');particlesAt(g.x,g.y,'#f6d85e',8);if(save.settings.damageNumbers)texts.push({x:g.x,y:g.y-10,text:'+'+earned+' XP',life:.9,color:'#e8ed9b'})}}
+ for(const g of gears){
+  g.t+=dt;g.age=(g.age||0)+dt;
+  let distance=Math.hypot(player.x-g.x,player.y-g.y);
+  const magnetRadius=player.magnet+60; // Radio de atracción ampliado.
+  // Los engranajes esperan dos segundos y después vuelan hacia el tanque desde más lejos.
+  if(g.age>=2&&distance<magnetRadius){
+    const pullSpeed=Math.min(620,250+Math.max(0,magnetRadius-distance)*2.2);
+    const step=Math.min(distance,pullSpeed*dt);
+    if(distance>0){g.x+=(player.x-g.x)/distance*step;g.y+=(player.y-g.y)/distance*step;}
+    distance=Math.hypot(player.x-g.x,player.y-g.y);
+  }
+  if(distance<14){g.gone=true;gearCount++;const earned=Math.round((g.value+(player.upgrades.gearXP||0)*10)*(player.xpMultiplier||1));gainXP(earned);sfx('pickup');particlesAt(g.x,g.y,'#f6d85e',8);if(save.settings.damageNumbers)texts.push({x:g.x,y:g.y-10,text:'+'+earned+' XP',life:.9,color:'#e8ed9b'});}
+}
  gears=gears.filter(g=>!g.gone);
  for(const c of coinDrops){
-   c.t+=dt;
-   const coinMagnetRadius=[0,25,40,55,75,100][player.upgrades.coinMagnet||0]||0;
-   if(Math.hypot(player.x-c.x,player.y-c.y)<player.magnet+9+coinMagnetRadius){
+   c.t+=dt;c.age=(c.age||0)+dt;
+   const coinUpgradeRadius=[0,40,65,95,130,180][player.upgrades.coinMagnet||0]||0;
+   const magnetRadius=player.magnet+60+coinUpgradeRadius;
+   let distance=Math.hypot(player.x-c.x,player.y-c.y);
+   // Las monedas también esperan dos segundos y luego se desplazan hacia el tanque.
+   if(c.age>=2&&distance<magnetRadius){
+     const pullSpeed=Math.min(620,250+Math.max(0,magnetRadius-distance)*2.2);
+     const step=Math.min(distance,pullSpeed*dt);
+     if(distance>0){c.x+=(player.x-c.x)/distance*step;c.y+=(player.y-c.y)/distance*step;}
+     distance=Math.hypot(player.x-c.x,player.y-c.y);
+   }
+   // Mantiene la recogida inmediata si ya estaban prácticamente encima del tanque.
+   if(distance<14||(c.age<2&&distance<player.magnet+9+coinUpgradeRadius)){
      c.gone=true;save.coins=(save.coins||0)+c.value;persist();sfx('coin');
      particlesAt(c.x,c.y,'#f6d85e',5);
      texts.push({x:c.x,y:c.y-12,text:'+'+c.value+' monedas',life:1,color:'#ffdc70'});
@@ -2445,29 +2597,53 @@ function tankSvg(t){
  <rect x="${x+8}" y="${trackY+trackH+2}" width="${cfg.length-16}" height="3" fill="#111912"/>
  </svg>`;
 }
-function header(title,back='main'){return `<div class="subpage-head"><button class="secondary backButton" data-page="${back}">← MENÚ</button><div><div class="eyebrow">STEEL SWARM / FIELD COMMAND</div><h2>${title}</h2></div><div class="subpage-mark">SS<span> // 4.2</span></div></div>`}
+function header(title,back='main'){return `<div class="subpage-head"><button class="secondary backButton" data-page="${back}">← MENÚ</button><div><div class="eyebrow">STEEL SWARM / FIELD COMMAND</div><h2>${title}</h2></div><div class="subpage-mark">SS<span> // 4.5</span></div></div>`}
 function drawMenu(page){
  const box=$('menuContent');
  box.classList.remove('page-pop');void box.offsetWidth;box.classList.add('page-pop');
  if(page==='main'){
   const t=selectedTank();
-  box.innerHTML=`<div class="simple-main">
-    <div class="simple-top"><div class="simple-logo"><span class="logo-mark">SS</span><span>STEEL SWARM<small>PIXEL TANK SURVIVAL</small></span></div><span class="wallet-tag">🪙 ${save.coins||0} monedas</span><span class="version-tag">V4.2</span></div>
+  box.innerHTML=`<div class="simple-main ss-menu-v45">
+    <div class="simple-top">
+      <div class="simple-logo"><span class="logo-mark">SS</span><span>STEEL SWARM<small>ARMORED SURVIVAL COMMAND</small></span></div>
+      <div class="simple-top-right"><button type="button" class="news-mini-btn" data-action="news"><span>▤</span> NOTAS DEL PARCHE</button><span class="wallet-tag">🪙 ${save.coins||0} <small>MONEDAS</small></span><span class="version-tag">V4.5</span></div>
+    </div>
     <div class="simple-hero">
-      <div class="simple-title"><div class="eyebrow">CAMPAÑA DE SUPERVIVENCIA</div><h1>STEEL <em>SWARM</em></h1><p>Hordas con roles diferentes: exploradores que flanquean, artillería de largo alcance, ingenieros que reparan, francotiradores y tanques de asalto.</p></div>
-      <div class="side-preview"><div class="preview-caption">VEHÍCULO SELECCIONADO</div><div class="side-tank">${tankSvg(t)}</div><div class="preview-name">${t.name}</div><div class="preview-meta">${t.nation} · ${t.era}</div><div class="preview-stats"><span>VIDA <b>${t.hp}</b></span><span>DAÑO <b>${t.damage}</b></span><span>VELOCIDAD <b>${t.speed}</b></span></div></div>
+      <div class="simple-title">
+        <div class="eyebrow"><span class="live-dot"></span> CENTRO DE MANDO · LISTO PARA DESPLEGAR</div>
+        <h1>STEEL <em>SWARM</em></h1>
+        <p>Elige cómo sobrevivir, prepara tu blindado y mejora tu arsenal. Cada vehículo tiene sus propias estadísticas y cada partida pone a prueba tu estrategia.</p>
+        <div class="hero-feature-row"><span>✦ JEFES</span><span>▰ COLECCIÓN DE TANQUES</span><span>⚙ MEJORAS PERMANENTES</span></div>
+      </div>
+      <div class="side-preview">
+        <div class="preview-head"><div class="preview-caption">VEHÍCULO EQUIPADO</div><span class="equipped-pill">● PREPARADO</span></div>
+        <div class="side-tank">${tankSvg(t)}</div>
+        <div class="preview-name">${t.name}</div>
+        <div class="preview-meta">${t.nation} <span>·</span> ${t.era}</div>
+        <div class="preview-stats"><span>VIDA<b>${t.hp}</b></span><span>DAÑO<b>${t.damage}</b></span><span>VELOCIDAD<b>${t.speed}</b></span></div>
+        <button type="button" class="preview-change" data-page="garage">CAMBIAR VEHÍCULO <span>↗</span></button>
+      </div>
     </div>
-    <div class="simple-actions">
-      <button class="primary simple-play" data-action="play"><span>▶</span><span><b>JUGAR</b><small>Iniciar nueva partida</small></span></button>
-      <button class="simple-nav" data-page="multiplayer"><span class="nav-icon">◎</span><span><b>ONLINE</b><small>Próximamente</small></span><span class="nav-arrow">›</span></button>
-      <button class="simple-nav" data-page="missions"><span class="nav-icon">✦</span><span><b>MISIONES</b><small>Objetivos y recompensas</small></span><span class="nav-arrow">›</span></button>
-      <button class="simple-nav" data-page="garage"><span class="nav-icon">▰</span><span><b>GARAGE</b><small>Elegir tanque</small></span><span class="nav-arrow">›</span></button>
-      <button class="simple-nav" data-page="boxes"><span class="nav-icon">▣</span><span><b>CAJAS</b><small>${save.crates} disponibles</small></span><span class="nav-arrow">›</span></button>
-      <button class="simple-nav" data-page="workshop"><span class="nav-icon">⚒</span><span><b>TALLER</b><small>${save.coins||0} monedas</small></span><span class="nav-arrow">›</span></button>
-      <button class="simple-nav" data-page="codes"><span class="nav-icon">⌘</span><span><b>CÓDIGOS</b><small>Canjear recompensas</small></span><span class="nav-arrow">›</span></button>
-      <button class="simple-nav" data-page="settings"><span class="nav-icon">⚙</span><span><b>AJUSTES</b><small>Sonido y dificultad</small></span><span class="nav-arrow">›</span></button>
-    </div>
-    <div class="simple-footer"><span>WASD / FLECHAS · AUTO-DISPARO</span><span>OLEADAS · MEJORAS · JEFES</span></div>
+    <section class="simple-mode-section" aria-label="Modos de juego">
+      <div class="menu-section-head"><div><span class="section-index">01 / DESPLIEGUE</span><h2>ELIGE TU PARTIDA</h2></div><p>Dos formas de poner a prueba tu tanque</p></div>
+      <div class="simple-mode-grid">
+        <button type="button" class="simple-mode-card classic-mode" data-action="play"><span class="mode-symbol">▶</span><span class="mode-copy"><b>CAMPAÑA CLÁSICA</b><small>Supera oleadas, derrota jefes cada cinco niveles y alcanza la oleada 50.</small><em>PARTIDA POR OLEADAS <span>→</span></em></span></button>
+        <button type="button" class="simple-mode-card infinite-mode-button" data-action="infinite"><span class="mode-symbol">∞</span><span class="mode-copy"><b>SUPERVIVENCIA INFINITA</b><small>Enemigos sin fin. La densidad y la dificultad aumentan con el tiempo.</small><em>RESISTE TODO LO POSIBLE <span>→</span></em></span><span class="mode-tag">RÉCORD</span></button>
+      </div>
+    </section>
+    <section class="simple-nav-section" aria-label="Gestión del juego">
+      <div class="menu-section-head"><div><span class="section-index">02 / PREPARACIÓN</span><h2>ARSENAL Y PROGRESO</h2></div><p>Todo lo necesario antes de combatir</p></div>
+      <div class="simple-nav-grid">
+        <button type="button" class="simple-nav" data-page="garage"><span class="nav-icon">▰</span><span><b>GARAGE</b><small>Elige y equipa un tanque</small></span><span class="nav-arrow">↗</span></button>
+        <button type="button" class="simple-nav" data-page="workshop"><span class="nav-icon">⚒</span><span><b>TALLER</b><small>Mejoras permanentes · ${save.coins||0} monedas</small></span><span class="nav-arrow">↗</span></button>
+        <button type="button" class="simple-nav" data-page="missions"><span class="nav-icon">✦</span><span><b>MISIONES</b><small>Objetivos y recompensas</small></span><span class="nav-arrow">↗</span></button>
+        <button type="button" class="simple-nav" data-page="boxes"><span class="nav-icon">▣</span><span><b>CAJAS</b><small>${save.crates} disponibles · vehículos nuevos</small></span><span class="nav-arrow">↗</span></button>
+        <button type="button" class="simple-nav" data-page="codes"><span class="nav-icon">⌘</span><span><b>CÓDIGOS</b><small>Canjea códigos de suministro</small></span><span class="nav-arrow">↗</span></button>
+        <button type="button" class="simple-nav" data-page="settings"><span class="nav-icon">⚙</span><span><b>AJUSTES</b><small>Sonido, música y dificultad</small></span><span class="nav-arrow">↗</span></button>
+        <button type="button" class="simple-nav online-soon" data-page="multiplayer"><span class="nav-icon">◎</span><span><b>MULTIJUGADOR</b><small>Partidas online</small></span><span class="soon-pill">PRÓXIMAMENTE</span></button>
+      </div>
+    </section>
+    <div class="simple-footer"><span>WASD / FLECHAS · DISPARO AUTOMÁTICO</span><span>OLEADAS · TANQUES · MEJORAS · JEFES</span></div>
   </div>`;
  }else if(page==='garage'){
   const rarityOrder=['legendary','epic','rare','uncommon','common'];
@@ -2501,12 +2677,12 @@ function drawMenu(page){
  }else if(page==='workshop'){
   const t=selectedTank(),u=getBaseLevels(t.id);
   const rows=Object.entries(BASE_UPGRADE_DEFS).map(([key,def])=>{
-    const lv=u[key]||0,cost=baseUpgradeCost(key,lv),maxed=lv>=5,canBuy=(save.coins||0)>=cost;
-    const current=key==='firepower'?`Daño base +${lv*6}%`:key==='plating'?`Vida máxima +${lv*8}%`:key==='engine'?`Velocidad +${lv*4}%`:key==='loading'?`Cadencia +${lv*4}%`:key==='bounty'?`Recompensa por baja +${lv*12}%`:key==='logistics'?`Intervalo de suministros −${lv*8}%`:key==='quartermaster'?`Caja extra ${lv*8}%`:`Chatarra por duplicado ${25+lv*10}`;
+    const lv=u[key]||0,cost=baseUpgradeCost(key,lv),maxed=lv>=10,canBuy=(save.coins||0)>=cost;
+    const current=key==='firepower'?`Daño base +${lv*20}%`:key==='plating'?`Vida máxima +${lv*15}%`:key==='engine'?`Velocidad +${lv*8}%`:key==='loading'?`Cadencia +${lv*8}%`:key==='bounty'?`Recompensa por baja +${lv*20}%`:key==='logistics'?`Intervalo de suministros −${lv*9}%`:key==='quartermaster'?`Prob. caja extra ${Math.min(90,lv*12)}%`:key==='salvage'?`Chatarra por duplicado ${25+lv*20}`:key==='capacitor'?`XP adicional +${lv*15}%`:`Radio magnético +${lv*35}`;
     const ico=def.icon||'⚙';
-    return `<div class="base-upgrade-card"><div class="base-upgrade-icon">${ico}</div><div class="base-upgrade-info"><b>${def.label}</b><small>${def.desc}</small><div class="base-level-track">${[1,2,3,4,5].map(n=>`<i class="${n<=lv?'filled':''}"></i>`).join('')}</div><span class="base-current">${current} · Nivel ${lv}/5</span></div><button class="base-buy ${canBuy&&!maxed?'can-buy':''}" data-buy-base="${key}" ${maxed||!canBuy?'disabled':''}>${maxed?'MÁXIMO':`🪙 ${cost}<small>COMPRAR ${lv+1}/5</small>`}</button></div>`
+    return `<div class="base-upgrade-card"><div class="base-upgrade-icon">${ico}</div><div class="base-upgrade-info"><b>${def.label}</b><small>${def.desc}</small><div class="base-level-track">${Array.from({length:10},(_,i)=>i+1).map(n=>`<i class="${n<=lv?'filled':''}"></i>`).join('')}</div><span class="base-current">${current} · Nivel ${lv}/10</span></div><button class="base-buy ${canBuy&&!maxed?'can-buy':''}" data-buy-base="${key}" ${maxed||!canBuy?'disabled':''}>${maxed?'MÁXIMO':`🪙 ${cost}<small>COMPRAR ${lv+1}/10</small>`}</button></div>`
   }).join('');
-  box.innerHTML=header('TALLER · PROGRESIÓN DE CAMPAÑA')+`<div class="workshop-banner"><div><span class="eyebrow">PRESUPUESTO DISPONIBLE</span><h3>🪙 ${save.coins||0} <small>MONEDAS</small></h3><p>Estas mejoras permanentes son distintas de las cartas temporales que eliges durante una partida. Con ${t.name} equipado, puedes mejorar daño, blindaje, motor, cadencia y también la economía de campaña.</p></div><div class="workshop-tank">${tankSvg(t)}<b>${t.name}</b><small>${t.nation} · ${t.era}</small></div></div><div class="base-upgrade-list">${rows}</div><p class="note">Cada beneficio tiene 5 niveles y se guarda por vehículo. Las mejoras de combate (cañón, motor, blindaje, minas, apoyo aéreo, etc.) siguen apareciendo solo como elecciones durante la partida.</p>`;
+  box.innerHTML=header('TALLER · PROGRESIÓN DE CAMPAÑA')+`<div class="workshop-banner"><div><span class="eyebrow">PRESUPUESTO DISPONIBLE</span><h3>🪙 ${save.coins||0} <small>MONEDAS</small></h3><p>Estas mejoras permanentes son distintas de las cartas temporales que eliges durante una partida. Con ${t.name} equipado, puedes mejorar daño, blindaje, motor, cadencia y también la economía de campaña.</p></div><div class="workshop-tank">${tankSvg(t)}<b>${t.name}</b><small>${t.nation} · ${t.era}</small></div></div><div class="base-upgrade-list">${rows}</div><p class="note">Cada mejora permanente tiene 10 niveles y se guarda por vehículo. Los niveles ahora dan bonificaciones mucho más notables. El Núcleo de experiencia aumenta la XP conseguida y el Imán industrial atrae desde más lejos tanto los engranajes como las monedas. Las cartas de combate temporales siguen apareciendo durante la partida.</p>`;
   }else if(page==='codes'){
   box.innerHTML=header('CÓDIGOS · CENTRO DE SUMINISTROS')+`<div class="code-layout"><p class="code-intro">Introduce códigos de suministro para recibir monedas, cajas y otras ayudas. Los códigos distinguen recompensas normales del protocolo especial de desarrollo.</p><div class="code-terminal"><div class="code-terminal-head"><b>▣ TERMINAL DE REQUISICIONES</b><span>CONEXIÓN LOCAL · ACTIVA</span></div><form id="redeemCodeForm" class="code-input-row"><input id="redeemCodeInput" maxlength="32" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="INTRODUCE UN CÓDIGO" aria-label="Código de recompensa"><button class="primary code-submit" type="submit">CANJEAR ↗</button></form><p id="codeFeedback" role="status" aria-live="polite">Los códigos canjeados se guardan en esta partida del navegador y no pueden volver a utilizarse.</p><div class="code-wallet"><span>SALDO ACTUAL</span><strong id="codeWallet">🪙 ${save.coins||0} monedas · 📦 ${save.crates} cajas</strong></div><p class="code-warning">PROTOCOLO DE DESARROLLO: el código de pruebas desbloquea el arsenal completo y activa una configuración sobrepotenciada al iniciar una nueva partida. Ideal para comprobar armas, tanques, oleadas y jefes.</p></div></div>`;
   }else if(page==='multiplayer'){
@@ -2549,7 +2725,7 @@ function redeemCode(){
   save.unlocked=[...new Set([...save.unlocked,...TANKS.map(t=>t.id)])];
   save.selected='abrams';save.coins=99999;save.crateInventory={standard:50,improved:25,elite:15,prototype:9};syncCrateCount();
   save.tankUpgrades={...save.tankUpgrades};
-  for(const tank of TANKS)save.tankUpgrades[tank.id]={firepower:5,plating:5,engine:5,loading:5,bounty:5,logistics:5,quartermaster:5,salvage:5};
+  for(const tank of TANKS)save.tankUpgrades[tank.id]={firepower:10,plating:10,engine:10,loading:10,bounty:10,logistics:10,quartermaster:10,salvage:10,capacitor:10,magnetism:10};
   save.testMode=true;
  }else{save.coins=(save.coins||0)+(reward.coins||0);if(reward.crates)addCrate('standard',reward.crates)}
  save.redeemedCodes.push(code);persist();updateCodeWallet();ui();
@@ -2566,7 +2742,9 @@ $('menuContent').addEventListener('click',e=>{
  if(b.dataset.select){save.selected=b.dataset.select;persist();drawMenu('garage');ui();return}
  if(b.dataset.buyBase){buyBaseUpgrade(b.dataset.buyBase);return}
  if(b.dataset.claimMission){claimMission(b.dataset.claimMission);return}
- if(b.dataset.action==='play'){launchRun();return}
+ if(b.dataset.action==='play'){launchRun('classic');return}
+ if(b.dataset.action==='infinite'){launchRun('infinite');return}
+ if(b.dataset.action==='news'){const news=$('ssNewsOverlay');if(news)news.classList.add('open');return}
  if(b.dataset.action==='resume'){gameState='playing';$('menuScreen').classList.add('hidden');if(mpIsCoopRun()&&mpIsHost)mpSocket.emit('game:resume');last=performance.now();return}
  if(b.dataset.openCrate){openCrate(b.dataset.openCrate);return}
  if(b.dataset.action==='opencrate'){openCrate('standard');return}
@@ -2660,7 +2838,7 @@ function startSlotDraw(){
 function awardSlotDraw(){
  const session=slotSession;if(!session||session.finished||!session.current||session.current.settled)return;
  const draw=session.current,tank=draw.prize,dup=save.unlocked.includes(tank.id);
- const salvageLevel=getBaseLevels(save.selected).salvage||0,scrapGain=25+salvageLevel*10;
+ const salvageLevel=getBaseLevels(save.selected).salvage||0,scrapGain=25+salvageLevel*20;
  if(!dup)save.unlocked.push(tank.id);else save.scrap=(save.scrap||0)+scrapGain;
  draw.settled=true;session.rewards.push({tank,duplicate:dup,scrapGain:dup?scrapGain:0});
  const number=String(session.rewards.length).padStart(2,'0');
@@ -2724,14 +2902,14 @@ requestAnimationFrame(frame)
 })();</script>
 <div id="ssNewsOverlay" role="dialog" aria-modal="true" aria-labelledby="ssNewsTitle">
  <section class="ss-news">
-  <header class="ss-news-head"><div class="ss-news-mark">SS</div><div><div class="ss-news-kicker">INFORME DE ACTUALIZACIÓN · VERSIÓN RECIENTE</div><h2 id="ssNewsTitle">NOVEDADES DEL ARSENAL</h2></div></header>
+  <header class="ss-news-head"><div class="ss-news-mark">SS</div><div><div class="ss-news-kicker">INFORME DE ACTUALIZACIÓN · VERSIÓN 4.5</div><h2 id="ssNewsTitle">NOTAS DEL PARCHE</h2></div><button type="button" id="ssNewsX" class="ss-news-x" aria-label="Cerrar notas">×</button></header>
   <div class="ss-news-body">
-   <p class="ss-news-lead">Comandante, estos son los cambios principales. Revisa las novedades antes de desplegarte en el campo de batalla.</p>
+   <p class="ss-news-lead">El centro de mando se ha reorganizado para que puedas encontrar cada función más rápido. Estas son las novedades de esta versión.</p>
    <div class="ss-news-list">
-    <article class="ss-news-item"><div class="ss-news-icon">▰</div><div><b>Modelos de tanques alemanes</b><p>El garaje incorpora modelos visuales de vehículos alemanes y una presentación con la bandera de su nación.</p></div></article>
-    <article class="ss-news-item"><div class="ss-news-icon">⚙</div><div><b>Vehículos y tamaños</b><p>Se está ajustando la escala visual de los tanques para que las diferencias entre ligeros, medios y superpesados se entiendan mejor.</p></div></article>
-    <article class="ss-news-item"><div class="ss-news-icon">♫</div><div><b>Sonido de combate</b><p>Nuevos efectos previstos para la pasada del avión de ataque aéreo y las explosiones de los proyectiles.</p></div></article>
-    <article class="ss-news-item"><div class="ss-news-icon">◎</div><div><b>Multijugador</b><p>El apartado online permanece temporalmente cerrado y volverá en una futura actualización.</p></div></article>
+    <article class="ss-news-item"><div class="ss-news-icon">▤</div><div><b>Menú rediseñado</b><p>Los modos de juego aparecen primero y el garaje, taller, misiones, cajas, códigos y ajustes quedan agrupados en una sección de preparación más clara. Puedes volver a abrir estas notas desde el menú.</p></div></article>
+    <article class="ss-news-item"><div class="ss-news-icon">∞</div><div><b>Supervivencia infinita</b><p>Juega sin límite de oleadas: la horda gana densidad con el tiempo y los jefes de élite ponen a prueba cuánto puedes resistir. La campaña clásica sigue disponible.</p></div></article>
+    <article class="ss-news-item"><div class="ss-news-icon">⚒</div><div><b>Progresión y potencia</b><p>El taller ofrece mejoras permanentes de hasta diez niveles y las cartas de combate potencian más claramente el daño, la defensa, la movilidad y los sistemas especiales.</p></div></article>
+    <article class="ss-news-item"><div class="ss-news-icon">◎</div><div><b>Recogida magnética</b><p>Los engranajes y las monedas pueden esperar un instante y después desplazarse hacia tu tanque cuando estén dentro del radio de atracción. El Imán industrial amplía ese alcance.</p></div></article>
    </div>
    <div class="ss-news-foot">
     <label class="ss-news-check"><input id="ssNewsSkip" type="checkbox"> No mostrar de nuevo esta noticia</label>
@@ -2742,7 +2920,7 @@ requestAnimationFrame(frame)
 </div>
 <script id="steel-swarm-news-popup-2026">
 (()=>{
- const KEY='steelSwarmNewsSeen_v1';
+ const KEY='steelSwarmNewsSeen_v45';
  const overlay=document.getElementById('ssNewsOverlay');
  if(!overlay)return;
  let seen=false;try{seen=localStorage.getItem(KEY)==='1'}catch{}
@@ -2765,6 +2943,7 @@ requestAnimationFrame(frame)
  }
  const close=()=>{const skip=document.getElementById('ssNewsSkip')?.checked;try{if(skip)localStorage.setItem(KEY,'1')}catch{}overlay.classList.remove('open')};
  document.getElementById('ssNewsClose')?.addEventListener('click',close);
+ document.getElementById('ssNewsX')?.addEventListener('click',close);
  overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('open'))close()});
 })();
